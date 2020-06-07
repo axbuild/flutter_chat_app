@@ -11,6 +11,7 @@ Widget appBarMain(BuildContext context){
 }
 
 //    title: Image.asset("assets/images/logo.png", height:50),
+//    title: Image.asset("assets/images/logo.png", height:50),
 
 InputDecoration textFieldInputDecoration(String hintText){
   return  InputDecoration(
