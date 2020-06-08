@@ -16,12 +16,36 @@ class _SignInState extends State<SignIn> {
         child: Column(
           children: <Widget>[
             TextField(
-              style: simpleTextFieldStyle(),
+              style: simpleTextStyle(),
               decoration: textFieldInputDecoration('email'),
             ),
             TextField(
-              style: simpleTextFieldStyle(),
+              style: simpleTextStyle(),
               decoration: textFieldInputDecoration('password'),
+            ),
+            SizedBox(height:8,),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text("ForgotPassword", style: simpleTextStyle(),),
+              ),
+            ),
+            SizedBox(height: 8,),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xff007EF4),
+                    const Color(0xff2A75BC)
+                  ]
+                )
+              ),
+              child: Text("Sign In", style: TextStyle(
+                    color: Colors.white,
+                    fontSize:18
+                ),
+              ),
             ),
           ],
         ),

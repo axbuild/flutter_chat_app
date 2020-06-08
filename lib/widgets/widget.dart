@@ -28,8 +28,9 @@ InputDecoration textFieldInputDecoration(String hintText){
   );
 }
 
-TextStyle simpleTextFieldStyle(){
+TextStyle simpleTextStyle(){
   return TextStyle(
-    color: Colors.white
+    color: Colors.white,
+    fontSize:16
   );
 }
