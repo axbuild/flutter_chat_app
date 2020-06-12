@@ -7,6 +7,12 @@ class SingUp extends StatefulWidget {
 }
 
 class _SingUpState extends State<SingUp> {
+
+  TextEditingController userNameTextEditingController = new TextEditingController();
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +27,17 @@ class _SingUpState extends State<SingUp> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
+                    controller: userNameTextEditingController,
+                    style: simpleTextStyle(),
+                    decoration: textFieldInputDecoration('username'),
+                  ),
+                  TextField(
+                    controller: emailTextEditingController,
                     style: simpleTextStyle(),
                     decoration: textFieldInputDecoration('email'),
                   ),
                   TextField(
+                    controller: passwordTextEditingController,
                     style: simpleTextStyle(),
                     decoration: textFieldInputDecoration('password'),
                   ),
@@ -50,7 +63,7 @@ class _SingUpState extends State<SingUp> {
                       ),
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Text("Sign In",
+                    child: Text("Sign Up",
                       style: mediumTextStyle(),
                     ),
                   ),
@@ -73,8 +86,8 @@ class _SingUpState extends State<SingUp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't have account?", style: mediumTextStyle(),),
-                      Text("Register now", style: TextStyle(
+                      Text("Already have account?", style: mediumTextStyle(),),
+                      Text("Sign In now", style: TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                           decoration: TextDecoration.underline
