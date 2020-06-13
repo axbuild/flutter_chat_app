@@ -2,6 +2,8 @@ import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
+import 'chat_rooms_screen.dart';
+
 class SingUp extends StatefulWidget {
   @override
   _SingUpState createState() => _SingUpState();
@@ -27,7 +29,11 @@ class _SingUpState extends State<SingUp> {
       authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
            passwordTextEditingController.text
       ).then((val){
-        print("$val");
+        print("${val}");
+
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => ChatRoom()
+        ));
       });
     }
   }
