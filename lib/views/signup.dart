@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 
 import 'chat_rooms_screen.dart';
 
-class SingUp extends StatefulWidget {
+class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
+
   @override
   _SingUpState createState() => _SingUpState();
 }
 
-class _SingUpState extends State<SingUp> {
+class _SingUpState extends State<SignUp> {
 
   bool isLoading = false;
 
@@ -140,11 +143,19 @@ class _SingUpState extends State<SingUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("Already have account?", style: mediumTextStyle(),),
-                      Text("Sign In now", style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          decoration: TextDecoration.underline
-                      ),)
+                      GestureDetector(
+                        onTap: (){
+                          widget.toggle();
+                        },
+                        child: Container(
+                          padding:EdgeInsets.symmetric(vertical: 8),
+                          child: Text("Sign In now", style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              decoration: TextDecoration.underline
+                          ),),
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(height:8,),
