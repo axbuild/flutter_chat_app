@@ -53,7 +53,7 @@ class _SingUpState extends State<SignUp> {
         SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height - 50,
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.center,
             child:Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Column(
@@ -112,8 +112,8 @@ class _SingUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                             colors: [
-                              const Color(0xff007EF4),
-                              const Color(0xff2A75BC)
+                              const Color(0xffadcbed),
+                              const Color(0xffadcbed)
                             ]
                         ),
                         borderRadius: BorderRadius.circular(30),
@@ -142,7 +142,7 @@ class _SingUpState extends State<SignUp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have account?", style: mediumTextStyle(),),
+                      Text("Already have account? ", style: mediumTextStyle(),),
                       GestureDetector(
                         onTap: (){
                           widget.toggle();
@@ -150,7 +150,7 @@ class _SingUpState extends State<SignUp> {
                         child: Container(
                           padding:EdgeInsets.symmetric(vertical: 8),
                           child: Text("Sign In now", style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.blueGrey,
                               fontSize: 17,
                               decoration: TextDecoration.underline
                           ),),

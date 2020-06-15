@@ -18,7 +18,7 @@ class _SignInState extends State<SignIn> {
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height - 50,
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.center,
           child:Container(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
@@ -48,8 +48,8 @@ class _SignInState extends State<SignIn> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                         colors: [
-                          const Color(0xff007EF4),
-                          const Color(0xff2A75BC)
+                          const Color(0xffadcbed),
+                          const Color(0xffadcbed)
                         ]
                     ),
                     borderRadius: BorderRadius.circular(30),
@@ -77,7 +77,7 @@ class _SignInState extends State<SignIn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have account?", style: mediumTextStyle(),),
+                    Text("Don't have account? ", style: mediumTextStyle(),),
                     GestureDetector(
                       onTap: () {
                         widget.toggle();
@@ -85,7 +85,7 @@ class _SignInState extends State<SignIn> {
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8),
                         child: Text("Register now", style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.blueGrey,
                             fontSize: 17,
                             decoration: TextDecoration.underline
                         ),),

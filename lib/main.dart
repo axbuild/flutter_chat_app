@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Chat App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xFF2e3a4d),
-        scaffoldBackgroundColor: Colors.deepOrange,
+        primaryColor: Colors.blueGrey,
+        scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
