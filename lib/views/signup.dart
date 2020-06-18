@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:chatapp/widgets/widget.dart';
@@ -19,6 +20,7 @@ class _SingUpState extends State<SignUp> {
 
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
+//  HelperFunctions helperFunctions = new HelperFunctions();
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
@@ -36,12 +38,15 @@ class _SingUpState extends State<SignUp> {
         "email" : emailTextEditingController.text
       };
 
+      HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
+      HelperFunctions.saveUserNameInSharedPreference(userNameTextEditingController.text);
+
       authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
            passwordTextEditingController.text
       ).then((val){
 
         databaseMethods.uploadUserInfo(userInfoMap);
-
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
         Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => ChatRoom()
         ));

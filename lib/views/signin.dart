@@ -1,6 +1,9 @@
 import 'dart:ui';
+import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:flutter/material.dart';
+
+import 'chat_rooms_screen.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -11,6 +14,29 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
+
+  bool isLoading = false;
+
+  signIn(){
+    if(formKey.currentState.validate()){
+
+      HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
+//      HelperFunctions.saveUserNameInSharedPreference(userNameTextEditingController.text);
+
+      setState((){
+        isLoading = true;
+      });
+
+      HelperFunctions.saveUserLoggedInSharedPreference(true);
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => ChatRoom()
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +50,30 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextField(
-                  style: simpleTextStyle(),
-                  decoration: textFieldInputDecoration('email'),
-                ),
-                TextField(
-                  style: simpleTextStyle(),
-                  decoration: textFieldInputDecoration('password'),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        validator: (val){
+                          return RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                              .hasMatch(val) ? null : 'Please Provide a valid email';
+                        },
+                        controller: emailTextEditingController,
+                        style: simpleTextStyle(),
+                        decoration: textFieldInputDecoration('email'),
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        validator: (val){
+                          return val.length > 6 ? null: 'Please Provide password 6+ character';
+                        },
+                        controller: passwordTextEditingController,
+                        style: simpleTextStyle(),
+                        decoration: textFieldInputDecoration('password'),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height:8,),
                 Container(
@@ -41,21 +84,26 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 SizedBox(height: 8,),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [
-                          const Color(0xffadcbed),
-                          const Color(0xffadcbed)
-                        ]
+                GestureDetector(
+                  onTap: () {
+                    signIn();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [
+                            const Color(0xffadcbed),
+                            const Color(0xffadcbed)
+                          ]
+                      ),
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text("Sign In",
-                    style: mediumTextStyle(),
+                    child: Text("Sign In",
+                      style: mediumTextStyle(),
+                    ),
                   ),
                 ),
                 SizedBox(height:8,),
