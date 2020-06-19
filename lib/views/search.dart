@@ -17,6 +17,18 @@ class _State extends State<SearchScreen> {
 
   QuerySnapshot searchSnapshot;
 
+  Widget searchList(){
+    return searchSnapshot != null ? ListView.builder(
+        itemCount: searchSnapshot.documents.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index){
+          return SearchTile(
+            userName:searchSnapshot.documents[index].data["name"],
+            userEmail: searchSnapshot.documents[index].data["email"],
+          );
+        }) : Container();
+  }
+
   initiateSearch(){
     databaseMethods
       .getUserByUserName(searchTextEditingController.text)
@@ -28,31 +40,56 @@ class _State extends State<SearchScreen> {
   }
 
   //create chatroom, send user to conversation screen, pushreplacement
-  createChatRoomAndStartConversation(String userName){
+  createChatRoomAndStartConversation({String userName}){
 
-    String chatRoomId = getChatRoomId(userName, Constants.myName);
+    if(userName != Constants.myName) {
+      String chatRoomId = getChatRoomId(userName, Constants.myName);
 
-    List<String> users = [userName, Constants.myName];
-    Map<String, dynamic> chatRoomMap = {
-      "users" : users,
-      "chatroomid" : chatRoomId
-    };
-    databaseMethods.createChatRoom(chatRoomId, chatRoomMap);
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ConversationScreen()
-    ));
+      List<String> users = [userName, Constants.myName];
+      Map<String, dynamic> chatRoomMap = {
+        "users" : users,
+        "chatroomid" : chatRoomId
+      };
+      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => ConversationScreen()
+      ));
+    }else{
+      print("you cannot send message to yourself");
+    }
+
   }
 
-  Widget searchList(){
-    return searchSnapshot != null ? ListView.builder(
-      itemCount: searchSnapshot.documents.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index){
-        return SearchTile(
-          userName:searchSnapshot.documents[index].data["name"],
-          userEmail: searchSnapshot.documents[index].data["email"],
-        );
-      }) : Container();
+  Widget SearchTile({String userName, String userEmail}){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 1),
+      child: Row(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(userName, style: mediumTextStyle()),
+              Text(userEmail, style: mediumTextStyle()),
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: (){
+              createChatRoomAndStartConversation(
+                  userName: userName
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black38,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text("Message"),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -95,44 +132,6 @@ class _State extends State<SearchScreen> {
             searchList()
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SearchTile extends StatelessWidget {
-
-  final String userName;
-  final String userEmail;
-  SearchTile({this.userName, this.userEmail});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 1),
-      child: Row(
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(userName, style: mediumTextStyle()),
-              Text(userEmail, style: mediumTextStyle()),
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: (){
-
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black38,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text("Message"),
-            ),
-          )
-        ],
       ),
     );
   }
