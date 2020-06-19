@@ -1,4 +1,6 @@
+import 'package:chatapp/helper/constants.dart';
 import 'package:chatapp/services/database.dart';
+import 'package:chatapp/views/conversation_screen.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ class _State extends State<SearchScreen> {
 
   initiateSearch(){
     databaseMethods
-      .getUserByUsername(searchTextEditingController.text)
+      .getUserByUserName(searchTextEditingController.text)
         .then((val){
           setState(() {
             searchSnapshot = val;
@@ -28,8 +30,17 @@ class _State extends State<SearchScreen> {
   //create chatroom, send user to conversation screen, pushreplacement
   createChatRoomAndStartConversation(String userName){
 
-    List<String> users = [userName, ];
-    databaseMethods.createChatRoom();
+    String chatRoomId = getChatRoomId(userName, Constants.myName);
+
+    List<String> users = [userName, Constants.myName];
+    Map<String, dynamic> chatRoomMap = {
+      "users" : users,
+      "chatroomid" : chatRoomId
+    };
+    databaseMethods.createChatRoom(chatRoomId, chatRoomMap);
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => ConversationScreen()
+    ));
   }
 
   Widget searchList(){
@@ -124,5 +135,13 @@ class SearchTile extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+getChatRoomId(String a, String b) {
+  if(a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  }else{
+    return "$a\_$b";
   }
 }
