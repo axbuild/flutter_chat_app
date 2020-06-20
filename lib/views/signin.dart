@@ -80,8 +80,9 @@ class _SignInState extends State<SignIn> {
                               .hasMatch(val) ? null : 'Please Provide a valid email';
                         },
                         controller: emailTextEditingController,
-                        style: simpleTextStyle(),
+                        style: mediumInputFieldStyle(),
                         decoration: textFieldInputDecoration('email'),
+                        textAlign: TextAlign.center,
                       ),
                       TextFormField(
                         obscureText: true,
@@ -89,8 +90,9 @@ class _SignInState extends State<SignIn> {
                           return val.length > 6 ? null: 'Please Provide password 6+ character';
                         },
                         controller: passwordTextEditingController,
-                        style: simpleTextStyle(),
+                        style: mediumInputFieldStyle(),
                         decoration: textFieldInputDecoration('password'),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -113,16 +115,11 @@ class _SignInState extends State<SignIn> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [
-                            const Color(0xffadcbed),
-                            const Color(0xffadcbed)
-                          ]
-                      ),
+                      color: Color(0xff39796b),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Text("Sign In",
-                      style: mediumTextStyle(),
+                      style: mediumBtnStyle(),
                     ),
                   ),
                 ),

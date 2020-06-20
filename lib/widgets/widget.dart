@@ -25,27 +25,45 @@ InputDecoration textFieldInputDecoration(String hintText){
   return  InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(
-          color: Colors.black38
+          color: Colors.grey
       ),
       focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black38)
+          borderSide: BorderSide(color: Color(0xff39796b))
       ),
       enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.black38)
-      )
+          borderSide: BorderSide(color: Color(0xff39796b))
+      ),
   );
 }
 
 TextStyle simpleTextStyle(){
   return TextStyle(
-    color: Colors.black38,
+    color: Colors.black,
     fontSize:18
   );
 }
 
 TextStyle mediumTextStyle(){
   return TextStyle(
-      color: Colors.black38,
+      color: Colors.black,
       fontSize:20
   );
 }
+
+TextStyle mediumInputFieldStyle(){
+  return TextStyle(
+      color: Colors.black,
+      fontSize:20
+  );
+}
+
+TextStyle mediumBtnStyle(){
+  return TextStyle(
+      color: Colors.white,
+      fontSize:20
+  );
+}
+
+//primary #004d40
+//light #39796b
+//dark #00251a

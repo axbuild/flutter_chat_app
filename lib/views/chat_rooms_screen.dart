@@ -61,7 +61,7 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Image.asset("assets/images/logo.png", height: 50,),
+          title: Icon(Icons.list),
           actions: [
             GestureDetector(
               onTap: (){
@@ -79,6 +79,7 @@ class _ChatRoomState extends State<ChatRoom> {
         ),
         body: chatRoomList(),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xff39796b),
           child: Icon(Icons.search),
           onPressed: (){
             Navigator.push(context, MaterialPageRoute(
@@ -112,7 +113,7 @@ class ChatRoomTile extends StatelessWidget {
               width: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: Color(0xff39796b),
                 borderRadius: BorderRadius.circular(40)
               ),
               child: Text("${userName.substring(0,1).toLowerCase()}",
