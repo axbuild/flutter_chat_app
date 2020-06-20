@@ -1,4 +1,5 @@
 import 'package:chatapp/helper/constants.dart';
+import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:chatapp/views/conversation_screen.dart';
 import 'package:chatapp/widgets/widget.dart';
@@ -9,6 +10,8 @@ class SearchScreen extends StatefulWidget {
   @override
   _State createState() => _State();
 }
+
+String _myName;
 
 class _State extends State<SearchScreen> {
 
@@ -44,7 +47,8 @@ class _State extends State<SearchScreen> {
 
     if(userName != Constants.myName) {
       String chatRoomId = getChatRoomId(userName, Constants.myName);
-
+//      print("CUSTOM: onTap create ChatRoom ${chatRoomId}");
+//      print("CUSTOM: onTap create ChatRoom ${Constants.myName}");
       List<String> users = [userName, Constants.myName];
       Map<String, dynamic> chatRoomMap = {
         "users" : users,
@@ -52,7 +56,9 @@ class _State extends State<SearchScreen> {
       };
       DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
       Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen()
+          builder: (context) => ConversationScreen(
+            chatRoomId
+          )
       ));
     }else{
       print("you cannot send message to yourself");
@@ -94,7 +100,6 @@ class _State extends State<SearchScreen> {
 
   @override
   void initState() {
-    initiateSearch();
     super.initState();
   }
 

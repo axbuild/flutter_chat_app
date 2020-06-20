@@ -29,20 +29,22 @@ class _SignInState extends State<SignIn> {
   signIn(){
     if(formKey.currentState.validate()){
       HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
-//      HelperFunctions.saveUserNameInSharedPreference(userNameTextEditingController.text);
+
+      dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
+          .then((val){
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserNameInSharedPreference(snapshotUserInfo.documents[0].data['name']);
+        //HelperFunctions.saveUserEmailInSharedPreference(snapshotUserInfo.documents[0].data['name']);
+      });
+
       setState((){
         isLoading = true;
       });
 
-      dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
+      authMethods
+          .signInWithEmailAndPassword(emailTextEditingController.text,
+            passwordTextEditingController.text)
           .then((val){
-            snapshotUserInfo = val;
-            HelperFunctions.saveUserEmailInSharedPreference(snapshotUserInfo.documents[0].data['name']);
-      });
-
-      authMethods.signInWithEmailAndPassword(
-          emailTextEditingController.text,
-          passwordTextEditingController.text).then((val){
             if(val != null){
               HelperFunctions.saveUserLoggedInSharedPreference(true);
               Navigator.pushReplacement(context, MaterialPageRoute(

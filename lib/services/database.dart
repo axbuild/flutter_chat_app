@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseMethods{
 
   getUserByUserName(String userName) async {
-  return await Firestore.instance.collection("users")
-      .where("name", isEqualTo: userName )
-      .getDocuments();
+    return await Firestore.instance.collection("users")
+        .where("name", isEqualTo: userName )
+        .getDocuments();
   }
 
   getUserByUserEmail(String userEmail) async {
@@ -27,5 +27,28 @@ class DatabaseMethods{
         .catchError((e){
           print(e.toString());
         });
+  }
+
+  addConversationMessages(String chatRoomId, messageMap){
+    Firestore.instance.collection("ChatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .add(messageMap).catchError((e){
+          print(e.toString());
+    });
+  }
+
+  getConversationMessages(String chatRoomId) async {
+    return await Firestore.instance.collection("ChatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: false)
+        .snapshots();
+  }
+
+  getChatRooms(String userName) async {
+    return await Firestore.instance.collection("ChatRoom")
+        .where("users", arrayContains: userName)
+        .snapshots();
   }
 }
