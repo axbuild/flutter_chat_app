@@ -3,6 +3,8 @@ import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/views/chat_rooms_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'helper/push_notifications.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -19,6 +21,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    PushNotificationsManager();
     getLoggedInState();
     super.initState();
   }

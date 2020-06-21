@@ -64,6 +64,3 @@ TextStyle mediumBtnStyle(){
   );
 }
 
-//primary #004d40
-//light #39796b
-//dark #00251a
