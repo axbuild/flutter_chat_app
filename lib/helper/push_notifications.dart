@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class PushNotificationsManager {
@@ -19,8 +20,8 @@ class PushNotificationsManager {
       _firebaseMessaging.configure();
 
       // For testing purposes print the Firebase Messaging token
-      String token = await _firebaseMessaging.getToken();
-      print("FirebaseMessaging token: $token");
+      Constants.token = await _firebaseMessaging.getToken();
+      //print("FirebaseMessaging token: $token");
 
       _initialized = true;
     }
