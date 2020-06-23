@@ -35,7 +35,8 @@ class _SingUpState extends State<SignUp> {
 
       Map<String, String> userInfoMap = {
         "name" : userNameTextEditingController.text,
-        "email" : emailTextEditingController.text
+        "email" : emailTextEditingController.text,
+        "token" : ""
       };
 
       HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
