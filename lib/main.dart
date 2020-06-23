@@ -22,7 +22,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     //TODO
-    PushNotificationsManager();
+    PushNotificationsManager pushNotificationsManager = PushNotificationsManager();
+    pushNotificationsManager.init();
 
     getLoggedInState();
     super.initState();
