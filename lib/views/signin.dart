@@ -52,9 +52,19 @@ class _SignInState extends State<SignIn> {
               ));
             }
       });
-
-
     }
+  }
+
+  signInWithGoogle(){
+    setState((){
+      isLoading = true;
+    });
+
+    authMethods.googleSignIn()
+    .then((val){
+      print("=======================");
+      print(val);
+    });
   }
 
   @override
@@ -124,18 +134,22 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 SizedBox(height:8,),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text("Sign In with Google", style: TextStyle(
-                      color: Colors.black38,
-                      fontSize:18
-                  ),
+                GestureDetector(
+                  onTap: () {
+                      signInWithGoogle();
+                      print('Sign in with Google');
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text("Sign In with Google",
+                      style: mediumBtnStyle(),
+                    ),
                   ),
                 ),
                 SizedBox(height:8,),

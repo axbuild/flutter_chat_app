@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/constants.dart';
 import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/database.dart';
@@ -36,7 +37,7 @@ class _SingUpState extends State<SignUp> {
       Map<String, String> userInfoMap = {
         "name" : userNameTextEditingController.text,
         "email" : emailTextEditingController.text,
-        "token" : ""
+        "token" : Constants.token
       };
 
       HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
