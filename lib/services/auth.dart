@@ -52,20 +52,20 @@ class AuthMethods {
  Future googleSignIn() async {
    try{
      final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-     print('before');
+
      final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
-      print('one');
+
      final AuthCredential credential = GoogleAuthProvider
          .getCredential(idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
-     print('two');
+
      AuthResult result = await _auth.signInWithCredential(credential);
-     print(result.user);
+
      FirebaseUser firebaseUser = result.user;
      return _userFromFirebaseUser(firebaseUser);
    }catch(e){
-     print('exception');
+
      print(e.toString());
    }
  }
