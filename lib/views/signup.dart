@@ -43,7 +43,7 @@ class _SingUpState extends State<SignUp> {
       HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
       HelperFunctions.saveUserNameInSharedPreference(userNameTextEditingController.text);
 
-      authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
+      authMethods.signUpWithEmailAndPassword( emailTextEditingController.text,
            passwordTextEditingController.text
       ).then((val){
 
@@ -54,6 +54,29 @@ class _SingUpState extends State<SignUp> {
         ));
       });
     }
+  }
+
+  signUpWithGoogle(){
+    setState((){
+      isLoading = true;
+    });
+
+    authMethods.googleSignUp()
+        .then((val) async {
+//      if(val != null){
+//        snapshotUserInfo = await Firestore.instance.collection('users')
+//            .where('googleId', isEqualTo: val.uid)
+//            .getDocuments();
+//        final List<DocumentSnapshot> documents = snapshotUserInfo.documents;
+//
+//        if(documents.length == 0){
+//          print('You dont have a account. Move to Create Account');
+//          widget.toggle();
+//        } else {
+//
+//        }
+//      }
+    });
   }
 
   @override
@@ -139,18 +162,22 @@ class _SingUpState extends State<SignUp> {
                     ),
                   ),
                   SizedBox(height:8,),
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Text("Sign In with Google", style: TextStyle(
-                        color: Colors.black38,
-                        fontSize:18
-                    ),
+                  GestureDetector(
+                    onTap: () {
+                      signUpWithGoogle();
+                      print('Sign in with Google');
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Text("Sign In with Google",
+                        style: mediumBtnStyle(),
+                      ),
                     ),
                   ),
                   SizedBox(height:8,),

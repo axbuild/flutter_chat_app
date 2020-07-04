@@ -4,12 +4,21 @@ import 'package:chatapp/helper/helperfunctions.dart';
 import 'package:chatapp/services/log.dart';
 import 'package:chatapp/views/chat_rooms_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'helper/push_notifications.dart';
+import 'model/user.dart';
 
 void main() {
-//  runApp(MyApp());
   runZoned(() async {
-    runApp(MyApp());
+    runApp(
+        MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (context) => User()),
+            ],
+            child:MyApp()
+        )
+
+    );
   }, onError: LogProvider.reportError);
 }
 

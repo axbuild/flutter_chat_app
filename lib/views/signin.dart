@@ -32,9 +32,9 @@ class _SignInState extends State<SignIn> {
 
       dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
           .then((val){
-        snapshotUserInfo = val;
-        HelperFunctions.saveUserNameInSharedPreference(snapshotUserInfo.documents[0].data['name']);
-        //HelperFunctions.saveUserEmailInSharedPreference(snapshotUserInfo.documents[0].data['name']);
+            snapshotUserInfo = val;
+            HelperFunctions.saveUserNameInSharedPreference(
+                snapshotUserInfo.documents[0].data['name']);
       });
 
       setState((){
@@ -61,9 +61,23 @@ class _SignInState extends State<SignIn> {
     });
 
     authMethods.googleSignIn()
-    .then((val){
-      print("=======================");
-      print(val);
+    .then((val) async {
+      if(val != null){
+        print('################');
+        print(val);
+        print('################');
+        snapshotUserInfo = await Firestore.instance.collection('users')
+            .where('googleId', isEqualTo: val.uid)
+            .getDocuments();
+        final List<DocumentSnapshot> documents = snapshotUserInfo.documents;
+
+        if(documents.length == 0){
+          print('You dont have a account. Move to Create Account');
+          widget.toggle();
+        } else {
+
+        }
+      }
     });
   }
 
