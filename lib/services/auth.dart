@@ -1,6 +1,11 @@
-import 'package:chatapp/modal/user.dart';
+import 'package:chatapp/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+abstract class BaseAuth {
+  Future<String> signIn();
+  Future<String> signOut();
+}
 
 class AuthMethods {
  final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -22,7 +27,7 @@ class AuthMethods {
    }
  }
 
- Future signUpwithEmailAndPassword(String email, String password) async {
+ Future signUpWithEmailAndPassword(String email, String password) async {
    try {
      AuthResult result = await _auth.createUserWithEmailAndPassword
        (email: email, password: password);
@@ -57,17 +62,42 @@ class AuthMethods {
       await googleSignInAccount.authentication;
 
      final AuthCredential credential = GoogleAuthProvider
-         .getCredential(idToken: googleSignInAuthentication.idToken,
-            accessToken: googleSignInAuthentication.accessToken);
+         .getCredential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken);
 
      AuthResult result = await _auth.signInWithCredential(credential);
+
+     print('***********');
+     print(result.user.uid);
+     print('***********');
 
      FirebaseUser firebaseUser = result.user;
      return _userFromFirebaseUser(firebaseUser);
    }catch(e){
-
      print(e.toString());
    }
+ }
+
+ Future googleSignUp() async {
+//   try{
+//     final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+//
+//     final GoogleSignInAuthentication googleSignInAuthentication =
+//     await googleSignInAccount.authentication;
+//
+//     final AuthCredential credential = GoogleAuthProvider
+//         .getCredential(
+//          idToken: googleSignInAuthentication.idToken,
+//          accessToken: googleSignInAuthentication.accessToken);
+//
+//     AuthResult result = await _auth.signInWithCredential(credential);
+//
+//     FirebaseUser firebaseUser = result.user;
+//     return _userFromFirebaseUser(firebaseUser);
+//   }catch(e){
+//     print(e.toString());
+//   }
  }
 
  Future googleSignOut() async {
