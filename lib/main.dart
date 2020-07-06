@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:chatapp/core/helper/authenticate.dart';
-import 'package:chatapp/core/helper/helperfunctions.dart';
-import 'package:chatapp/core/services/log.dart';
+import 'package:chatapp/business_logic/utils/authenticate.dart';
+import 'package:chatapp/business_logic/utils/helperfunctions.dart';
+import 'package:chatapp/services/log.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
 import 'package:flutter/material.dart';
-import 'core/helper/push_notifications.dart';
+import 'business_logic/utils/push_notifications.dart';
 
 void main() {
 //  runApp(MyApp());
