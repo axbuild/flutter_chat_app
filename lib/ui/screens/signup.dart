@@ -1,11 +1,8 @@
-import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/business_logic/utils//helperfunctions.dart';
-import 'package:chatapp/services/auth.dart';
-import 'package:chatapp/services/database.dart';
+import 'package:chatapp/business_logic/view_models/signup_screen_viewmodel.dart';
+import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 
-import 'chat_rooms_screen.dart';
 
 class SignUp extends StatefulWidget {
   final Function toggle;
@@ -17,50 +14,13 @@ class SignUp extends StatefulWidget {
 
 class _SingUpState extends State<SignUp> {
 
-  bool isLoading = false;
-
-  AuthMethods authMethods = new AuthMethods();
-  DatabaseMethods databaseMethods = new DatabaseMethods();
-//  HelperFunctions helperFunctions = new HelperFunctions();
-
-  final formKey = GlobalKey<FormState>();
-  TextEditingController userNameTextEditingController = new TextEditingController();
-  TextEditingController emailTextEditingController = new TextEditingController();
-  TextEditingController passwordTextEditingController = new TextEditingController();
-
-  signMeUp(){
-    if(formKey.currentState.validate()) {
-      setState(() {
-        isLoading = true;
-      });
-
-      Map<String, String> userInfoMap = {
-        "name" : userNameTextEditingController.text,
-        "email" : emailTextEditingController.text,
-        "token" : Constants.token
-      };
-
-      HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
-      HelperFunctions.saveUserNameInSharedPreference(userNameTextEditingController.text);
-
-      authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
-           passwordTextEditingController.text
-      ).then((val){
-
-        databaseMethods.uploadUserInfo(userInfoMap);
-        HelperFunctions.saveUserLoggedInSharedPreference(true);
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ChatRoom()
-        ));
-      });
-    }
-  }
+  SignUpScreenViewModel model = serviceLocator<SignUpScreenViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
-      body:  isLoading ? Container(
+      body:  model.isLoading ? Container(
         child: Center(
           child: CircularProgressIndicator()
         )
@@ -75,14 +35,14 @@ class _SingUpState extends State<SignUp> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Form(
-                    key: formKey,
+                    key: model.formKey,
                     child: Column(
                       children: [
                         TextFormField(
                           validator: (val){
                             return val.isEmpty || val.length < 4 ? "Please Provide UserName!" : null;
                           },
-                          controller: userNameTextEditingController,
+                          controller: model.userNameTextEditingController,
                           style: simpleTextStyle(),
                           decoration: textFieldInputDecoration('username'),
                         ),
@@ -91,7 +51,7 @@ class _SingUpState extends State<SignUp> {
                             return RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                                 .hasMatch(val) ? null : 'Please Provide a valid email';
                           },
-                          controller: emailTextEditingController,
+                          controller: model.emailTextEditingController,
                           style: simpleTextStyle(),
                           decoration: textFieldInputDecoration('email'),
                         ),
@@ -100,7 +60,7 @@ class _SingUpState extends State<SignUp> {
                           validator: (val){
                             return val.length > 6 ? null: 'Please Provide password 6+ character';
                           },
-                          controller: passwordTextEditingController,
+                          controller: model.passwordTextEditingController,
                           style: simpleTextStyle(),
                           decoration: textFieldInputDecoration('password'),
                         )
@@ -118,7 +78,7 @@ class _SingUpState extends State<SignUp> {
                   SizedBox(height: 8,),
                   GestureDetector(
                     onTap:(){
-                        signMeUp();
+                        model.signMeUp(context);
                     },
                     child: Container(
                       alignment: Alignment.center,

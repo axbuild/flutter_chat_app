@@ -1,12 +1,8 @@
 import 'dart:ui';
-import 'package:chatapp/business_logic/utils/helperfunctions.dart';
-import 'package:chatapp/services/auth.dart';
-import 'package:chatapp/services/database.dart';
+import 'package:chatapp/business_logic/view_models/signin_screen_viewmodel.dart';
+import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/shared/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'chat_rooms_screen.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -17,54 +13,13 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final formKey = GlobalKey<FormState>();
-  AuthMethods authMethods = new AuthMethods();
-  DatabaseMethods dateBaseMethods = new DatabaseMethods();
-  TextEditingController emailTextEditingController = new TextEditingController();
-  TextEditingController passwordTextEditingController = new TextEditingController();
 
-  bool isLoading = false;
-  QuerySnapshot snapshotUserInfo;
+  SignInScreenModelView model  = serviceLocator<SignInScreenModelView>();
 
-  signIn(){
-    if(formKey.currentState.validate()){
-      HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
-
-      dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
-          .then((val){
-        snapshotUserInfo = val;
-        HelperFunctions.saveUserNameInSharedPreference(snapshotUserInfo.documents[0].data['name']);
-        //HelperFunctions.saveUserEmailInSharedPreference(snapshotUserInfo.documents[0].data['name']);
-      });
-
-      setState((){
-        isLoading = true;
-      });
-
-      authMethods
-          .signInWithEmailAndPassword(emailTextEditingController.text,
-            passwordTextEditingController.text)
-          .then((val){
-            if(val != null){
-              HelperFunctions.saveUserLoggedInSharedPreference(true);
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => ChatRoom()
-              ));
-            }
-      });
-    }
-  }
-
-  signInWithGoogle(){
-    setState((){
-      isLoading = true;
-    });
-
-    authMethods.googleSignIn()
-    .then((val){
-      print("=======================");
-      print(val);
-    });
+  @override
+  void initState() {
+    model.loadData();
+    super.initState();
   }
 
   @override
@@ -81,7 +36,7 @@ class _SignInState extends State<SignIn> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Form(
-                  key: formKey,
+                  key: model.formKey,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
@@ -89,7 +44,7 @@ class _SignInState extends State<SignIn> {
                           return RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                               .hasMatch(val) ? null : 'Please Provide a valid email';
                         },
-                        controller: emailTextEditingController,
+                        controller: model.emailTextEditingController,
                         style: mediumInputFieldStyle(),
                         decoration: textFieldInputDecoration('email'),
                         textAlign: TextAlign.center,
@@ -99,7 +54,7 @@ class _SignInState extends State<SignIn> {
                         validator: (val){
                           return val.length > 6 ? null: 'Please Provide password 6+ character';
                         },
-                        controller: passwordTextEditingController,
+                        controller: model.passwordTextEditingController,
                         style: mediumInputFieldStyle(),
                         decoration: textFieldInputDecoration('password'),
                         textAlign: TextAlign.center,
@@ -118,7 +73,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: 8,),
                 GestureDetector(
                   onTap: () {
-                    signIn();
+                    model.signIn(context);
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -136,7 +91,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height:8,),
                 GestureDetector(
                   onTap: () {
-                      signInWithGoogle();
+                      model.signInWithGoogle();
                       print('Sign in with Google');
                   },
                   child: Container(
