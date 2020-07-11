@@ -7,6 +7,7 @@ class User  extends ChangeNotifier {
   String email;
   String token;
   String _documentId;
+  bool isExist = false;
 
   User({this.userId});
 

@@ -1,6 +1,9 @@
+import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/utils/helperfunctions.dart';
 import 'package:chatapp/services/database.dart';
+import 'package:chatapp/services/service_locator.dart';
+import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,29 +18,36 @@ String _myName;
 
 class _State extends State<SearchScreen> {
 
-  DatabaseMethods databaseMethods = new DatabaseMethods();
+  StorageService storageService = serviceLocator<StorageService>();
+//  DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = new TextEditingController();
 
   QuerySnapshot searchSnapshot;
+  List<User> users = [];
 
   Widget searchList(){
-    return searchSnapshot != null ? ListView.builder(
-        itemCount: searchSnapshot.documents.length,
+    print('________');
+    print(users);
+    return Container();
+    return users.length != null ? ListView.builder(
+        itemCount: users.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
           return SearchTile(
-            userName:searchSnapshot.documents[index].data["name"],
-            userEmail: searchSnapshot.documents[index].data["email"],
+            userName: users[index].name,
+            userEmail: users[index].email,
           );
         }) : Container();
   }
 
   initiateSearch(){
-    databaseMethods
+    storageService
       .getUserByUserName(searchTextEditingController.text)
         .then((val){
           setState(() {
-            searchSnapshot = val;
+            print(val);
+//            searchSnapshot = val;
+            //users.addAll(val);
           });
     });
   }
@@ -54,7 +64,7 @@ class _State extends State<SearchScreen> {
         "users" : users,
         "chatroomid" : chatRoomId
       };
-      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+      storageService.createChatRoom(chatRoomId, chatRoomMap);
       Navigator.push(context, MaterialPageRoute(
           builder: (context) => ConversationScreen(
             chatRoomId
