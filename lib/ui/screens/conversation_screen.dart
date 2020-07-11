@@ -1,5 +1,7 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/database.dart';
+import 'package:chatapp/services/service_locator.dart';
+import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +15,9 @@ class ConversationScreen extends StatefulWidget {
 
 class _ConversationScreenState extends State<ConversationScreen> {
 
-  DatabaseMethods databaseMethods = new DatabaseMethods();
+  StorageService storageService = serviceLocator<StorageService>();
+
+//  DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
   Stream chatMessagesStream;
 
@@ -40,14 +44,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
         "sendBy": Constants.myName,
         "time": DateTime.now().millisecondsSinceEpoch
       };
-      databaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
+      storageService.addConversationMessages(widget.chatRoomId, messageMap);
       messageController.text = "";
     }
   }
 
   @override
   void initState() {
-    databaseMethods.getConversationMessages(widget.chatRoomId).then((value){
+    storageService.getConversationMessages(widget.chatRoomId).then((value){
       setState(() {
         chatMessagesStream = value;
       });
