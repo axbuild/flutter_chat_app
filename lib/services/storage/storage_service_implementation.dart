@@ -63,22 +63,22 @@ class StorageServiceImpl implements StorageService{
 
   @override
   Future<List<User>> getUserByUserName(String userName) async {
-    User user;
+
     List<User> users = [];
 
-    users = await Firestore.instance.collection("users")
+    await Firestore.instance.collection("users")
         .where("name", isEqualTo: userName )
         .getDocuments()
         .then((snapshot){
-        print(snapshot.documents[0].data['email']);
-            snapshot.documents.forEach((element) {
-                user.name = element.data['name'];
-                user.email = element.data['email'];
-                users.add(user);
 
-            // ignore: missing_return
-            });
+        snapshot.documents.forEach((element) {
+                users.add(User(
+                  name: element.data['name'],
+                  email: element.data['email']
+                ));
         });
+      });
+
     return users;
   }
   

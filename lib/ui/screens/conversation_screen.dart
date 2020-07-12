@@ -1,5 +1,4 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/services/database.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/shared/widget.dart';
@@ -17,7 +16,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   StorageService storageService = serviceLocator<StorageService>();
 
-//  DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
   Stream chatMessagesStream;
 

@@ -2,7 +2,6 @@ import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/utils/helperfunctions.dart';
 import 'package:chatapp/services/auth.dart';
-import 'package:chatapp/services/database.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
@@ -18,7 +17,7 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
 
   AuthMethods authMethods = new AuthMethods();
-//  DatabaseMethods databaseMethods = new DatabaseMethods();
+
   StorageService storageService = serviceLocator<StorageService>();
 
   Stream chatRoomsStream;
@@ -57,11 +56,7 @@ class _ChatRoomState extends State<ChatRoom> {
         chatRoomsStream = value;
       });
     });
-//    databaseMethods.getChatRooms(Constants.myName).then((value){
-//      setState(() {
-//        chatRoomsStream = value;
-//      });
-//    });
+
     setState(() {
 
     });

@@ -2,7 +2,6 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/helperfunctions.dart';
 import 'package:chatapp/services/auth.dart';
-import 'package:chatapp/services/database.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
@@ -16,7 +15,6 @@ class SignInScreenModelView extends ChangeNotifier {
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AuthMethods authMethods = new AuthMethods();
-//  DatabaseMethods dateBaseMethods = new DatabaseMethods();
 
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
@@ -31,7 +29,6 @@ class SignInScreenModelView extends ChangeNotifier {
       User user = await storageService.getUserByUserEmail(emailTextEditingController.text);
       HelperFunctions.saveUserNameInSharedPreference(user.name);
 
-      print("~~~~~~~~~${user.name}");
       /*
       dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
           .then((val){

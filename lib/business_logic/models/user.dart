@@ -9,7 +9,7 @@ class User  extends ChangeNotifier {
   String _documentId;
   bool isExist = false;
 
-  User({this.userId});
+  User({this.userId, this.name, this.email});
 
   void setId(String documentId){
     _documentId = documentId;
