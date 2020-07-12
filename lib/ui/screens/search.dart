@@ -1,7 +1,7 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/utils/helperfunctions.dart';
-import 'package:chatapp/services/database.dart';
+import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
@@ -18,62 +18,25 @@ String _myName;
 
 class _State extends State<SearchScreen> {
 
-  StorageService storageService = serviceLocator<StorageService>();
-//  DatabaseMethods databaseMethods = new DatabaseMethods();
-  TextEditingController searchTextEditingController = new TextEditingController();
+  SearchScreenViewModel model  = serviceLocator<SearchScreenViewModel>();
 
-  QuerySnapshot searchSnapshot;
-  List<User> users = [];
+  @override
+  void initState() {
+    model.loadData();
+    super.initState();
+  }
+
 
   Widget searchList(){
-    print('________');
-    print(users);
-    return Container();
-    return users.length != null ? ListView.builder(
-        itemCount: users.length,
+    return model.users.length != null ? ListView.builder(
+        itemCount: model.users.length,
         shrinkWrap: true,
         itemBuilder: (context, index){
           return SearchTile(
-            userName: users[index].name,
-            userEmail: users[index].email,
+            userName: model.users[index].name,
+            userEmail: model.users[index].email,
           );
         }) : Container();
-  }
-
-  initiateSearch(){
-    storageService
-      .getUserByUserName(searchTextEditingController.text)
-        .then((val){
-          setState(() {
-            print(val);
-//            searchSnapshot = val;
-            //users.addAll(val);
-          });
-    });
-  }
-
-  //create chatroom, send user to conversation screen, pushreplacement
-  createChatRoomAndStartConversation({String userName}){
-
-    if(userName != Constants.myName) {
-      String chatRoomId = getChatRoomId(userName, Constants.myName);
-//      print("CUSTOM: onTap create ChatRoom ${chatRoomId}");
-//      print("CUSTOM: onTap create ChatRoom ${Constants.myName}");
-      List<String> users = [userName, Constants.myName];
-      Map<String, dynamic> chatRoomMap = {
-        "users" : users,
-        "chatroomid" : chatRoomId
-      };
-      storageService.createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(
-            chatRoomId
-          )
-      ));
-    }else{
-      print("you cannot send message to yourself");
-    }
-
   }
 
   Widget SearchTile({String userName, String userEmail}){
@@ -91,7 +54,8 @@ class _State extends State<SearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: (){
-              createChatRoomAndStartConversation(
+              model.createChatRoomAndStartConversation(
+                  context: context,
                   userName: userName
               );
             },
@@ -109,11 +73,6 @@ class _State extends State<SearchScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
@@ -126,13 +85,13 @@ class _State extends State<SearchScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      controller: searchTextEditingController,
+                      controller: model.searchTextEditingController,
                       decoration: textFieldInputDecoration('search'),
                     ),
                   ),
                   GestureDetector(
                     onTap: (){
-                      initiateSearch();
+                      model.initiateSearch();
                     },
                     child: Icon(
                         Icons.search,
@@ -149,13 +108,5 @@ class _State extends State<SearchScreen> {
         ),
       ),
     );
-  }
-}
-
-getChatRoomId(String a, String b) {
-  if(a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-    return "$b\_$a";
-  }else{
-    return "$a\_$b";
   }
 }
