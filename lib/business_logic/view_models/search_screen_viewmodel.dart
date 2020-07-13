@@ -3,7 +3,6 @@ import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
-import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,23 +10,21 @@ class SearchScreenViewModel extends ChangeNotifier {
 
   StorageService storageService = serviceLocator<StorageService>();
 
-  TextEditingController searchTextEditingController = new TextEditingController();
-
 //  QuerySnapshot searchSnapshot;
-  List<User> users = [];
+  List<User> _users = [];
+  List<User> get users => _users;
 
+  initiateSearch(text){
+    _users.clear();
 
-
-  initiateSearch(){
-    users.clear();
-    print('***********');
     storageService
-        .getUserByUserName(searchTextEditingController.text)
+        .getUserByUserName(text)
         .then((val){
-          users.addAll(val);
+          _users.addAll(val);
+          notifyListeners();
         });
     notifyListeners();
-  }
+   }
 
   createChatRoomAndStartConversation({BuildContext context, String userName}){
 
