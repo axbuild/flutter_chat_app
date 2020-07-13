@@ -1,8 +1,11 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
+import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
@@ -14,14 +17,14 @@ class ConversationScreen extends StatefulWidget {
 
 class _ConversationScreenState extends State<ConversationScreen> {
 
-  StorageService storageService = serviceLocator<StorageService>();
+  ConversationScreenViewModel model = serviceLocator<ConversationScreenViewModel>();
 
-  TextEditingController messageController = new TextEditingController();
-  Stream chatMessagesStream;
+  TextEditingController messageController;
 
-  Widget ChatMessageList(){
+
+  Widget ChatMessageList(model){
       return StreamBuilder(
-        stream: chatMessagesStream,
+        stream: model.chatMessagesStream,
         builder: (context, snapshot){
           return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.documents.length,
@@ -35,66 +38,59 @@ class _ConversationScreenState extends State<ConversationScreen> {
       );
   }
 
-  sendMessage(){
-    if(messageController.text.isNotEmpty){
-      Map<String,dynamic> messageMap = {
-        "message": messageController.text,
-        "sendBy": Constants.myName,
-        "time": DateTime.now().millisecondsSinceEpoch
-      };
-      storageService.addConversationMessages(widget.chatRoomId, messageMap);
-      messageController.text = "";
-    }
-  }
-
   @override
   void initState() {
-    storageService.getConversationMessages(widget.chatRoomId).then((value){
-      setState(() {
-        chatMessagesStream = value;
-      });
-    });
+    model.loadData(widget.chatRoomId);
+    messageController = new TextEditingController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarMain(context),
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            ChatMessageList(),
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                child: Row(
+    return ChangeNotifierProvider<ConversationScreenViewModel>(
+        create: (context) => model,
+          child: Consumer<ConversationScreenViewModel>(
+            builder: (context, model, child) => Scaffold(
+              appBar: appBarMain(context),
+              body: Container(
+                child: Stack(
                   children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: messageController,
-                        decoration: textFieldInputDecoration('Message...'),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        sendMessage();
-                      },
-                      child: Icon(
-                          Icons.send,
-                          color: Colors.black38,
-                          size: 28.0
-                      ),
-                    ),
+                    ChatMessageList(model),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextField(
+                                controller: messageController,
+                                decoration: textFieldInputDecoration('Message...'),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                if(messageController.text.isNotEmpty) {
+                                  model.sendMessage(messageController.text);
+                                  messageController.text = "";
+                                }
+                              },
+                              child: Icon(
+                                  Icons.send,
+                                  color: Colors.black38,
+                                  size: 28.0
+                              ),
+                            ),
 
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
             )
-          ],
-        ),
-      ),
+      )
     );
   }
 }

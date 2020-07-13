@@ -1,6 +1,8 @@
 import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/utils/helperfunctions.dart';
+import 'package:chatapp/business_logic/view_models/chat_rooms_screen_viewmodel.dart';
+import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
@@ -8,6 +10,7 @@ import 'package:chatapp/ui/screens/conversation_screen.dart';
 import 'package:chatapp/ui/screens/search.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -16,82 +19,70 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
 
-  AuthMethods authMethods = new AuthMethods();
+  ChatRoomsScreenViewModel model = serviceLocator<ChatRoomsScreenViewModel>();
 
-  StorageService storageService = serviceLocator<StorageService>();
+  @override
+  void initState() {
+    model.loadData();
+    super.initState();
+  }
 
-  Stream chatRoomsStream;
 
-  Widget chatRoomList(){
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<ChatRoomsScreenViewModel>(
+      create: (context) => model,
+      child: Consumer<ChatRoomsScreenViewModel>(
+          builder: (context, model, child) => Scaffold(
+            appBar: AppBar(
+              title: Icon(Icons.list),
+              actions: [
+                GestureDetector(
+                  onTap: (){
+                    model.authMethods.signOut();
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => Authenticate()
+                    ));
+                  },
+                  child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Icon(Icons.exit_to_app)
+                  ),
+                )
+              ],
+            ),
+            body: chatRoomList(model),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Color(0xff39796b),
+              child: Icon(Icons.search),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => SearchScreen()
+                ));
+              },
+            ),
+          )
+      )
+    );
+
+  }
+
+  Widget chatRoomList(ChatRoomsScreenViewModel){
     return StreamBuilder(
-      stream: chatRoomsStream,
+      stream: model.chatRoomsStream,
       builder: (context, snapshot){
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
             return ChatRoomTile(
-              snapshot.data.documents[index].data["chatroomid"]
-                  .toString().replaceAll("_", "")
-                  .replaceAll(Constants.myName, ""),
-              snapshot.data.documents[index].data["chatroomid"]
+                snapshot.data.documents[index].data["chatroomid"]
+                    .toString().replaceAll("_", "")
+                    .replaceAll(Constants.myName, ""),
+                snapshot.data.documents[index].data["chatroomid"]
             );
           },
         ) : Container();
       },
-    );
-  }
-
-  @override
-  void initState() {
-    getUserInfo();
-    super.initState();
-  }
-
-  getUserInfo() async {
-    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-
-
-    storageService.getChatRooms(Constants.myName).then((value){
-      setState(() {
-        chatRoomsStream = value;
-      });
-    });
-
-    setState(() {
-
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Icon(Icons.list),
-          actions: [
-            GestureDetector(
-              onTap: (){
-                authMethods.signOut();
-                Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => Authenticate()
-                ));
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.exit_to_app)
-              ),
-            )
-          ],
-        ),
-        body: chatRoomList(),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Color(0xff39796b),
-          child: Icon(Icons.search),
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => SearchScreen()
-            ));
-          },
-        ),
     );
   }
 }
