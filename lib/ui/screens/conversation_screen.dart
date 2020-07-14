@@ -1,8 +1,6 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
-import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
