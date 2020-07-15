@@ -1,9 +1,8 @@
-import 'package:chatapp/business_logic/models/global_config.dart';
+import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/services/log/logger.dart';
 import 'package:sentry/sentry.dart';
 
-final GlobalConfig globalConfig = GlobalConfig();
-final SentryClient _sentry = SentryClient(dsn: globalConfig.sentryDsn);
+final SentryClient _sentry = SentryClient(dsn: Settings().sentryDsn);
 
 class SentryLogger implements Logger {
 

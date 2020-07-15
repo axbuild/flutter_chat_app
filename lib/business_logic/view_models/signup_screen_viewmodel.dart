@@ -1,5 +1,5 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/business_logic/utils/helperfunctions.dart';
+import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
@@ -32,8 +32,8 @@ class SignUpScreenViewModel extends ChangeNotifier {
         "token" : Constants.token
       };
 
-      HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
-      HelperFunctions.saveUserNameInSharedPreference(userNameTextEditingController.text);
+      Options.saveUserEmail(emailTextEditingController.text);
+      Options.saveUserName(userNameTextEditingController.text);
 
       authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
           passwordTextEditingController.text
@@ -41,7 +41,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
 
         storageService.uploadUserInfo(userInfoMap);
 
-        HelperFunctions.saveUserLoggedInSharedPreference(true);
+        Options.saveUserLogged(true);
         Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => ChatRoom()
         ));
