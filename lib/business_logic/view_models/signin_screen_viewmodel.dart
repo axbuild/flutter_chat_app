@@ -1,6 +1,6 @@
 
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/helperfunctions.dart';
+import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
@@ -24,10 +24,10 @@ class SignInScreenModelView extends ChangeNotifier {
 
   void signIn(BuildContext context) async {
     if(formKey.currentState.validate()){
-      HelperFunctions.saveUserEmailInSharedPreference(emailTextEditingController.text);
+      Options.saveUserEmail(emailTextEditingController.text);
 
       User user = await storageService.getUserByUserEmail(emailTextEditingController.text);
-      HelperFunctions.saveUserNameInSharedPreference(user.name);
+      Options.saveUserName(user.name);
 
       /*
       dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
@@ -43,7 +43,7 @@ class SignInScreenModelView extends ChangeNotifier {
           passwordTextEditingController.text)
           .then((val){
         if(val != null){
-          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          Options.saveUserLogged(true);
           Navigator.pushReplacement(context, MaterialPageRoute(
               builder: (context) => ChatRoom()
           ));

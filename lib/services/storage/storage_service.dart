@@ -15,8 +15,6 @@ abstract class StorageService {
   Future<Message> addConversationMessages(String chatRoomId, messageMap);
 
   Future<Stream> getConversationMessages(String chatRoomId);
-//  Future<List<Message>> getConversationMessages(String chatRoomId);
 
   Future<Stream> getChatRooms(String userName);
-//  Future<List<Room>> getChatRooms(String userName);
 }

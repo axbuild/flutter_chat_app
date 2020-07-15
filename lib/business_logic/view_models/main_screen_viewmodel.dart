@@ -1,4 +1,4 @@
-import 'package:chatapp/business_logic/utils/helperfunctions.dart';
+import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/business_logic/utils/push_notifications.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -8,7 +8,7 @@ class MainScreenViewModel extends ChangeNotifier {
   String title = 'Flutter Chat App';
 
   void loadData() async {
-    await HelperFunctions.getUserLoggedSharedPreference().then((value){
+    await Options.getUserLogged().then((value){
       print("getLoggedInState:value: ${value}");
       userIsLoggedIn = value ?? false;
     });

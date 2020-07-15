@@ -1,5 +1,5 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/business_logic/utils/helperfunctions.dart';
+import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/storage_service.dart';
@@ -14,7 +14,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
   void loadData() async {
     authMethods = new AuthMethods();
     storageService = serviceLocator<StorageService>();
-    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+    Constants.myName = await Options.getUserName();
 
     storageService.getChatRooms(Constants.myName).then((value){
       chatRoomsStream = value;
