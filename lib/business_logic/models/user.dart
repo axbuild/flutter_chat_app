@@ -8,6 +8,8 @@ class User  extends ChangeNotifier {
   String token;
   String _documentId;
   bool isExist = false;
+  String age;
+  String location;
 
   User({this.userId, this.name, this.email});
 
@@ -15,4 +17,15 @@ class User  extends ChangeNotifier {
     _documentId = documentId;
     notifyListeners();
   }
+
+  User.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'],
+        location = json['location'];
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'age': age,
+    'location': location,
+  };
 }
