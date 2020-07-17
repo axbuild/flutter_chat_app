@@ -21,11 +21,13 @@ class User  extends ChangeNotifier {
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         age = json['age'],
-        location = json['location'];
+        location = json['location'],
+        userId = json['id'];
 
   Map<String, dynamic> toJson() => {
     'name': name,
     'age': age,
     'location': location,
+    'userId': userId
   };
 }
