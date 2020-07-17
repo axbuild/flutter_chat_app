@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 
-class User  extends ChangeNotifier {
+import 'base.dart';
+
+class User extends ChangeNotifier implements BaseModel {
   String userId;
   String accountType;
   String name;

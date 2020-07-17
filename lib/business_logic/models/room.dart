@@ -1,5 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'base.dart';
 
-class Room extends ChangeNotifier {
+class Room extends ChangeNotifier implements BaseModel {
   String id;
+
+  Room();
+
+  Room.fromJson(Map<String, dynamic> json)
+      :id = json['id'];
+
+  Map<String, dynamic> toJson()  => {
+    'id': id
+  };
 }
