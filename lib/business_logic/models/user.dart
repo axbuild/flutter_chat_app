@@ -7,6 +7,7 @@ class User extends ChangeNotifier implements BaseModel {
   String accountType;
   String name;
   String email;
+  bool isLogged;
   String token;
   String _documentId;
   bool isExist = false;

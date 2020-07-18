@@ -1,16 +1,16 @@
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
+import 'package:chatapp/services/database/database_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConversationScreenViewModel extends ChangeNotifier {
-  StorageService storageService;
+  DatabaseService storageService;
   Stream chatMessagesStream;
   String _chatRoomId;
 
   void loadData(String chatRoomId){
       _chatRoomId = chatRoomId;
-      storageService = serviceLocator<StorageService>();
+      storageService = serviceLocator<DatabaseService>();
       storageService.getConversationMessages(chatRoomId).then((value){
         chatMessagesStream = value;
         notifyListeners();

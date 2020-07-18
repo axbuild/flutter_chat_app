@@ -1,9 +1,9 @@
 
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
+import 'package:chatapp/services/database/database_service.dart';
+import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 
 class SignInScreenModelView extends ChangeNotifier {
 
-  StorageService  storageService = serviceLocator<StorageService>();
+  DatabaseService  databaseService = serviceLocator<DatabaseService>();
+  OptionStorageService  optionStorageService = serviceLocator<OptionStorageService>();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AuthMethods authMethods = new AuthMethods();
@@ -22,19 +23,21 @@ class SignInScreenModelView extends ChangeNotifier {
   bool isLoading = false;
   QuerySnapshot snapshotUserInfo;
 
+  User user;
+
   void signIn(BuildContext context) async {
     if(formKey.currentState.validate()){
-      Options.saveUserEmail(emailTextEditingController.text);
-
-      User user = await storageService.getUserByUserEmail(emailTextEditingController.text);
-      Options.saveUserName(user.name);
-
-      /*
-      dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
-          .then((val){
-        snapshotUserInfo = val;
-        HelperFunctions.saveUserNameInSharedPreference(snapshotUserInfo.documents[0].data['name']);
-     });*/
+//      user = new User();
+//      Options.saveUserEmail(emailTextEditingController.text);
+      databaseService.getUserByUserEmail(emailTextEditingController.text)
+          .then((value){
+            optionStorageService.save('user', value.toJson()).then((res){
+              user = value;
+            print('user save on signin');
+        });
+      });
+//      Options.saveUserName(user.name);
+//      user.email = emailTextEditingController.text;
 
       isLoading = true;
 
@@ -43,7 +46,10 @@ class SignInScreenModelView extends ChangeNotifier {
           passwordTextEditingController.text)
           .then((val){
         if(val != null){
-          Options.saveUserLogged(true);
+          user.isLogged = true;
+          optionStorageService.save('user', user.toJson());
+
+//          Options.saveUserLogged(true);
           Navigator.pushReplacement(context, MaterialPageRoute(
               builder: (context) => ChatRoom()
           ));
@@ -52,7 +58,7 @@ class SignInScreenModelView extends ChangeNotifier {
     }
   }
 
-  signInWithGoogle(){
+  void signInWithGoogle(){
     isLoading = true;
 
     authMethods.googleSignIn()
@@ -65,5 +71,12 @@ class SignInScreenModelView extends ChangeNotifier {
   void loadData() async {
     notifyListeners();
   }
+
+/*
+  dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
+      .then((val){
+    snapshotUserInfo = val;
+    HelperFunctions.saveUserNameInSharedPreference(snapshotUserInfo.documents[0].data['name']);
+ });*/
 
 }

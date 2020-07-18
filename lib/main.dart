@@ -8,19 +8,18 @@ import 'package:flutter/material.dart';
 
 void main() {
   setupServiceLocator();
-
   runZoned(() async {
-    runApp(MyApp());
+    runApp(App());
   }, onError: serviceLocator<Logger>().reportError);
 }
 
-class MyApp extends StatefulWidget {
+class App extends StatefulWidget {
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _AppState createState() => _AppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _AppState extends State<App> {
 
   MainScreenViewModel model = serviceLocator<MainScreenViewModel>();
 

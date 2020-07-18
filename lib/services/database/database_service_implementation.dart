@@ -1,10 +1,10 @@
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
+import 'package:chatapp/services/database/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StorageServiceImpl implements StorageService{
+class DatabaseServiceImpl implements DatabaseService{
   @override
   Future<Message> addConversationMessages(String chatRoomId, messageMap) {
     Firestore.instance.collection("ChatRoom")
@@ -49,6 +49,7 @@ class StorageServiceImpl implements StorageService{
         .getDocuments()
         .then((snapshot){
             user.name = snapshot.documents[0].data['name'];
+            user.email = snapshot.documents[0].data['name'];
         });
     return user;
   }
