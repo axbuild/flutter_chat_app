@@ -1,8 +1,9 @@
+import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
+import 'package:chatapp/services/database/database_service.dart';
+import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,9 @@ class SignUpScreenViewModel extends ChangeNotifier {
 
   AuthMethods authMethods = new AuthMethods();
 
-  StorageService storageService = serviceLocator<StorageService>();
+  DatabaseService storageService = serviceLocator<DatabaseService>();
+  OptionStorageService optionStorageService = serviceLocator<OptionStorageService>();
+  User user;
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
@@ -32,8 +35,12 @@ class SignUpScreenViewModel extends ChangeNotifier {
         "token" : Constants.token
       };
 
-      Options.saveUserEmail(emailTextEditingController.text);
-      Options.saveUserName(userNameTextEditingController.text);
+//      Options.saveUserEmail(emailTextEditingController.text);
+//      Options.saveUserName(userNameTextEditingController.text);
+
+      user.name = userNameTextEditingController.text;
+      user.email = emailTextEditingController.text;
+      optionStorageService.save('user', user.toJson());
 
       authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
           passwordTextEditingController.text
@@ -41,7 +48,9 @@ class SignUpScreenViewModel extends ChangeNotifier {
 
         storageService.uploadUserInfo(userInfoMap);
 
-        Options.saveUserLogged(true);
+        user.isLogged = true;
+        optionStorageService.save('user', user.toJson());
+//        Options.saveUserLogged(true);
         Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => ChatRoom()
         ));

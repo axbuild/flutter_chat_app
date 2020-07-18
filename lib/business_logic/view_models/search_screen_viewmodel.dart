@@ -1,14 +1,14 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
+import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreenViewModel extends ChangeNotifier {
 
-  StorageService storageService = serviceLocator<StorageService>();
+  DatabaseService databaseService = serviceLocator<DatabaseService>();
 
 //  QuerySnapshot searchSnapshot;
   List<User> _users = [];
@@ -17,7 +17,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   initiateSearch(text){
     _users.clear();
 
-    storageService
+    databaseService
         .getUserByUserName(text)
         .then((val){
           _users.addAll(val);
@@ -36,7 +36,7 @@ class SearchScreenViewModel extends ChangeNotifier {
         "users" : users,
         "chatroomid" : chatRoomId
       };
-      storageService.createChatRoom(chatRoomId, chatRoomMap);
+      databaseService.createChatRoom(chatRoomId, chatRoomMap);
       Navigator.push(context, MaterialPageRoute(
           builder: (context) => ConversationScreen(
               chatRoomId

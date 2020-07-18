@@ -1,11 +1,10 @@
 import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/business_logic/utils/options.dart';
 import 'package:chatapp/business_logic/view_models/chat_rooms_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/storage_service.dart';
+import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
 import 'package:chatapp/ui/screens/search.dart';
 import 'package:chatapp/ui/shared/widget.dart';
