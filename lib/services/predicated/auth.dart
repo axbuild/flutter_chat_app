@@ -7,7 +7,7 @@ class AuthMethods {
  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
  User _userFromFirebaseUser(FirebaseUser user) {
-   return user != null ? User(userId: user.uid) : null;
+   return user != null ? User(pid: user.uid) : null;
  }
 
  Future signInWithEmailAndPassword(String email, String password) async {

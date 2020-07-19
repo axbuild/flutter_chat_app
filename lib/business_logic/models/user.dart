@@ -3,34 +3,44 @@ import 'package:flutter/foundation.dart';
 import 'base.dart';
 
 class User extends ChangeNotifier implements BaseModel {
-  String userId;
-  String accountType;
+  String sid;
+  String lid;
+  String pid;
   String name;
   String email;
-  bool isLogged;
+  String phoneNumber;
+  String photoUrl;
   String token;
-  String _documentId;
-  bool isExist = false;
   String age;
   String location;
 
-  User({this.userId, this.name, this.email});
+  bool isLogged;
 
-  void setId(String documentId){
-    _documentId = documentId;
-    notifyListeners();
-  }
+  User({
+    this.sid,
+    this.lid,
+    this.pid,
+    this.name,
+    this.email,
+    this.phoneNumber,
+    this.photoUrl,
+    this.isLogged
+  });
 
   User.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        age = json['age'],
-        location = json['location'],
-        userId = json['id'];
+      : sid = json['sid'],
+        lid = json['lid'],
+        pid = json['pid'],
+        name = json['name'],
+        email = json['email'],
+        isLogged = json['isLogged'];
 
   Map<String, dynamic> toJson() => {
+    'sid': sid,
+    'lid': lid,
+    'pid': pid,
     'name': name,
-    'age': age,
-    'location': location,
-    'userId': userId
+    'email': email,
+    'isLogged': isLogged
   };
 }

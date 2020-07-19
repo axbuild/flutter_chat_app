@@ -5,13 +5,17 @@ import 'authentication_service.dart';
 class AuthenticationServiceDefault implements AuthenticationService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final String email;
-  final String password;
-
-  AuthenticationServiceDefault(this.email, this.password);
+  String email;
+  String password;
 
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(userId: user.uid) : null;
+    return user != null ? User(
+        pid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        photoUrl: user.photoUrl
+    ) : null;
   }
 
   @override

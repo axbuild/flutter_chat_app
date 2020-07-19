@@ -9,7 +9,7 @@ class AuthenticationServiceGoogle implements AuthenticationService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(userId: user.uid) : null;
+    return user != null ? User(pid: user.uid) : null;
   }
 
   @override
@@ -48,8 +48,24 @@ class AuthenticationServiceGoogle implements AuthenticationService {
 
   @override
   Future<User> signUp() async {
-    // TODO: implement signUp
-    throw UnimplementedError();
+    try{
+      final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider
+          .getCredential(idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken);
+
+      AuthResult result = await _auth.signInWithCredential(credential);
+
+      FirebaseUser firebaseUser = result.user;
+      return _userFromFirebaseUser(firebaseUser);
+    }catch(e){
+
+      print(e.toString());
+    }
   }
 
 }

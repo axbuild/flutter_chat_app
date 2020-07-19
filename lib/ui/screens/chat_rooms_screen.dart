@@ -2,7 +2,7 @@ import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/view_models/chat_rooms_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
-import 'package:chatapp/services/auth.dart';
+import 'file:///C:/Users/29228796/AndroidStudioProjects/flutter_chat_app/lib/services/predicated/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
@@ -38,7 +38,7 @@ class _ChatRoomState extends State<ChatRoom> {
               actions: [
                 GestureDetector(
                   onTap: (){
-                    model.authMethods.signOut();
+                    model.signOut();
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context) => Authenticate()
                     ));

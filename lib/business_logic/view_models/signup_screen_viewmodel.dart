@@ -1,6 +1,8 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'package:chatapp/services/auth.dart';
+import 'file:///C:/Users/29228796/AndroidStudioProjects/flutter_chat_app/lib/services/predicated/auth.dart';
+import 'package:chatapp/services/authentication/authentication_service_default.dart';
+import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
@@ -10,52 +12,63 @@ import 'package:flutter/material.dart';
 
 class SignUpScreenViewModel extends ChangeNotifier {
 
-
-  bool isLoading = false;
-
-  AuthMethods authMethods = new AuthMethods();
-
+  AuthenticationServiceDefault authenticationServiceDefault = serviceLocator<AuthenticationServiceDefault>();
+  AuthenticationServiceGoogle authenticationServiceGoogle = serviceLocator<AuthenticationServiceGoogle>();
   DatabaseService storageService = serviceLocator<DatabaseService>();
   OptionStorageService optionStorageService = serviceLocator<OptionStorageService>();
   User user;
+  bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
-  void signMeUp(BuildContext context){
-    if(formKey.currentState.validate()) {
+  Map<String, String> userInfoMap = {};
+
+  bool signUp(BuildContext context){
+    user = User();
+    if(!formKey.currentState.validate()) return false;
 
       isLoading = true;
 
-      Map<String, String> userInfoMap = {
+      userInfoMap = {
         "name" : userNameTextEditingController.text,
         "email" : emailTextEditingController.text,
         "token" : Constants.token
       };
 
-//      Options.saveUserEmail(emailTextEditingController.text);
-//      Options.saveUserName(userNameTextEditingController.text);
-
       user.name = userNameTextEditingController.text;
       user.email = emailTextEditingController.text;
       optionStorageService.save('user', user.toJson());
 
-      authMethods.signUpwithEmailAndPassword( emailTextEditingController.text,
-          passwordTextEditingController.text
-      ).then((val){
+      authenticationServiceDefault.email = emailTextEditingController.text.trim();
+      authenticationServiceDefault.password = passwordTextEditingController.text.trim();
+      authenticationServiceDefault.signUp().then((val){
 
         storageService.uploadUserInfo(userInfoMap);
 
         user.isLogged = true;
         optionStorageService.save('user', user.toJson());
-//        Options.saveUserLogged(true);
         Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => ChatRoom()
         ));
       });
-    }
+
+      return true;
+  }
+
+  void googleSignUp(BuildContext context){
+    authenticationServiceGoogle.signUp().then((val){
+
+      storageService.uploadUserInfo(userInfoMap);
+
+      val.isLogged = true;
+      optionStorageService.save('user', val.toJson());
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => ChatRoom()
+      ));
+    });
   }
 
   void loadData(){
