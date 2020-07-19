@@ -1,18 +1,23 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/storage/database_service.dart';
+import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:async';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
+  //WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
-  test('Storage Access', () async {
-    StorageService storageService = serviceLocator<StorageService>();
-    final User user = await storageService.getUserByUserEmail('test@test.te');
+  OptionStorageService  optionStorageService = serviceLocator<OptionStorageService>();
 
-    expect(user, isNotNull);
+  //User user = User();
+  test('Storage read user object', () async {
+
+    await  .read('user').then((value){
+      print(value);
+      //expect(value.runtimeType.toString(), 'User');
+
+    });
+
   });
 }

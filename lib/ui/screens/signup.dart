@@ -78,7 +78,7 @@ class _SingUpState extends State<SignUp> {
                   SizedBox(height: 8,),
                   GestureDetector(
                     onTap:(){
-                        model.signMeUp(context);
+                        model.signUp(context);
                     },
                     child: Container(
                       alignment: Alignment.center,

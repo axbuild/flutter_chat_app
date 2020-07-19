@@ -91,7 +91,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height:8,),
                 GestureDetector(
                   onTap: () {
-                      model.signInWithGoogle();
+                      model.signInWithGoogle(context);
                       print('Sign in with Google');
                   },
                   child: Container(
