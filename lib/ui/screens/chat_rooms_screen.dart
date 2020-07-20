@@ -1,10 +1,7 @@
 import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/view_models/chat_rooms_screen_viewmodel.dart';
-import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
-import 'file:///C:/Users/29228796/AndroidStudioProjects/flutter_chat_app/lib/services/predicated/auth.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
 import 'package:chatapp/ui/screens/search.dart';
 import 'package:chatapp/ui/shared/widget.dart';
@@ -25,7 +22,6 @@ class _ChatRoomState extends State<ChatRoom> {
     model.loadData();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -42,14 +42,15 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   @override
-  Future<User> getUserByUserEmail(String userEmail) async {
+  Future<User> getUserByEmail(String userEmail) async {
     User user = User();
     await Firestore.instance.collection("users")
         .where("email", isEqualTo: userEmail )
         .getDocuments()
         .then((snapshot){
             user.name = snapshot.documents[0].data['name'];
-            user.email = snapshot.documents[0].data['name'];
+            user.email = snapshot.documents[0].data['email'];
+            user.isLogged = true;
         });
     return user;
   }

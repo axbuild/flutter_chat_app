@@ -6,6 +6,8 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'business_logic/utils/helper.dart';
+
 void main() {
   setupServiceLocator();
   runZoned(() async {
@@ -23,6 +25,9 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+    //Helper().printModelsState();
+    //Helper().clearModelState();
+    //Helper().saveUser();
     model.loadData();
     super.initState();
   }
@@ -37,7 +42,7 @@ class _AppState extends State<App> {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: model.userIsLoggedIn ? ChatRoom() : Authenticate(),
+      home: model.user.isLogged ? ChatRoom() : Authenticate(),
     );
   }
 }

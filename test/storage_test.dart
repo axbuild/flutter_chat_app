@@ -6,17 +6,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'dart:async';
 
 void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
   OptionStorageService  optionStorageService = serviceLocator<OptionStorageService>();
 
   //User user = User();
-  test('Storage read user object', () async {
+  test('Storage read user object', () {
 
-    await  .read('user').then((value){
-      print(value);
-      //expect(value.runtimeType.toString(), 'User');
-
+    optionStorageService.read('user').then((value){
+      expect(value.runtimeType.toString(), 'User');
     });
 
   });

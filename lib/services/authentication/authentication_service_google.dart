@@ -9,7 +9,11 @@ class AuthenticationServiceGoogle implements AuthenticationService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(pid: user.uid) : null;
+    return user != null ? User(
+        pid: user.uid,
+        name: user.displayName,
+        email: user.email
+    ) : null;
   }
 
   @override

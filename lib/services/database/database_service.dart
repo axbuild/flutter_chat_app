@@ -4,7 +4,7 @@ import 'package:chatapp/business_logic/models/user.dart';
 
 abstract class DatabaseService {
 
-  Future<User> getUserByUserEmail(String userEmail);
+  Future<User> getUserByEmail(String userEmail);
 
   Future<List<User>> getUserByUserName(String userName);
 

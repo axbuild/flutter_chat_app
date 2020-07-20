@@ -1,6 +1,5 @@
 
 import 'package:chatapp/business_logic/models/user.dart';
-import 'file:///C:/Users/29228796/AndroidStudioProjects/flutter_chat_app/lib/services/predicated/auth.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -20,8 +19,6 @@ class SignInScreenModelView extends ChangeNotifier {
   AuthenticationServiceDefault authenticationServiceDefault = serviceLocator<AuthenticationServiceDefault>();
   AuthenticationServiceGoogle authenticationServiceGoogle = serviceLocator<AuthenticationServiceGoogle>();
 
-//  AuthMethods authMethods = new AuthMethods();
-
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
@@ -31,37 +28,19 @@ class SignInScreenModelView extends ChangeNotifier {
   User user;
 
   void signIn(BuildContext context) async {
-    if(formKey.currentState.validate()){
-//      user = new User();
-//      Options.saveUserEmail(emailTextEditingController.text);
-      databaseService.getUserByUserEmail(emailTextEditingController.text)
-          .then((value){
-            optionStorageService.save('user', value.toJson()).then((res){
-              user = value;
-            print('user save on signin');
-        });
-      });
-//      Options.saveUserName(user.name);
-//      user.email = emailTextEditingController.text;
+    isLoading = true;
 
-      isLoading = true;
-/*
-      authMethods
-          .signInWithEmailAndPassword(emailTextEditingController.text,
-          passwordTextEditingController.text)
-          .then((val){
-        if(val != null){
-          user.isLogged = true;
-          optionStorageService.save('user', user.toJson());
-          Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (context) => ChatRoom()
-          ));
-        }
-      });
-*/
+    if(formKey.currentState.validate()){
+
+      databaseService.getUserByEmail(emailTextEditingController.text.trim())
+          .then((value){
+//            optionStorageService.save('user', value.toJson());
+            user = value;
+          });
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
+
       authenticationServiceDefault.signIn()
         .then((value){
           if(value != null){
@@ -78,16 +57,9 @@ class SignInScreenModelView extends ChangeNotifier {
     }
   }
 
-  void signInWithGoogle(context){
+  void signInWithGoogle(BuildContext context){
     isLoading = true;
 
-    /*
-    authMethods.googleSignIn()
-        .then((val){
-      print("=======================");
-      print(val);
-    });
-*/
     authenticationServiceGoogle.signIn()
     .then((value){
       if(value != null){
@@ -106,12 +78,5 @@ class SignInScreenModelView extends ChangeNotifier {
   void loadData() async {
     notifyListeners();
   }
-
-/*
-  dateBaseMethods.getUserByUserEmail(emailTextEditingController.text)
-      .then((val){
-    snapshotUserInfo = val;
-    HelperFunctions.saveUserNameInSharedPreference(snapshotUserInfo.documents[0].data['name']);
- });*/
 
 }
