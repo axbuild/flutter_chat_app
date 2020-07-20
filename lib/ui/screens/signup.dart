@@ -99,18 +99,23 @@ class _SingUpState extends State<SignUp> {
                     ),
                   ),
                   SizedBox(height:8,),
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Text("Sign In with Google", style: TextStyle(
-                        color: Colors.black38,
-                        fontSize:18
-                    ),
+                  GestureDetector(
+                    onTap:(){
+                      model.googleSignUp(context);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Text("Sign In with Google", style: TextStyle(
+                          color: Colors.black38,
+                          fontSize:18
+                      ),
+                      ),
                     ),
                   ),
                   SizedBox(height:8,),

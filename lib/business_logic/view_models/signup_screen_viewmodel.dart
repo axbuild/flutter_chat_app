@@ -14,8 +14,9 @@ class SignUpScreenViewModel extends ChangeNotifier {
 
   AuthenticationServiceDefault authenticationServiceDefault = serviceLocator<AuthenticationServiceDefault>();
   AuthenticationServiceGoogle authenticationServiceGoogle = serviceLocator<AuthenticationServiceGoogle>();
-  DatabaseService storageService = serviceLocator<DatabaseService>();
+  DatabaseService databaseService = serviceLocator<DatabaseService>();
   OptionStorageService optionStorageService = serviceLocator<OptionStorageService>();
+
   User user;
   bool isLoading = false;
 
@@ -27,7 +28,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
   Map<String, String> userInfoMap = {};
 
   bool signUp(BuildContext context){
-    user = User();
+    user = User.empty();
     if(!formKey.currentState.validate()) return false;
 
       isLoading = true;
@@ -44,24 +45,28 @@ class SignUpScreenViewModel extends ChangeNotifier {
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
-      authenticationServiceDefault.signUp().then((val){
+      authenticationServiceDefault.signUp()
+          .then((val){
+            databaseService.uploadUserInfo(userInfoMap);
 
-        storageService.uploadUserInfo(userInfoMap);
-
-        user.isLogged = true;
-        optionStorageService.save('user', user.toJson());
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => ChatRoom()
-        ));
-      });
+            user.isLogged = true;
+            optionStorageService.save('user', user.toJson());
+            Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) => ChatRoom()
+            ));
+          });
 
       return true;
   }
 
   void googleSignUp(BuildContext context){
     authenticationServiceGoogle.signUp().then((val){
-
-      storageService.uploadUserInfo(userInfoMap);
+      /*userInfoMap = {
+          "name" : val.name,
+          "email" : val.email
+      };*/
+//      databaseService.uploadUserInfo(userInfoMap);
+      databaseService.uploadUserInfo(val.toJson());
 
       val.isLogged = true;
       optionStorageService.save('user', val.toJson());

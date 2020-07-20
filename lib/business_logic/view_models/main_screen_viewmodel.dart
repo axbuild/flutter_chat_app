@@ -8,20 +8,21 @@ class MainScreenViewModel extends ChangeNotifier {
 
   OptionStorageService  optionStorageService = serviceLocator<OptionStorageService>();
 
-  User user = User();
-  bool userIsLoggedIn = false;
+  User user = User.empty();
   String title = 'Flutter Chat App';
 
   void loadData() async {
-
-    await optionStorageService.read('user').then((value){
-      print(":::::::::::::::::Main > getLoggedInState:value: ${value.isLogged}");
-      userIsLoggedIn = value.isLogged ?? false;
-      notifyListeners();
-    });
+    await optionStorageService.read('user')
+        .then((value){
+          if(value != null){
+            user = User.fromJson(value);
+          } else {
+            optionStorageService.save('user', user.toJson());
+          }
+          notifyListeners();
+        });
 
     PushNotificationsManager().init();
-
     notifyListeners();
   }
 }

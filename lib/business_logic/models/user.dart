@@ -27,6 +27,8 @@ class User extends ChangeNotifier implements BaseModel {
     this.isLogged
   });
 
+  User.empty(): isLogged = false;
+
   User.fromJson(Map<String, dynamic> json)
       : sid = json['sid'],
         lid = json['lid'],

@@ -42,9 +42,8 @@ class OptionStorageServiceSharedPreferences extends OptionStorageService{
 
 
   Future<dynamic> read(String key) async {
-    print(":::::::::::::::::Prefs > loadData ${key}");
     final prefs = await SharedPreferences.getInstance();
-    return json.decode(prefs.getString(key));
+    return prefs.getString(key) != null ? json.decode( prefs.getString(key)) : null;
   }
 
   Future<bool> save(String key, value) async {
