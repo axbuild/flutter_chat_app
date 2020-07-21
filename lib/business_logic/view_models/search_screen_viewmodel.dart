@@ -58,6 +58,8 @@ class SearchScreenViewModel extends ChangeNotifier {
 
 
   void loadData(){
+
+    print("::::********::::::::::::${Constants.test}");
     notifyListeners();
   }
 }
