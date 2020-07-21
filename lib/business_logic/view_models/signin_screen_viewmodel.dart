@@ -1,5 +1,6 @@
 
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -29,7 +30,7 @@ class SignInScreenModelView extends ChangeNotifier {
 
   void signIn(BuildContext context) async {
     isLoading = true;
-
+    print("::::::::::::::::${Constants.test}");
     if(formKey.currentState.validate()){
 
       databaseService.getUserByEmail(emailTextEditingController.text.trim())
@@ -76,6 +77,9 @@ class SignInScreenModelView extends ChangeNotifier {
   }
 
   void loadData() async {
+
+    Constants.test = '123412341234';
+
     notifyListeners();
   }
 
