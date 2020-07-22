@@ -73,7 +73,6 @@ class _State extends State<SearchScreen> {
   }
 
   Widget searchList(SearchScreenViewModel model){
-    print(":::searchList:::${model.users.length}");
     return model.users.length != null ? ListView.builder(
         itemCount: model.users.length,
         shrinkWrap: true,

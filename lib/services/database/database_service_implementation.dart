@@ -64,7 +64,7 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   @override
-  Future<List<User>> getUserByUserName(String userName) async {
+  Future<List<User>> getUserByName(String userName) async {
 
     List<User> users = [];
 

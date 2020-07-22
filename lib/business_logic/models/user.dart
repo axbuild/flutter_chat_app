@@ -45,4 +45,5 @@ class User extends ChangeNotifier implements BaseModel {
     'email': email,
     'isLogged': isLogged
   };
+
 }
