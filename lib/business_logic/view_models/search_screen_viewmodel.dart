@@ -10,7 +10,6 @@ class SearchScreenViewModel extends ChangeNotifier {
 
   DatabaseService databaseService = serviceLocator<DatabaseService>();
 
-//  QuerySnapshot searchSnapshot;
   List<User> _users = [];
   List<User> get users => _users;
 
@@ -18,13 +17,13 @@ class SearchScreenViewModel extends ChangeNotifier {
     _users.clear();
 
     databaseService
-        .getUserByUserName(text)
+        .getUserByName(text)
         .then((val){
           _users.addAll(val);
           notifyListeners();
         });
     notifyListeners();
-   }
+  }
 
   createChatRoomAndStartConversation({BuildContext context, String userName}){
 
@@ -58,8 +57,6 @@ class SearchScreenViewModel extends ChangeNotifier {
 
 
   void loadData(){
-
-    print("::::********::::::::::::${Constants.test}");
     notifyListeners();
   }
 }

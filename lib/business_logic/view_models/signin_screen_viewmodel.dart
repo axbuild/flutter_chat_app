@@ -30,7 +30,7 @@ class SignInScreenModelView extends ChangeNotifier {
 
   void signIn(BuildContext context) async {
     isLoading = true;
-    print("::::::::::::::::${Constants.test}");
+
     if(formKey.currentState.validate()){
 
       databaseService.getUserByEmail(emailTextEditingController.text.trim())
@@ -77,9 +77,6 @@ class SignInScreenModelView extends ChangeNotifier {
   }
 
   void loadData() async {
-
-    Constants.test = '123412341234';
-
     notifyListeners();
   }
 

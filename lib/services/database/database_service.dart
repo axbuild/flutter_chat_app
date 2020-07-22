@@ -6,7 +6,7 @@ abstract class DatabaseService {
 
   Future<User> getUserByEmail(String userEmail);
 
-  Future<List<User>> getUserByUserName(String userName);
+  Future<List<User>> getUserByName(String userName);
 
   Future<bool> uploadUserInfo(userMap);
 
