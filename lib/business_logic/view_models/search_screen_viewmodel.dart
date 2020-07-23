@@ -1,3 +1,4 @@
+import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -25,22 +26,41 @@ class SearchScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  createChatRoomAndStartConversation({BuildContext context, String userName}){
+  createChatRoomAndStartConversation({BuildContext context, User user}){
 
-    if(userName != Constants.myName) {
-      String chatRoomId = getChatRoomId(userName, Constants.myName);
+    if(user.name != Constants.myName) {
+      //String chatRoomId = getChatRoomId(userName, Constants.myName);
 
-      List<String> users = [userName, Constants.myName];
+      print("++++++++++++++++++");
+      print(user.sid);
+      print('_________');
+      print(Constants.user.sid);
+      print("++++++++++++++++++");
+      Room room = new Room();
+      databaseService.getRoom(user, Constants.user).then((value){
+        room = value;
+      });
+//      List<String> users = [userName, Constants.myName];
+//      Map<String, dynamic> chatRoomMap = {
+//        userName : users,
+//        "chatroomid" : chatRoomId
+//      };
       Map<String, dynamic> chatRoomMap = {
-        "users" : users,
-        "chatroomid" : chatRoomId
+        "users": {
+          user.sid: true,
+          Constants.user.sid: true
+        },
+        "time": new DateTime.now().millisecondsSinceEpoch
       };
-      databaseService.createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(
-              chatRoomId
-          )
-      ));
+
+      databaseService.createChatRoom(room, chatRoomMap).then((value){
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ConversationScreen(
+                value.id//chatRoomId
+            )
+        ));
+      });
+
     }else{
       print("you cannot send message to yourself");
     }

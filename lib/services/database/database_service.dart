@@ -10,7 +10,11 @@ abstract class DatabaseService {
 
   Future<bool> uploadUserInfo(userMap);
 
-  Future<Room> createChatRoom(String chatRoomId, chatRoomMap);
+  Future<Room> createChatRoom(Room room, chatRoomMap);
+
+//  Future<Room> addRoom();
+
+  Future<Room> getRoom(User user1, User user2);
 
   Future<Message> addConversationMessages(String chatRoomId, messageMap);
 
