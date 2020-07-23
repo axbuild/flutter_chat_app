@@ -22,6 +22,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
       if(value != null){
         user = User.fromJson(value);
         Constants.myName = user.name;
+        Constants.user = user;
       }
     });
 
