@@ -13,6 +13,7 @@ class SearchScreenViewModel extends ChangeNotifier {
 
   List<User> _users = [];
   List<User> get users => _users;
+  Room room;
 
   initiateSearch(text){
     _users.clear();
@@ -29,22 +30,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   createChatRoomAndStartConversation({BuildContext context, User user}){
 
     if(user.name != Constants.myName) {
-      //String chatRoomId = getChatRoomId(userName, Constants.myName);
 
-      print("++++++++++++++++++");
-      print(user.sid);
-      print('_________');
-      print(Constants.user.sid);
-      print("++++++++++++++++++");
-      Room room = new Room();
-      databaseService.getRoom(user, Constants.user).then((value){
-        room = value;
-      });
-//      List<String> users = [userName, Constants.myName];
-//      Map<String, dynamic> chatRoomMap = {
-//        userName : users,
-//        "chatroomid" : chatRoomId
-//      };
       Map<String, dynamic> chatRoomMap = {
         "users": {
           user.sid: true,
@@ -53,13 +39,27 @@ class SearchScreenViewModel extends ChangeNotifier {
         "time": new DateTime.now().millisecondsSinceEpoch
       };
 
-      databaseService.createChatRoom(room, chatRoomMap).then((value){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ConversationScreen(
-                value.id//chatRoomId
-            )
-        ));
-      });
+      databaseService.getRoom(user, Constants.user)
+          .then((currentRoom){
+            room = currentRoom;
+            if(room.id == null){
+              databaseService.addRoom(chatRoomMap)
+                .then((newRoom){
+                  room = newRoom;
+              });
+            }
+          })
+          .then((_){
+              if(room.id != null){
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ConversationScreen(
+                        room.id//chatRoomId
+                    )
+                ));
+              }else{
+                print('Cant create new room');
+              }
+          });
 
     }else{
       print("you cannot send message to yourself");
@@ -67,16 +67,8 @@ class SearchScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  getChatRoomId(String a, String b) {
-    if(a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-      return "$b\_$a";
-    }else{
-      return "$a\_$b";
-    }
-  }
-
-
   void loadData(){
+    room = new Room();
     notifyListeners();
   }
 }

@@ -4,7 +4,7 @@ import 'base.dart';
 class Room extends ChangeNotifier implements BaseModel {
   String id;
 
-  Room();
+  Room({this.id});
 
   Room.fromJson(Map<String, dynamic> json)
       :id = json['id'];

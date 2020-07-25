@@ -20,57 +20,27 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   @override
-  Future<Room> createChatRoom(Room room, chatRoomMap) async {
-    if(room.id != null){
-      await _roomsRef
-          .document(room.id)
-          .setData(chatRoomMap);
-    }else{
-      await _roomsRef.add(chatRoomMap)
-          .then((ref){
-        room.id = ref.documentID;
-      })
-          .catchError((e){
-        print(e.toString());
-      });
-    }
-    return room;
+  Future<Room> addRoom(chatRoomMap) async {
+    return await _roomsRef
+        .add(chatRoomMap)
+        .then((ref) => new Room(id: ref.documentID));
   }
 
-  Future<Room> getRoom(User user1, User user2) async {
-    Room room = new Room();
-    print('&&&&&&&&&&&&&&&&&&&&&&&');
-    print(user1.sid);
-    print('&&&&&&&&&&&&&&&&&&&&&&&');
-    await _roomsRef
-        .where("time", isEqualTo: "1595534994034")
-//        .where("users."+user1.sid, isEqualTo: true)
-//        .where("users."+user2.sid, isEqualTo: true)
-        .snapshots()
-        .listen((data) =>
-            data.documents.forEach(
-                    (doc){
-                      print('^^^^^^^^^^^^^');
-                      print(doc.documentID);
-                    }
-            )
-        );
-//        .listen((data) {
-//
-//            room.id =  data.documents[0].documentID;
-//            print("______________-${room.id}");
-//        });
-//        .getDocuments()
-//        .then((snapshot){
-//           room.id =  snapshot.documents[0].documentID;
-//    });
-    return room;
+  Future<Room> getRoom(User user1, User user2) async  {
+     return await _roomsRef
+        .where("users."+user1.sid, isEqualTo: true)
+        .where("users."+user2.sid, isEqualTo: true)
+        .limit(1)
+        .getDocuments()
+        .then((snapshot) => new Room(id: snapshot.documents.first.documentID))
+        .catchError((e) => new Room());
   }
 
   @override
-  Future<Stream> getChatRooms(String userName) async {
+  Future<Stream> getChatRooms(User user) async {
     return await _roomsRef
-        .where("users", arrayContains: userName)
+        .where("users."+user.sid, isEqualTo: true)
+//        .where("users", arrayContains: userName)
         .snapshots();
   }
 
@@ -86,17 +56,16 @@ class DatabaseServiceImpl implements DatabaseService{
 
   @override
   Future<User> getUserByEmail(String userEmail) async {
-    User user = User();
-    await _usersRef
+
+    return await _usersRef
         .where("email", isEqualTo: userEmail )
         .getDocuments()
-        .then((snapshot){
-            user.sid = snapshot.documents[0].documentID;
-            user.name = snapshot.documents[0].data['name'];
-            user.email = snapshot.documents[0].data['email'];
-            user.isLogged = true;
-        });
-    return user;
+        .then((snapshot) => new User(
+            sid : snapshot.documents.first.documentID,
+            name : snapshot.documents.first.data['name'],
+            email : snapshot.documents.first.data['email'],
+            isLogged : true
+        ));
   }
 
   @override
@@ -109,24 +78,21 @@ class DatabaseServiceImpl implements DatabaseService{
 
   @override
   Future<List<User>> getUserByName(String userName) async {
-
     List<User> users = [];
 
-    await _usersRef
+    return await _usersRef
         .where("name", isEqualTo: userName )
         .getDocuments()
         .then((snapshot){
-
-        snapshot.documents.forEach((element) {
-                users.add(User(
-                  sid: element.documentID,
-                  name: element.data['name'],
-                  email: element.data['email']
-                ));
+          snapshot.documents.forEach((element) {
+            users.add(User(
+                sid: element.documentID,
+                name: element.data['name'],
+                email: element.data['email']
+            ));
+          });
+          return users;
         });
-      });
-
-    return users;
   }
   
 }
