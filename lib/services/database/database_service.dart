@@ -10,9 +10,7 @@ abstract class DatabaseService {
 
   Future<bool> uploadUserInfo(userMap);
 
-  Future<Room> createChatRoom(Room room, chatRoomMap);
-
-//  Future<Room> addRoom();
+  Future<Room> addRoom(chatRoomMap);
 
   Future<Room> getRoom(User user1, User user2);
 
@@ -20,5 +18,5 @@ abstract class DatabaseService {
 
   Future<Stream> getConversationMessages(String chatRoomId);
 
-  Future<Stream> getChatRooms(String userName);
+  Future<Stream> getChatRooms(User user);
 }

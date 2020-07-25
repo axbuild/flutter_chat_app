@@ -62,7 +62,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   }
 
-  Widget chatRoomList(ChatRoomsScreenViewModel){
+  Widget chatRoomList(model){
     return StreamBuilder(
       stream: model.chatRoomsStream,
       builder: (context, snapshot){

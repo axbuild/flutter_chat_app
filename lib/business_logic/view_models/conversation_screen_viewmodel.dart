@@ -11,10 +11,11 @@ class ConversationScreenViewModel extends ChangeNotifier {
   void loadData(String chatRoomId){
       _chatRoomId = chatRoomId;
       storageService = serviceLocator<DatabaseService>();
-      storageService.getConversationMessages(chatRoomId).then((value){
-        chatMessagesStream = value;
-        notifyListeners();
-      });
+      storageService.getConversationMessages(chatRoomId)
+          .then((value){
+            chatMessagesStream = value;
+            notifyListeners();
+          });
       notifyListeners();
   }
 

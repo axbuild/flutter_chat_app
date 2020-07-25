@@ -18,17 +18,22 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
   User user;
 
   void loadData() async {
-    localStorageService.read('user').then((value){
-      if(value != null){
-        user = User.fromJson(value);
-        Constants.myName = user.name;
-        Constants.user = user;
-      }
-    });
+    localStorageService.read('user')
+        .then((value){
+          if(value != null){
+            user = User.fromJson(value);
+            Constants.myName = user.name;
+            Constants.user = user;
+          }
+        })
+        .then((_){
+          databaseService.getChatRooms(Constants.user)
+              .then((value){
+                chatRoomsStream = value;
+              });
+        });
 
-    databaseService.getChatRooms(Constants.myName).then((value){
-      chatRoomsStream = value;
-    });
+
     notifyListeners();
   }
 

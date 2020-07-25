@@ -1,3 +1,4 @@
+import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
+
   ConversationScreen(this.chatRoomId);
 
   @override
