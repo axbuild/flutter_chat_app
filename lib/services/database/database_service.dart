@@ -1,6 +1,7 @@
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class DatabaseService {
 
@@ -18,5 +19,7 @@ abstract class DatabaseService {
 
   Future<Stream> getConversationMessages(String chatRoomId);
 
-  Future<Stream> getChatRooms(User user);
+  Future<Stream> getRooms(User user);
+
+  Future<Stream> getUsers(List sids);
 }
