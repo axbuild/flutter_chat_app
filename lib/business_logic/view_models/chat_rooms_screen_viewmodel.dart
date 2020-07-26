@@ -14,7 +14,10 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
   AuthenticationServiceDefault authenticationServiceDefault = serviceLocator<AuthenticationServiceDefault>();
   AuthenticationServiceGoogle authenticationServiceGoogle = serviceLocator<AuthenticationServiceGoogle>();
 
-  Stream chatRoomsStream;
+  Stream streamRooms;
+  Stream streamUsers;
+  List usersIds = [];
+
   User user;
 
   void loadData() async {
@@ -27,9 +30,10 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
           }
         })
         .then((_){
-          databaseService.getChatRooms(Constants.user)
+          databaseService.getRooms(Constants.user)
               .then((value){
-                chatRoomsStream = value;
+                streamRooms = value;
+//                value.toList().then( (value) => print("******") );
               });
         });
 

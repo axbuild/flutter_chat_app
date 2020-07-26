@@ -37,7 +37,7 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   @override
-  Future<Stream> getChatRooms(User user) async {
+  Future<Stream> getRooms(User user) async {
     return await _roomsRef
         .where("users."+user.sid, isEqualTo: true)
 //        .where("users", arrayContains: userName)
@@ -74,6 +74,21 @@ class DatabaseServiceImpl implements DatabaseService{
         .add(userMap).catchError((e){
       print(e.toString());
     });
+  }
+
+  Future<Stream> getUsers(List sids) async {
+    List<String> documentIds = [];
+
+
+    documentIds.forEach((element) {
+        print("====================");
+        print(element);
+      });
+
+
+    return await _usersRef
+        .where("name", whereIn: documentIds )
+        .snapshots();
   }
 
   @override

@@ -47,6 +47,7 @@ class _ChatRoomState extends State<ChatRoom> {
               ],
             ),
             body: chatRoomList(model),
+            drawer: drawer(),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Color(0xff39796b),
               child: Icon(Icons.search),
@@ -64,12 +65,13 @@ class _ChatRoomState extends State<ChatRoom> {
 
   Widget chatRoomList(model){
     return StreamBuilder(
-      stream: model.chatRoomsStream,
+      stream: model.streamRooms,
       builder: (context, snapshot){
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
             return ChatRoomTile(
+
                 snapshot.data.documents[index].data["chatroomid"]
                     .toString().replaceAll("_", "")
                     .replaceAll(Constants.myName, ""),
