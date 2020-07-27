@@ -71,11 +71,12 @@ class _ChatRoomState extends State<ChatRoom> {
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
             return ChatRoomTile(
-
-                snapshot.data.documents[index].data["chatroomid"]
-                    .toString().replaceAll("_", "")
-                    .replaceAll(Constants.myName, ""),
-                snapshot.data.documents[index].data["chatroomid"]
+                snapshot.data.documents[index].data["time"].toString(),
+                snapshot.data.documents[index].data["chatroomid"].toString()
+//                snapshot.data.documents[index].data["chatroomid"]
+//                    .toString().replaceAll("_", "")
+//                    .replaceAll(Constants.myName, ""),
+//                snapshot.data.documents[index].data["chatroomid"]
             );
           },
         ) : Container();
