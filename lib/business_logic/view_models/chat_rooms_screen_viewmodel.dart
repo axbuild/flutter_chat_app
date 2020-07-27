@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
@@ -20,7 +22,10 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
 
   User user;
 
+  Map <String, dynamic> users = {};
+
   void loadData() async {
+
     localStorageService.read('user')
         .then((value){
           if(value != null){
@@ -33,12 +38,20 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
           databaseService.getRooms(Constants.user)
               .then((value){
                 streamRooms = value;
-//                value.toList().then( (value) => print("******") );
+                value.listen((data) =>
+                    data.documents.forEach((doc){
+                      users = doc["users"];
+                      users.keys.forEach((element) {
+                        if(element != Constants.user.sid){
+                          usersIds.add(element)
+                        }
+                      });
+                    })
+                );
+                notifyListeners();
               });
+          notifyListeners();
         });
-
-
-    notifyListeners();
   }
 
   void signOut(){
