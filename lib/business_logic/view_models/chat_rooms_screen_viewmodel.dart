@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
@@ -18,15 +16,17 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
 
   Stream streamRooms;
   Stream streamUsers;
-  List usersIds = [];
+  List<String> usersIds = [];
 
   User user;
+  String title = '*****';
 
   Map <String, dynamic> users = {};
 
   void loadData() async {
-
-    localStorageService.read('user')
+    title = 'testsasdfa';
+//    notifyListeners();
+    await localStorageService.read('user')
         .then((value){
           if(value != null){
             user = User.fromJson(value);
@@ -34,24 +34,47 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
             Constants.user = user;
           }
         })
-        .then((_){
-          databaseService.getRooms(Constants.user)
+        .then((_) async {
+          await databaseService.getRooms(Constants.user)
               .then((value){
                 streamRooms = value;
-                value.listen((data) =>
-                    data.documents.forEach((doc){
-                      users = doc["users"];
-                      users.keys.forEach((element) {
-                        if(element != Constants.user.sid){
-                          usersIds.add(element)
-                        }
-                      });
-                    })
-                );
+                getUsers();
                 notifyListeners();
               });
-          notifyListeners();
+//          notifyListeners();
         });
+//    notifyListeners();
+  }
+
+  Future<void> getUsers() async {
+//    streamRooms.listen((data) async {
+//      data.documents.forEach((doc){
+//        users = doc["users"];
+//        users.keys.forEach((element) {
+//          if(element != Constants.user.sid){
+//            usersIds.add(element);
+//          }
+//
+//        });
+//      });
+//
+//    });
+    print('!!!!!!!!!!!!!!!!!');
+
+    print('!!!!!!!!!!!!!!!!!');
+
+    if(usersIds.length > 0)
+    {
+      await databaseService.getUsers(usersIds)
+          .then((value){
+              streamUsers = value;
+              print(usersIds.length);
+              title = 'ttttttest';
+              notifyListeners();
+          });
+    }else{
+      print("array empty = =========");
+    }
   }
 
   void signOut(){
