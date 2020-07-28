@@ -76,18 +76,9 @@ class DatabaseServiceImpl implements DatabaseService{
     });
   }
 
-  Future<Stream> getUsers(List sids) async {
-    List<String> documentIds = [];
-
-
-    documentIds.forEach((element) {
-        print("====================");
-        print(element);
-      });
-
-
+  Future<Stream> getUsers(List documentIds) async {
     return await _usersRef
-        .where("name", whereIn: documentIds )
+        .where('uid', whereIn: documentIds )
         .snapshots();
   }
 

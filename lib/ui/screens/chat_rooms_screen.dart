@@ -30,7 +30,7 @@ class _ChatRoomState extends State<ChatRoom> {
       child: Consumer<ChatRoomsScreenViewModel>(
           builder: (context, model, child) => Scaffold(
             appBar: AppBar(
-              title: Icon(Icons.list),
+              title: Text(model.title),//Icon(Icons.list),
               actions: [
                 GestureDetector(
                   onTap: (){
@@ -63,16 +63,22 @@ class _ChatRoomState extends State<ChatRoom> {
 
   }
 
-  Widget chatRoomList(model){
-    return StreamBuilder(
+  Widget chatRoomList(ChatRoomsScreenViewModel model){
+//   print("~~~~~${model.streamUsers.isEmpty}");
+
+      return StreamBuilder(
       stream: model.streamRooms,
       builder: (context, snapshot){
+        print('~~~~~~~~~');
+        if(snapshot.hasData){
+          print(snapshot.data.documents.length);
+        };
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
             return ChatRoomTile(
-                snapshot.data.documents[index].data["time"].toString(),
-                snapshot.data.documents[index].data["chatroomid"].toString()
+                "test-${index}",
+                '1234'
 //                snapshot.data.documents[index].data["chatroomid"]
 //                    .toString().replaceAll("_", "")
 //                    .replaceAll(Constants.myName, ""),
@@ -92,6 +98,7 @@ class ChatRoomTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('________________');
     return GestureDetector(
       onTap:(){
         Navigator.push(context, MaterialPageRoute(
