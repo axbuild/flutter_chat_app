@@ -36,6 +36,8 @@ class SearchScreenViewModel extends ChangeNotifier {
           user.sid: true,
           Constants.user.sid: true
         },
+        "author": Constants.user.sid,
+        "recipient": user.sid,
         "time": new DateTime.now().millisecondsSinceEpoch
       };
 

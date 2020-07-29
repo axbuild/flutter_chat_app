@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
@@ -8,6 +10,7 @@ class DatabaseServiceImpl implements DatabaseService{
 
   static CollectionReference _roomsRef = Firestore.instance.collection("rooms");
   static CollectionReference _usersRef = Firestore.instance.collection("users");
+  static CollectionReference _contactsRef = Firestore.instance.collection("contacts");
 
   @override
   Future<Message> addConversationMessages(String chatRoomId, messageMap) {
@@ -80,6 +83,63 @@ class DatabaseServiceImpl implements DatabaseService{
     return await _usersRef
         .where('uid', whereIn: documentIds )
         .snapshots();
+  }
+
+  Future<Stream> getContacts(User user) async {
+    List documentIds = [];
+    Stream users;
+
+    return Future.wait([getRoomsDocIds(user)])
+      .then((List responses) {
+//        print(responses.first);
+//        print(responses.first);
+//        documentIds = responses.first;
+        return _usersRef
+//          .where('name', whereIn: responses )
+//          .where(FieldPath.documentId, whereIn: documentIds )
+          .where(FieldPath.documentId, whereIn: [1,2,3] )
+          .snapshots();
+        return null;
+      });
+
+//      return await _roomsRef
+//        .where("users."+user.sid, isEqualTo: true)
+//        .getDocuments()
+//        .then((snapshot){
+//            print("===${snapshot.documents.length}");
+//            snapshot.documents.forEach((element){
+//              documentIds.add(element.documentID);
+//            });
+//        })
+//        .then((_) async {
+//           print("=***==${documentIds.length}");
+//           return await _usersRef
+//                  .where('uid', whereIn: documentIds )
+//                  .snapshots();
+//        });
+  }
+
+  Future<List> getRoomsDocIds(User user) async {
+    List documentIds = [];
+    Map <String, bool> users = {};
+    return documentIds;
+    return await _roomsRef
+        .where("users."+user.sid, isEqualTo: true)
+        .getDocuments()
+        .then((snapshot){
+          print("===${snapshot.documents.length}");
+          snapshot.documents.forEach((element){
+//            print(element.data['users']);
+//            users = json.decode(element.data['users'].toString());
+            users.forEach((key, value) {
+              if(key != user.sid){
+                documentIds.add(key);
+              }
+            });
+
+          });
+          return documentIds;
+        });
   }
 
   @override

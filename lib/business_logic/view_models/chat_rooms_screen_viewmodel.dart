@@ -24,8 +24,12 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
   Map <String, dynamic> users = {};
 
   void loadData() async {
-    title = 'testsasdfa';
-//    notifyListeners();
+
+//    Future.wait([initUser()])
+//    .then((List responses){
+//        Future.wait([initContacts()]);
+//    });
+
     await localStorageService.read('user')
         .then((value){
           if(value != null){
@@ -35,15 +39,34 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
           }
         })
         .then((_) async {
-          await databaseService.getRooms(Constants.user)
+          await databaseService.getContacts(Constants.user)
               .then((value){
-                streamRooms = value;
-                getUsers();
+//                streamRooms = value;
+//                print(value);
+//                getUsers();
                 notifyListeners();
               });
-//          notifyListeners();
+
         });
-//    notifyListeners();
+
+  }
+
+  Future<void> initUser() async {
+    await localStorageService.read('user')
+    .then((value){
+      if(value != null){
+        user = User.fromJson(value);
+        Constants.myName = user.name;
+        Constants.user = user;
+      }
+    });
+  }
+
+  Future<void> initContacts() async {
+    await databaseService.getContacts(Constants.user)
+    .then((value){
+      streamRooms = value;
+    });
   }
 
   Future<void> getUsers() async {
@@ -60,7 +83,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
 //
 //    });
     print('!!!!!!!!!!!!!!!!!');
-
+//    print(streamRooms.);
     print('!!!!!!!!!!!!!!!!!');
 
     if(usersIds.length > 0)

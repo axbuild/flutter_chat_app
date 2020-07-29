@@ -22,4 +22,6 @@ abstract class DatabaseService {
   Future<Stream> getRooms(User user);
 
   Future<Stream> getUsers(List sids);
+
+  Future<Stream> getContacts(User user);
 }

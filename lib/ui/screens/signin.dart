@@ -42,7 +42,7 @@ class _SignInState extends State<SignIn> {
                       TextFormField(
                         validator: (val){
                           return RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                              .hasMatch(val) ? null : 'Please Provide a valid email';
+                              .hasMatch(val.trim()) ? null : 'Please Provide a valid email';
                         },
                         controller: model.emailTextEditingController,
                         style: mediumInputFieldStyle(),
