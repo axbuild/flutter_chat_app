@@ -1,6 +1,5 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/constants.dart';
-import 'file:///C:/Users/29228796/AndroidStudioProjects/flutter_chat_app/lib/services/predicated/auth.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -60,7 +59,8 @@ class SignUpScreenViewModel extends ChangeNotifier {
   }
 
   void googleSignUp(BuildContext context){
-    authenticationServiceGoogle.signUp().then((val){
+    authenticationServiceGoogle.signUp()
+    .then((val){
       /*userInfoMap = {
           "name" : val.name,
           "email" : val.email
