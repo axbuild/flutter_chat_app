@@ -15,6 +15,8 @@ abstract class DatabaseService {
 
   Future<Room> getRoom(User user1, User user2);
 
+  Future<String> addContact(User user, User contact);
+
   Future<Message> addConversationMessages(String chatRoomId, messageMap);
 
   Future<Stream> getConversationMessages(String chatRoomId);

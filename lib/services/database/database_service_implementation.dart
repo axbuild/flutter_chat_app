@@ -48,6 +48,18 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   @override
+  Future<String> addContact(User user, User contact) async {
+    Map<String, dynamic> contactMap = {
+      'id': contact.sid
+    };
+    return await _usersRef
+        .document(user.sid)
+        .collection("contacts")
+        .add(contactMap)
+        .then((ref) => ref.documentID);
+  }
+
+  @override
   Future<Stream> getConversationMessages(String chatRoomId) async {
 
    return await _roomsRef
@@ -86,6 +98,12 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   Future<Stream> getContacts(User user) async {
+
+    return await _usersRef
+        .document(user.sid)
+        .collection("contacts")
+        .snapshots();
+
     List documentIds = [];
     Stream users;
 

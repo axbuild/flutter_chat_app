@@ -42,25 +42,28 @@ class SearchScreenViewModel extends ChangeNotifier {
       };
 
       databaseService.getRoom(user, Constants.user)
-          .then((currentRoom){
+          .then((currentRoom) {
             room = currentRoom;
+          })
+          .then((value){
             if(room.id == null){
               databaseService.addRoom(chatRoomMap)
-                .then((newRoom){
-                  room = newRoom;
+              .then((newRoom){
+                room = newRoom;
+                databaseService.addContact(Constants.user, user);
               });
             }
           })
-          .then((_){
-              if(room.id != null){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ConversationScreen(
-                        room.id//chatRoomId
-                    )
-                ));
-              }else{
-                print('Cant create new room');
-              }
+          .then((value){
+            if(room.id != null){
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ConversationScreen(
+                      room.id//chatRoomId
+                  )
+              ));
+            }else{
+              print('Cant create new room');
+            }
           });
 
     }else{
