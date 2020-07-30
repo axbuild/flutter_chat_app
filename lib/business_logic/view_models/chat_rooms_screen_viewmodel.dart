@@ -41,7 +41,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
         .then((_) async {
           await databaseService.getContacts(Constants.user)
               .then((value){
-//                streamRooms = value;
+                streamRooms = value;
 //                print(value);
 //                getUsers();
                 notifyListeners();
