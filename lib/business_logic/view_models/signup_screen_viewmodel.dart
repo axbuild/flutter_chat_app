@@ -32,48 +32,37 @@ class SignUpScreenViewModel extends ChangeNotifier {
 
       isLoading = true;
 
-      userInfoMap = {
-        "name" : userNameTextEditingController.text,
-        "email" : emailTextEditingController.text,
-        "token" : Constants.token
-      };
+//      userInfoMap = {
+//        "name" : userNameTextEditingController.text,
+//        "email" : emailTextEditingController.text,
+//        "token" : Constants.token
+//      };
 
-      user.name = userNameTextEditingController.text;
-      user.email = emailTextEditingController.text;
+      user.name = userNameTextEditingController.text.trim();
+      user.email = emailTextEditingController.text.trim();
       optionStorageService.save('user', user.toJson());
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
       authenticationServiceDefault.signUp()
-          .then((val){
-            databaseService.uploadUserInfo(userInfoMap);
-
-            user.isLogged = true;
-            optionStorageService.save('user', user.toJson());
-            Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) => ChatRoom()
-            ));
-          });
+          .then((val) => finishAuthorize(context, val));
 
       return true;
   }
 
   void googleSignUp(BuildContext context){
     authenticationServiceGoogle.signUp()
-    .then((val){
-      /*userInfoMap = {
-          "name" : val.name,
-          "email" : val.email
-      };*/
-//      databaseService.uploadUserInfo(userInfoMap);
-      databaseService.uploadUserInfo(val.toJson());
+        .then((val) => finishAuthorize(context, val));
+  }
 
-      val.isLogged = true;
-      optionStorageService.save('user', val.toJson());
-      Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ChatRoom()
-      ));
-    });
+  void finishAuthorize(BuildContext context, dynamic value){
+    databaseService.uploadUserInfo(value.toJson());
+
+    value.isLogged = true;
+    optionStorageService.save('user', value.toJson());
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => ChatRoom()
+    ));
   }
 
   void loadData(){

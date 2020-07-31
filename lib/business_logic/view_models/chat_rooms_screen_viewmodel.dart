@@ -37,6 +37,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
             Constants.myName = user.name;
             Constants.user = user;
           }
+          print(Constants.myName);
         })
         .then((_) async {
           await databaseService.getContacts(Constants.user)

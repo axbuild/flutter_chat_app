@@ -7,6 +7,7 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
+import 'package:chatapp/ui/shared/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,26 +35,13 @@ class SignInScreenModelView extends ChangeNotifier {
     if(formKey.currentState.validate()){
 
       databaseService.getUserByEmail(emailTextEditingController.text.trim())
-          .then((value){
-//            optionStorageService.save('user', value.toJson());
-            user = value;
-          });
+          .then((value) => user = value);
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
 
       authenticationServiceDefault.signIn()
-        .then((value){
-          if(value != null){
-            user.isLogged = true;
-            optionStorageService.save('user', user.toJson());
-
-            Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (context) => ChatRoom()
-            ));
-            notifyListeners();
-          }
-      });
+        .then((value) => finishAuthorize(context, value));
 
     }
   }
@@ -62,18 +50,22 @@ class SignInScreenModelView extends ChangeNotifier {
     isLoading = true;
 
     authenticationServiceGoogle.signIn()
-    .then((value){
-      if(value != null){
-        user.isLogged = true;
-        optionStorageService.save('user', user.toJson());
+    .then((value) => finishAuthorize(context, value));
 
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => ChatRoom()
-        ));
-        notifyListeners();
-      }
-    });
+  }
 
+  void finishAuthorize(BuildContext context, dynamic value){
+    if(value != null){
+      user.isLogged = true;
+      optionStorageService.save('user', user.toJson());
+
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => ChatRoom()
+      ));
+      notifyListeners();
+    } else {
+      showPopUpDialog(context, 'User not found!');
+    }
   }
 
   void loadData() async {

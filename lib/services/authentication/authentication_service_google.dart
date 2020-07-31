@@ -12,7 +12,9 @@ class AuthenticationServiceGoogle implements AuthenticationService {
     return user != null ? User(
         pid: user.uid,
         name: user.displayName,
-        email: user.email
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        photoUrl: user.photoUrl
     ) : null;
   }
 
