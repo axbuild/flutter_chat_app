@@ -6,6 +6,7 @@ class User extends ChangeNotifier implements BaseModel {
   String sid;
   String lid;
   String pid;
+  String login;
   String name;
   String email;
   String phoneNumber;
@@ -20,6 +21,7 @@ class User extends ChangeNotifier implements BaseModel {
     this.sid,
     this.lid,
     this.pid,
+    this.login,
     this.name,
     this.email,
     this.phoneNumber,
@@ -30,10 +32,11 @@ class User extends ChangeNotifier implements BaseModel {
   User.empty(): isLogged = false;
 
   User.fromJson(Map<String, dynamic> json)
-      : sid = json['sid'],
-        lid = json['lid'],
-        pid = json['pid'],
-        name = json['name'],
+      : sid   = json['sid'],
+        lid   = json['lid'],
+        pid   = json['pid'],
+        login = json['login'],
+        name  = json['name'],
         email = json['email'],
         isLogged = json['isLogged'];
 
@@ -41,6 +44,7 @@ class User extends ChangeNotifier implements BaseModel {
     'sid': sid,
     'lid': lid,
     'pid': pid,
+    'login': login,
     'name': name,
     'email': email,
     'isLogged': isLogged

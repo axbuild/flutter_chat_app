@@ -89,7 +89,6 @@ class _State extends State<SearchScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(user.sid, style: mediumTextStyle()),
               Text(user.name, style: mediumTextStyle()),
               Text(user.email, style: mediumTextStyle()),
             ],

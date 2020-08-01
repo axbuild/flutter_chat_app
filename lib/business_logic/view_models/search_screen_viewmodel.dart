@@ -16,20 +16,21 @@ class SearchScreenViewModel extends ChangeNotifier {
   Room room;
 
   initiateSearch(text){
-    _users.clear();
-
+    print(text);
     databaseService
-        .getUserByName(text)
-        .then((val){
-          _users.addAll(val);
-          notifyListeners();
-        });
+        .getUsersByEmail(text, Constants.user.email)
+        .then((val) => showOccurrences(val));
+  }
+
+  void showOccurrences(List<User> users){
+    _users.clear();
+    _users.addAll(users);
     notifyListeners();
   }
 
   createChatRoomAndStartConversation({BuildContext context, User user}){
 
-    if(user.name != Constants.myName) {
+    if(user.sid != null &&  Constants.user.sid != null) {
 
       Map<String, dynamic> chatRoomMap = {
         "users": {
@@ -51,6 +52,7 @@ class SearchScreenViewModel extends ChangeNotifier {
               .then((newRoom){
                 room = newRoom;
                 databaseService.addContact(Constants.user, user);
+                databaseService.addContact(user, Constants.user);
               });
             }
           })
@@ -67,6 +69,7 @@ class SearchScreenViewModel extends ChangeNotifier {
           });
 
     }else{
+      print("user1: ${user.sid} user2:${Constants.user.sid}");
       print("you cannot send message to yourself");
     }
     notifyListeners();

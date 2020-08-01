@@ -30,6 +30,7 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   Future<Room> getRoom(User user1, User user2) async  {
+
      return await _roomsRef
         .where("users."+user1.sid, isEqualTo: true)
         .where("users."+user2.sid, isEqualTo: true)
@@ -50,7 +51,8 @@ class DatabaseServiceImpl implements DatabaseService{
   @override
   Future<String> addContact(User user, User contact) async {
     Map<String, dynamic> contactMap = {
-      'id': contact.sid
+      'id': contact.sid,
+      'name': contact.name
     };
     return await _usersRef
         .document(user.sid)
@@ -67,20 +69,6 @@ class DatabaseServiceImpl implements DatabaseService{
         .collection("chats")
         .orderBy("time", descending: false)
         .snapshots();
-  }
-
-  @override
-  Future<User> getUserByEmail(String userEmail) async {
-
-    return await _usersRef
-        .where("email", isEqualTo: userEmail )
-        .getDocuments()
-        .then((snapshot) => new User(
-            sid : snapshot.documents.first.documentID,
-            name : snapshot.documents.first.data['name'],
-            email : snapshot.documents.first.data['email'],
-            isLogged : true
-        ));
   }
 
   @override
@@ -178,5 +166,41 @@ class DatabaseServiceImpl implements DatabaseService{
           return users;
         });
   }
-  
+
+  @override
+  Future<User> getUserByEmail(String userEmail) async {
+
+    return await _usersRef
+        .where("email", isEqualTo: userEmail )
+        .getDocuments()
+        .then((snapshot) => new User(
+        sid : snapshot.documents.first.documentID,
+        name : snapshot.documents.first.data['name'],
+        email : snapshot.documents.first.data['email'],
+        isLogged : true
+    ));
+  }
+
+  @override
+  Future<List<User>> getUsersByEmail(String userEmail, String excludeEmail) async {
+    List<User> users = [];
+
+    return await _usersRef
+        .where("email", isGreaterThanOrEqualTo: userEmail )
+        .getDocuments()
+        .then((snapshot){
+          snapshot.documents.forEach((element) {
+            if(excludeEmail != element.data['email'])
+              users.add(User(
+                  sid: element.documentID,
+                  name: element.data['name'],
+                  email: element.data['email']
+              ));
+          });
+          print(users.length);
+          return users;
+    });
+  }
+
+
 }

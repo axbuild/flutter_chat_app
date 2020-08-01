@@ -1,3 +1,4 @@
+import 'package:chatapp/business_logic/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 Widget appBarMain(BuildContext context){
@@ -65,12 +66,13 @@ TextStyle mediumBtnStyle(){
 }
 
 Drawer drawer(){
+
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
         DrawerHeader(
-          child: Text('Drawer Header'),
+          child: Text("You: ${Constants.myName}"),
           decoration: BoxDecoration(
             color: Colors.blue,
           ),
