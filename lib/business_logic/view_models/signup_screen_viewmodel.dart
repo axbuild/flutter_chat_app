@@ -6,6 +6,7 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
+import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
   DatabaseService databaseService = serviceLocator<DatabaseService>();
   OptionStorageService optionStorageService = serviceLocator<OptionStorageService>();
 
-  User user;
+//  User user;
   bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
@@ -24,45 +25,42 @@ class SignUpScreenViewModel extends ChangeNotifier {
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
-  Map<String, String> userInfoMap = {};
+//  Map<String, String> userInfoMap = {};
 
   bool signUp(BuildContext context){
-    user = User.empty();
+//    user = User.empty();
     if(!formKey.currentState.validate()) return false;
 
       isLoading = true;
 
-//      userInfoMap = {
-//        "name" : userNameTextEditingController.text,
-//        "email" : emailTextEditingController.text,
-//        "token" : Constants.token
-//      };
-
-      user.name = userNameTextEditingController.text.trim();
-      user.email = emailTextEditingController.text.trim();
-      optionStorageService.save('user', user.toJson());
-
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
       authenticationServiceDefault.signUp()
-          .then((val) => finishAuthorize(context, val));
+          .then((value) => finishAuthorize(context, value));
 
       return true;
   }
 
   void googleSignUp(BuildContext context){
     authenticationServiceGoogle.signUp()
-        .then((val) => finishAuthorize(context, val));
+        .then((value) => finishAuthorize(context, value));
   }
 
-  void finishAuthorize(BuildContext context, dynamic value){
-    databaseService.uploadUserInfo(value.toJson());
+  void finishAuthorize(BuildContext context, User user){
+    if(user != null) {
+      user.name = userNameTextEditingController.text.trim();
+      databaseService.uploadUserInfo(user.toJson());
 
-    value.isLogged = true;
-    optionStorageService.save('user', value.toJson());
-    Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => ChatRoom()
-    ));
+      Constants.user = user;
+
+      user.isLogged = true;
+      optionStorageService.save('user', user.toJson());
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => ChatRoom()
+      ));
+    } else {
+      showPopUpDialog(context, 'User already exist, smth wrong!');
+    }
   }
 
   void loadData(){

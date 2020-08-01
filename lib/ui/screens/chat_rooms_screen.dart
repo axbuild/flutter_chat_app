@@ -77,8 +77,8 @@ class _ChatRoomState extends State<ChatRoom> {
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
             return ChatRoomTile(
-                "test-${index}",
-                '1234'
+                snapshot.data.documents[index].data["id"],
+                snapshot.data.documents[index].data["name"]
 //                snapshot.data.documents[index].data["chatroomid"]
 //                    .toString().replaceAll("_", "")
 //                    .replaceAll(Constants.myName, ""),

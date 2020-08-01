@@ -11,19 +11,26 @@ abstract class DatabaseService {
 
   Future<bool> uploadUserInfo(userMap);
 
+  Future<Stream> getUsers(List sids);
+
+  Future<List<User>> getUsersByEmail(String userEmail, String excludeEmail);
+
+
+  Future<String> addContact(User user, User contact);
+
+  Future<Stream> getContacts(User user);
+
+
+
   Future<Room> addRoom(chatRoomMap);
 
   Future<Room> getRoom(User user1, User user2);
 
-  Future<String> addContact(User user, User contact);
+  Future<Stream> getRooms(User user);
+
 
   Future<Message> addConversationMessages(String chatRoomId, messageMap);
 
   Future<Stream> getConversationMessages(String chatRoomId);
 
-  Future<Stream> getRooms(User user);
-
-  Future<Stream> getUsers(List sids);
-
-  Future<Stream> getContacts(User user);
 }

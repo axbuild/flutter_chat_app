@@ -59,6 +59,8 @@ class SignInScreenModelView extends ChangeNotifier {
       user.isLogged = true;
       optionStorageService.save('user', user.toJson());
 
+      Constants.user = user;
+
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => ChatRoom()
       ));
