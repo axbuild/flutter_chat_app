@@ -1,5 +1,5 @@
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -18,88 +18,94 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
   Stream streamUsers;
   List<String> usersIds = [];
 
-  User user;
-  String title = '*****';
+//  User user;
+  String title;
 
   Map <String, dynamic> users = {};
 
   void loadData() async {
 
+    await databaseService.getContacts(Local.user)
+        .then((value){
+          streamRooms = value;
+          notifyListeners();
+        });
+
 //    Future.wait([initUser()])
 //    .then((List responses){
 //        Future.wait([initContacts()]);
 //    });
-
-    await localStorageService.read('user')
-        .then((value){
-          if(value != null){
-            user = User.fromJson(value);
-            Constants.myName = user.name;
-            Constants.user = user;
-          }
-          print(Constants.myName);
-        })
-        .then((_) async {
-          await databaseService.getContacts(Constants.user)
-              .then((value){
-                streamRooms = value;
-//                print(value);
-//                getUsers();
-                notifyListeners();
-              });
-
-        });
-
-  }
-
-  Future<void> initUser() async {
-    await localStorageService.read('user')
-    .then((value){
-      if(value != null){
-        user = User.fromJson(value);
-        Constants.myName = user.name;
-        Constants.user = user;
-      }
-    });
-  }
-
-  Future<void> initContacts() async {
-    await databaseService.getContacts(Constants.user)
-    .then((value){
-      streamRooms = value;
-    });
-  }
-
-  Future<void> getUsers() async {
-//    streamRooms.listen((data) async {
-//      data.documents.forEach((doc){
-//        users = doc["users"];
-//        users.keys.forEach((element) {
-//          if(element != Constants.user.sid){
-//            usersIds.add(element);
+//    await localStorageService.read('user')
+//        .then((value){
+//          if(value != null){
+//            user = User.fromJson(value);
+//            Constants.myName = user.name;
+//            Constants.user = user;
+//            title = user.name;
 //          }
+//          print(Constants.myName);
+//        })
+//        .then((_) async {
+//          await databaseService.getContacts(Constants.user)
+//              .then((value){
+//                streamRooms = value;
+////                print(value);
+////                getUsers();
+//                notifyListeners();
+//              });
 //
 //        });
-//      });
-//
-//    });
-    print('!!!!!!!!!!!!!!!!!');
-//    print(streamRooms.);
-    print('!!!!!!!!!!!!!!!!!');
 
-    if(usersIds.length > 0)
-    {
-      await databaseService.getUsers(usersIds)
-          .then((value){
-              streamUsers = value;
-              print(usersIds.length);
-              title = 'ttttttest';
-              notifyListeners();
-          });
-    }else{
-      print("array empty = =========");
-    }
   }
+//
+//  Future<void> initUser() async {
+//    await localStorageService.read('user')
+//    .then((value){
+//      if(value != null){
+//        user = User.fromJson(value);
+//        Constants.myName = user.name;
+//        Constants.user = user;
+//      }
+//    });
+//  }
+//
+//  Future<void> initContacts() async {
+//    await databaseService.getContacts(Constants.user)
+//    .then((value){
+//      streamRooms = value;
+//    });
+//  }
+//
+//  Future<void> getUsers() async {
+////    streamRooms.listen((data) async {
+////      data.documents.forEach((doc){
+////        users = doc["users"];
+////        users.keys.forEach((element) {
+////          if(element != Constants.user.sid){
+////            usersIds.add(element);
+////          }
+////
+////        });
+////      });
+////
+////    });
+//    print('!!!!!!!!!!!!!!!!!');
+////    print(streamRooms.);
+//    print('!!!!!!!!!!!!!!!!!');
+//
+//    if(usersIds.length > 0)
+//    {
+//      await databaseService.getUsers(usersIds)
+//          .then((value){
+//              streamUsers = value;
+//              print(usersIds.length);
+//              title = 'ttttttest';
+//              notifyListeners();
+//          });
+//    }else{
+//      print("array empty = =========");
+//    }
+//  }
 
   void signOut(){
     authenticationServiceDefault.signOut();

@@ -1,6 +1,6 @@
 
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -59,7 +59,7 @@ class SignInScreenModelView extends ChangeNotifier {
       user.isLogged = true;
       optionStorageService.save('user', user.toJson());
 
-      Constants.user = user;
+      Local.user = user;
 
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => ChatRoom()

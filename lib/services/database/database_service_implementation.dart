@@ -10,14 +10,13 @@ class DatabaseServiceImpl implements DatabaseService{
 
   static CollectionReference _roomsRef = Firestore.instance.collection("rooms");
   static CollectionReference _usersRef = Firestore.instance.collection("users");
-  static CollectionReference _contactsRef = Firestore.instance.collection("contacts");
 
   @override
-  Future<Message> addConversationMessages(String chatRoomId, messageMap) {
+  Future<Message> addConversationMessages(Room room, Message message) {
     _roomsRef
-        .document(chatRoomId)
+        .document(room.id)
         .collection("chats")
-        .add(messageMap).catchError((e){
+        .add(message.toJson()).catchError((e){
       print(e.toString());
     });
   }
@@ -62,6 +61,19 @@ class DatabaseServiceImpl implements DatabaseService{
   }
 
   @override
+  Future<void> setContact(User user, User contact) async {
+    Map<String, dynamic> contactMap = {
+      'id': contact.sid,
+      'name': contact.name
+    };
+    await _usersRef
+        .document(user.sid)
+        .collection("contacts")
+        .document(contact.sid)
+        .setData(contactMap);
+  }
+
+  @override
   Future<Stream> getConversationMessages(String chatRoomId) async {
 
    return await _roomsRef
@@ -91,61 +103,12 @@ class DatabaseServiceImpl implements DatabaseService{
         .document(user.sid)
         .collection("contacts")
         .snapshots();
-
-    List documentIds = [];
-    Stream users;
-
-    return Future.wait([getRoomsDocIds(user)])
-      .then((List responses) {
-//        print(responses.first);
-//        print(responses.first);
-//        documentIds = responses.first;
-        return _usersRef
-//          .where('name', whereIn: responses )
-//          .where(FieldPath.documentId, whereIn: documentIds )
-          .where(FieldPath.documentId, whereIn: [1,2,3] )
-          .snapshots();
-        return null;
-      });
-
-//      return await _roomsRef
-//        .where("users."+user.sid, isEqualTo: true)
-//        .getDocuments()
-//        .then((snapshot){
-//            print("===${snapshot.documents.length}");
-//            snapshot.documents.forEach((element){
-//              documentIds.add(element.documentID);
-//            });
-//        })
-//        .then((_) async {
-//           print("=***==${documentIds.length}");
-//           return await _usersRef
-//                  .where('uid', whereIn: documentIds )
-//                  .snapshots();
-//        });
   }
 
   Future<List> getRoomsDocIds(User user) async {
     List documentIds = [];
     Map <String, bool> users = {};
     return documentIds;
-    return await _roomsRef
-        .where("users."+user.sid, isEqualTo: true)
-        .getDocuments()
-        .then((snapshot){
-          print("===${snapshot.documents.length}");
-          snapshot.documents.forEach((element){
-//            print(element.data['users']);
-//            users = json.decode(element.data['users'].toString());
-            users.forEach((key, value) {
-              if(key != user.sid){
-                documentIds.add(key);
-              }
-            });
-
-          });
-          return documentIds;
-        });
   }
 
   @override

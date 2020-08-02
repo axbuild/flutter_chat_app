@@ -1,6 +1,6 @@
 import 'package:chatapp/business_logic/models/user.dart';
 
-class Constants{
+class Local {
   static String myName = '';
   static String token = '';
   //TODO:remove here

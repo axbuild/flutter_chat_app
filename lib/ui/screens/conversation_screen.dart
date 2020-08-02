@@ -1,5 +1,5 @@
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/shared/widget.dart';
@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ConversationScreen extends StatefulWidget {
-  final String chatRoomId;
+  final User user;
 
-  ConversationScreen(this.chatRoomId);
+  ConversationScreen(this.user);
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -30,8 +30,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index){
                 return MessageTile(
-                  snapshot.data.documents[index].data["message"],
-                    snapshot.data.documents[index].data["sendBy"] == Constants.myName
+                  snapshot.data.documents[index].data["text"],
+                    snapshot.data.documents[index].data["author"] == Local.user.sid
                 );
               }) : Container();
         },
@@ -40,7 +40,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   void initState() {
-    model.loadData(widget.chatRoomId);
+    model.loadData(widget.user);
     messageController = new TextEditingController();
     super.initState();
   }

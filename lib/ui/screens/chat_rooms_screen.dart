@@ -1,5 +1,6 @@
+import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/authenticate.dart';
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/view_models/chat_rooms_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
@@ -30,7 +31,7 @@ class _ChatRoomState extends State<ChatRoom> {
       child: Consumer<ChatRoomsScreenViewModel>(
           builder: (context, model, child) => Scaffold(
             appBar: AppBar(
-              title: Text(model.title),//Icon(Icons.list),
+              title: Text(model.title ?? 'undefined'),//Icon(Icons.list),
               actions: [
                 GestureDetector(
                   onTap: (){
@@ -77,12 +78,10 @@ class _ChatRoomState extends State<ChatRoom> {
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
             return ChatRoomTile(
-                snapshot.data.documents[index].data["id"],
-                snapshot.data.documents[index].data["name"]
-//                snapshot.data.documents[index].data["chatroomid"]
-//                    .toString().replaceAll("_", "")
-//                    .replaceAll(Constants.myName, ""),
-//                snapshot.data.documents[index].data["chatroomid"]
+                new User(
+                    sid:snapshot.data.documents[index].data['id'],
+                    name:snapshot.data.documents[index].data['name'],
+                )
             );
           },
         ) : Container();
@@ -92,17 +91,16 @@ class _ChatRoomState extends State<ChatRoom> {
 }
 
 class ChatRoomTile extends StatelessWidget {
-  final String userName;
-  final String chatRoomId;
-  ChatRoomTile(this.userName, this.chatRoomId);
+  final User user;
+  ChatRoomTile(this.user);
 
   @override
   Widget build(BuildContext context) {
-    print('________________');
+
     return GestureDetector(
       onTap:(){
         Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(chatRoomId)
+          builder: (context) => ConversationScreen(user)
         ));
       },
       child: Container(
@@ -117,11 +115,11 @@ class ChatRoomTile extends StatelessWidget {
                 color: Color(0xff39796b),
                 borderRadius: BorderRadius.circular(40)
               ),
-              child: Text("${userName.substring(0,1).toLowerCase()}",
+              child: Text("${user.name.substring(0,1).toLowerCase()}",
                   style: mediumTextStyle())
             ),
             SizedBox(width: 8,),
-            Text(userName, style: mediumTextStyle())
+            Text(user.name, style: mediumTextStyle())
           ],
         ),
       ),

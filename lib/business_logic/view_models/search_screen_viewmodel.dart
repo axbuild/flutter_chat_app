@@ -1,6 +1,6 @@
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
@@ -17,8 +17,7 @@ class SearchScreenViewModel extends ChangeNotifier {
 
   initiateSearch(text){
     print(text);
-    databaseService
-        .getUsersByEmail(text, Constants.user.email)
+    databaseService.getUsersByEmail(text, Local.user.email)
         .then((val) => showOccurrences(val));
   }
 
@@ -30,19 +29,19 @@ class SearchScreenViewModel extends ChangeNotifier {
 
   createChatRoomAndStartConversation({BuildContext context, User user}){
 
-    if(user.sid != null &&  Constants.user.sid != null) {
+    if(user.sid != null &&  Local.user.sid != null) {
 
       Map<String, dynamic> chatRoomMap = {
         "users": {
           user.sid: true,
-          Constants.user.sid: true
+          Local.user.sid: true
         },
-        "author": Constants.user.sid,
-        "recipient": user.sid,
+        "from": Local.user.sid,
+        "to": user.sid,
         "time": new DateTime.now().millisecondsSinceEpoch
       };
 
-      databaseService.getRoom(user, Constants.user)
+      databaseService.getRoom(user, Local.user)
           .then((currentRoom) {
             room = currentRoom;
           })
@@ -51,28 +50,35 @@ class SearchScreenViewModel extends ChangeNotifier {
               databaseService.addRoom(chatRoomMap)
               .then((newRoom){
                 room = newRoom;
-                databaseService.addContact(Constants.user, user);
-                databaseService.addContact(user, Constants.user);
+                databaseService.setContact(Local.user, user);
+                databaseService.setContact(user, Local.user);
+              })
+              .then((_){
+                if(room.id == null)  print('Cant create new room');
+                navigateToConversationScreen(user, context);
               });
+            }else{
+              print('Room not found, will be created');
             }
           })
           .then((value){
-            if(room.id != null){
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ConversationScreen(
-                      room.id//chatRoomId
-                  )
-              ));
-            }else{
-              print('Cant create new room');
-            }
+              if(room.id == null)  print('Cant create new room');
+              navigateToConversationScreen(user, context);
           });
 
     }else{
-      print("user1: ${user.sid} user2:${Constants.user.sid}");
-      print("you cannot send message to yourself");
+      print("Fields required! user1: ${user.sid} user2:${Local.user.sid}");
     }
     notifyListeners();
+  }
+
+  void navigateToConversationScreen(User user, context){
+       Navigator.push(context, MaterialPageRoute(
+          builder: (context) => ConversationScreen(
+              user
+//                      room.id//chatRoomId
+          )
+      ));
   }
 
   void loadData(){
