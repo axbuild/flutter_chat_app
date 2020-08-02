@@ -1,4 +1,4 @@
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:flutter/material.dart';
 
 Widget appBarMain(BuildContext context){
@@ -72,7 +72,7 @@ Drawer drawer(){
       padding: EdgeInsets.zero,
       children: <Widget>[
         DrawerHeader(
-          child: Text("You: ${Constants.myName}"),
+          child: Text("You: ${Local.user.name}"),
           decoration: BoxDecoration(
             color: Colors.blue,
           ),

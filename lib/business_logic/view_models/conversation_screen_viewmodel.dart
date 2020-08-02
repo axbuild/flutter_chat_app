@@ -1,4 +1,7 @@
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/models/message.dart';
+import 'package:chatapp/business_logic/models/room.dart';
+import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,26 +9,35 @@ import 'package:flutter/cupertino.dart';
 class ConversationScreenViewModel extends ChangeNotifier {
   DatabaseService storageService;
   Stream chatMessagesStream;
-  String _chatRoomId;
 
-  void loadData(String chatRoomId){
-      _chatRoomId = chatRoomId;
+  User _user;
+  Room room;
+
+  void loadData(User user){
+      _user = user;
       storageService = serviceLocator<DatabaseService>();
-      storageService.getConversationMessages(chatRoomId)
-          .then((value){
-            chatMessagesStream = value;
-            notifyListeners();
-          });
+
+      storageService.getRoom(Local.user, _user)
+      .then((value){
+        room = value;
+        storageService.getConversationMessages(value.id)
+            .then((value){
+          chatMessagesStream = value;
+          notifyListeners();
+        });
+
+      });
+
+
       notifyListeners();
   }
 
   sendMessage(text){
-      Map<String,dynamic> messageMap = {
-        "message": text,
-        "sendBy": Constants.myName,
-        "time": DateTime.now().millisecondsSinceEpoch
-      };
-      storageService.addConversationMessages(_chatRoomId, messageMap);
+      storageService.addConversationMessages(room, Message(
+        author: Local.user.sid,
+        text: text,
+        time: DateTime.now().millisecondsSinceEpoch
+      ));
       notifyListeners();
   }
 

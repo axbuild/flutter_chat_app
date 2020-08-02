@@ -7,6 +7,7 @@ import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'business_logic/utils/helper.dart';
+import 'business_logic/utils/local.dart';
 
 void main() {
   setupServiceLocator();

@@ -18,6 +18,8 @@ abstract class DatabaseService {
 
   Future<String> addContact(User user, User contact);
 
+  Future<void> setContact(User user, User contact);
+
   Future<Stream> getContacts(User user);
 
 
@@ -29,7 +31,7 @@ abstract class DatabaseService {
   Future<Stream> getRooms(User user);
 
 
-  Future<Message> addConversationMessages(String chatRoomId, messageMap);
+  Future<Message> addConversationMessages(Room room, Message message);
 
   Future<Stream> getConversationMessages(String chatRoomId);
 

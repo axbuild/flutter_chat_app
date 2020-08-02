@@ -1,4 +1,5 @@
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/utils/push_notifications.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
@@ -19,6 +20,7 @@ class MainScreenViewModel extends ChangeNotifier {
           } else {
             optionStorageService.save('user', user.toJson());
           }
+          Local.user = user;
           notifyListeners();
         });
 

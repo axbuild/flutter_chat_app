@@ -1,5 +1,5 @@
 import 'package:chatapp/business_logic/models/user.dart';
-import 'package:chatapp/business_logic/utils/constants.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -51,7 +51,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
       user.name = userNameTextEditingController.text.trim();
       databaseService.uploadUserInfo(user.toJson());
 
-      Constants.user = user;
+      Local.user = user;
 
       user.isLogged = true;
       optionStorageService.save('user', user.toJson());
