@@ -27,7 +27,7 @@ class SearchScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  createChatRoomAndStartConversation({BuildContext context, User user}){
+  startChatConversation({BuildContext context, User user}){
 
     if(user.sid != null &&  Local.user.sid != null) {
 
@@ -72,11 +72,14 @@ class SearchScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  startVoiceConversation({BuildContext context, User user}){}
+
+  startVideoConversation({BuildContext context, User user}){}
+
   void navigateToConversationScreen(User user, context){
        Navigator.push(context, MaterialPageRoute(
           builder: (context) => ConversationScreen(
               user
-//                      room.id//chatRoomId
           )
       ));
   }

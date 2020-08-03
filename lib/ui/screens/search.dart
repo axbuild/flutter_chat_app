@@ -96,7 +96,7 @@ class _State extends State<SearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: (){
-              model.createChatRoomAndStartConversation(
+              model.startVideoConversation(
                   context: context,
                   user: user
               );
@@ -106,9 +106,51 @@ class _State extends State<SearchScreen> {
                 color: Colors.black38,
               ),
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text("Message"),
+              child:  Icon(
+                  Icons.video_call,
+                  color: Colors.white,
+                  size: 20.0
+              ),
             ),
-          )
+          ),
+          GestureDetector(
+            onTap: (){
+              model.startVoiceConversation(
+                  context: context,
+                  user: user
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black38,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child:  Icon(
+                  Icons.call,
+                  color: Colors.white,
+                  size: 20.0
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: (){
+              model.startChatConversation(
+                  context: context,
+                  user: user
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black38,
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child:  Icon(
+                  Icons.chat,
+                  color: Colors.white,
+                  size: 20.0
+              ),
+            ),
+          ),
         ],
       ),
     );
