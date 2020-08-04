@@ -38,6 +38,7 @@ dependencies:
   get_it: ^4.0.2
   http: ^0.12.1
   agora_rtc_engine: ^1.0.13
+  permission_handler: ^3.0.0
 
 
 dev_dependencies:
