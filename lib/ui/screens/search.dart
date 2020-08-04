@@ -1,9 +1,13 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
+import 'package:chatapp/ui/screens/video_rooms_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:permission_handler/permission_handler.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -14,6 +18,16 @@ class _State extends State<SearchScreen> {
 
   SearchScreenViewModel model  = serviceLocator<SearchScreenViewModel>();
   TextEditingController _searchTextEditingController;
+
+  //===============================================================
+  /// create a channelController to retrieve text value
+//  final _channelController = TextEditingController();
+
+  /// if channel textField is validated to have error
+  bool _validateError = false;
+
+  ClientRole _role = ClientRole.Broadcaster;
+//===============================================================
 
   @override
   void initState() {
@@ -96,10 +110,11 @@ class _State extends State<SearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: (){
-              model.startVideoConversation(
-                  context: context,
-                  user: user
-              );
+              onJoin();
+//              model.startVideoConversation(
+//                  context: context,
+//                  user: user
+//              );
             },
             child: Container(
               decoration: BoxDecoration(
@@ -155,5 +170,40 @@ class _State extends State<SearchScreen> {
       ),
     );
   }
+
+
+  //=======================================================
+
+  Future<void> onJoin() async {
+    // update input validation
+//    setState(() {
+//      _channelController.text.isEmpty
+//          ? _validateError = true
+//          : _validateError = false;
+//    });
+//    if (_channelController.text.isNotEmpty) {
+    if (true) {
+      // await for camera and mic permissions before pushing video page
+      await _handleCameraAndMic();
+      // push video page with given channel name
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoRoom(
+            channelName: '123',
+            role: _role,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleCameraAndMic() async {
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.camera, PermissionGroup.microphone],
+    );
+  }
+
+//========================================================
 
 }

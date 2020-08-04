@@ -21,7 +21,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   TextEditingController messageController;
 
-
   Widget ChatMessageList(model){
       return StreamBuilder(
         stream: model.chatMessagesStream,
@@ -93,6 +92,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       )
     );
   }
+
 }
 
 class MessageTile extends StatelessWidget {
