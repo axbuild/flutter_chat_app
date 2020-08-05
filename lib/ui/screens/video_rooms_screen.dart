@@ -1,6 +1,8 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/view_models/video_rooms_screen_viewmodel.dart';
+import 'package:chatapp/services/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class VideoRoom extends StatefulWidget {
@@ -22,17 +24,12 @@ class VideoRoom extends StatefulWidget {
 
 class _VideoRoomState extends State<VideoRoom> {
 
-  static final _users = <int>[];
-  final _infoStrings = <String>[];
-  bool muted = false;
+  VideoRoomScreenViewModel model = serviceLocator<VideoRoomScreenViewModel>();
+
 
   @override
   void dispose() {
-    // clear users
-    _users.clear();
-    // destroy sdk
-    AgoraRtcEngine.leaveChannel();
-    AgoraRtcEngine.destroy();
+    model.dispose();
     super.dispose();
   }
 
@@ -40,94 +37,9 @@ class _VideoRoomState extends State<VideoRoom> {
   void initState() {
     super.initState();
     // initialize agora sdk
-    initialize();
+    model.initialize(widget.role, widget.channelName);
   }
 
-  Future<void> initialize() async {
-
-
-    if (Settings().agoraAppId.isEmpty) {
-      setState(() {
-        _infoStrings.add(
-          'APP_ID missing, please provide your APP_ID in settings.dart',
-        );
-        _infoStrings.add('Agora Engine is not starting');
-      });
-      return;
-    }
-
-    await _initAgoraRtcEngine();
-    _addAgoraEventHandlers();
-    await AgoraRtcEngine.enableWebSdkInteroperability(true);
-    VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
-    configuration.dimensions = Size(1920, 1080);
-    await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
-    await AgoraRtcEngine.joinChannel(null, widget.channelName, null, 0);
-  }
-
-  /// Create agora sdk instance and initialize
-  Future<void> _initAgoraRtcEngine() async {
-    await AgoraRtcEngine.create(Settings().agoraAppId);
-    await AgoraRtcEngine.enableVideo();
-    await AgoraRtcEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await AgoraRtcEngine.setClientRole(widget.role);
-  }
-
-  /// Add agora event handlers
-  void _addAgoraEventHandlers() {
-    AgoraRtcEngine.onError = (dynamic code) {
-      setState(() {
-        final info = 'onError: $code';
-        _infoStrings.add(info);
-      });
-    };
-
-    AgoraRtcEngine.onJoinChannelSuccess = (
-        String channel,
-        int uid,
-        int elapsed,
-        ) {
-      setState(() {
-        final info = 'onJoinChannel: $channel, uid: $uid';
-        _infoStrings.add(info);
-      });
-    };
-
-    AgoraRtcEngine.onLeaveChannel = () {
-      setState(() {
-        _infoStrings.add('onLeaveChannel');
-        _users.clear();
-      });
-    };
-
-    AgoraRtcEngine.onUserJoined = (int uid, int elapsed) {
-      setState(() {
-        final info = 'userJoined: $uid';
-        _infoStrings.add(info);
-        _users.add(uid);
-      });
-    };
-
-    AgoraRtcEngine.onUserOffline = (int uid, int reason) {
-      setState(() {
-        final info = 'userOffline: $uid';
-        _infoStrings.add(info);
-        _users.remove(uid);
-      });
-    };
-
-    AgoraRtcEngine.onFirstRemoteVideoFrame = (
-        int uid,
-        int width,
-        int height,
-        int elapsed,
-        ) {
-      setState(() {
-        final info = 'firstRemoteVideo: $uid ${width}x $height';
-        _infoStrings.add(info);
-      });
-    };
-  }
 
   /// Helper function to get list of native views
   List<Widget> _getRenderViews() {
@@ -135,7 +47,7 @@ class _VideoRoomState extends State<VideoRoom> {
     if (widget.role == ClientRole.Broadcaster) {
       list.add(AgoraRenderWidget(0, local: true, preview: true));
     }
-    _users.forEach((int uid) => list.add(AgoraRenderWidget(uid)));
+    model.users.forEach((int uid) => list.add(AgoraRenderWidget(uid)));
     return list;
   }
 
@@ -202,19 +114,19 @@ class _VideoRoomState extends State<VideoRoom> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           RawMaterialButton(
-            onPressed: _onToggleMute,
+            onPressed: model.onToggleMute,
             child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
+              model.muted ? Icons.mic_off : Icons.mic,
+              color: model.muted ? Colors.white : Colors.blueAccent,
               size: 20.0,
             ),
             shape: CircleBorder(),
             elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
+            fillColor: model.muted ? Colors.blueAccent : Colors.white,
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () => model.onCallEnd(context),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -226,7 +138,7 @@ class _VideoRoomState extends State<VideoRoom> {
             padding: const EdgeInsets.all(15.0),
           ),
           RawMaterialButton(
-            onPressed: _onSwitchCamera,
+            onPressed: model.onSwitchCamera,
             child: Icon(
               Icons.switch_camera,
               color: Colors.blueAccent,
@@ -253,9 +165,9 @@ class _VideoRoomState extends State<VideoRoom> {
           padding: const EdgeInsets.symmetric(vertical: 48),
           child: ListView.builder(
             reverse: true,
-            itemCount: _infoStrings.length,
+            itemCount: model.infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
-              if (_infoStrings.isEmpty) {
+              if (model.infoStrings.isEmpty) {
                 return null;
               }
               return Padding(
@@ -277,7 +189,7 @@ class _VideoRoomState extends State<VideoRoom> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(
-                          _infoStrings[index],
+                          model.infoStrings[index],
                           style: TextStyle(color: Colors.blueGrey),
                         ),
                       ),
@@ -292,27 +204,11 @@ class _VideoRoomState extends State<VideoRoom> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
-  }
-
-  void _onToggleMute() {
-    setState(() {
-      muted = !muted;
-    });
-    AgoraRtcEngine.muteLocalAudioStream(muted);
-  }
-
-  void _onSwitchCamera() {
-    AgoraRtcEngine.switchCamera();
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agora Flutter QuickStart'),
+        title: Text('Video call'),
       ),
       backgroundColor: Colors.black,
       body: Center(
