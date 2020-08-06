@@ -1,15 +1,20 @@
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/ui/screens/conversation_screen.dart';
+import 'package:chatapp/ui/screens/video_rooms_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SearchScreenViewModel extends ChangeNotifier {
 
   DatabaseService databaseService = serviceLocator<DatabaseService>();
+
+  ClientRole _role = ClientRole.Broadcaster;
 
   List<User> _users = [];
   List<User> get users => _users;
@@ -27,7 +32,7 @@ class SearchScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  startChatConversation({BuildContext context, User user}){
+  startConversation({BuildContext context, User user, String type}){
 
     if(user.sid != null &&  Local.user.sid != null) {
 
@@ -55,7 +60,8 @@ class SearchScreenViewModel extends ChangeNotifier {
               })
               .then((_){
                 if(room.id == null)  print('Cant create new room');
-                navigateToConversationScreen(user, context);
+                if(type == 'chat') navigateToConversationScreen(context, user);
+                if(type == 'video') startVideoConversation(context, room);
               });
             }else{
               print('Room not found, will be created');
@@ -63,7 +69,8 @@ class SearchScreenViewModel extends ChangeNotifier {
           })
           .then((value){
               if(room.id == null)  print('Cant create new room');
-              navigateToConversationScreen(user, context);
+              navigateToConversationScreen(context, user);
+              if(type == 'video') startVideoConversation(context, room);
           });
 
     }else{
@@ -72,11 +79,32 @@ class SearchScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  startVoiceConversation({BuildContext context, User user}){}
+//  startVoiceConversation({BuildContext context, User user}){}
 
-  startVideoConversation({BuildContext context, User user}){}
+  void startVideoConversation(BuildContext context, Room room) async {
 
-  void navigateToConversationScreen(User user, context){
+      // await for camera and mic permissions before pushing video page
+      await _handleCameraAndMic();
+      // push video page with given channel name
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoRoom(
+            channelName: room.id,
+            role: _role,
+          ),
+        ),
+      );
+
+  }
+
+  Future<void> _handleCameraAndMic() async {
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.camera, PermissionGroup.microphone],
+    );
+  }
+
+  void navigateToConversationScreen(context, User user){
        Navigator.push(context, MaterialPageRoute(
           builder: (context) => ConversationScreen(
               user

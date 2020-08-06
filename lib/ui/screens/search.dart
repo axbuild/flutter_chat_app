@@ -19,16 +19,6 @@ class _State extends State<SearchScreen> {
   SearchScreenViewModel model  = serviceLocator<SearchScreenViewModel>();
   TextEditingController _searchTextEditingController;
 
-  //===============================================================
-  /// create a channelController to retrieve text value
-//  final _channelController = TextEditingController();
-
-  /// if channel textField is validated to have error
-  bool _validateError = false;
-
-  ClientRole _role = ClientRole.Broadcaster;
-//===============================================================
-
   @override
   void initState() {
     model.loadData();
@@ -110,11 +100,12 @@ class _State extends State<SearchScreen> {
           Spacer(),
           GestureDetector(
             onTap: (){
-              onJoin();
-//              model.startVideoConversation(
-//                  context: context,
-//                  user: user
-//              );
+//              onJoin();
+              model.startConversation(
+                  context: context,
+                  user: user,
+                  type:'video'
+              );
             },
             child: Container(
               decoration: BoxDecoration(
@@ -130,9 +121,10 @@ class _State extends State<SearchScreen> {
           ),
           GestureDetector(
             onTap: (){
-              model.startVoiceConversation(
+              model.startConversation(
                   context: context,
-                  user: user
+                  user: user,
+                  type:'voice'
               );
             },
             child: Container(
@@ -149,9 +141,10 @@ class _State extends State<SearchScreen> {
           ),
           GestureDetector(
             onTap: (){
-              model.startChatConversation(
+              model.startConversation(
                   context: context,
-                  user: user
+                  user: user,
+                  type:'chat'
               );
             },
             child: Container(
@@ -170,40 +163,5 @@ class _State extends State<SearchScreen> {
       ),
     );
   }
-
-
-  //=======================================================
-
-  Future<void> onJoin() async {
-    // update input validation
-//    setState(() {
-//      _channelController.text.isEmpty
-//          ? _validateError = true
-//          : _validateError = false;
-//    });
-//    if (_channelController.text.isNotEmpty) {
-    if (true) {
-      // await for camera and mic permissions before pushing video page
-      await _handleCameraAndMic();
-      // push video page with given channel name
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => VideoRoom(
-            channelName: '123',
-            role: _role,
-          ),
-        ),
-      );
-    }
-  }
-
-  Future<void> _handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
-  }
-
-//========================================================
 
 }

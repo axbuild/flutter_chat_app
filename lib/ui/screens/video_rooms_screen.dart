@@ -1,9 +1,11 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
+//import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/video_rooms_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VideoRoom extends StatefulWidget {
 
@@ -35,9 +37,9 @@ class _VideoRoomState extends State<VideoRoom> {
 
   @override
   void initState() {
-    super.initState();
     // initialize agora sdk
     model.initialize(widget.role, widget.channelName);
+    super.initState();
   }
 
 
@@ -206,20 +208,25 @@ class _VideoRoomState extends State<VideoRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Video call'),
-      ),
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            _viewRows(),
-            _panel(),
-            _toolbar(),
-          ],
-        ),
-      ),
+    return ChangeNotifierProvider<VideoRoomScreenViewModel>(
+        create: (context) => model,
+        child: Consumer<VideoRoomScreenViewModel>(
+            builder: (context, model, child) => Scaffold(
+              appBar: AppBar(
+                title: Text('Video call'),
+              ),
+              backgroundColor: Colors.black,
+              body: Center(
+                child: Stack(
+                  children: <Widget>[
+                    _viewRows(),
+                    _panel(),
+                    _toolbar(),
+                  ],
+                ),
+              ),
+            )
+        )
     );
   }
 }
