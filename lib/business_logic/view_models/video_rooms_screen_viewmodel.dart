@@ -20,6 +20,7 @@ class VideoRoomScreenViewModel extends ChangeNotifier {
     // destroy sdk
     AgoraRtcEngine.leaveChannel();
     AgoraRtcEngine.destroy();
+    notifyListeners();
   }
 
 
@@ -111,8 +112,8 @@ class VideoRoomScreenViewModel extends ChangeNotifier {
 
   void onToggleMute() {
     muted = !muted;
-    notifyListeners();
     AgoraRtcEngine.muteLocalAudioStream(muted);
+    notifyListeners();
   }
 
   void onSwitchCamera() {
