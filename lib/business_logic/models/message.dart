@@ -15,13 +15,13 @@ class Message extends ChangeNotifier implements BaseModel  {
     this.text
   });
 
-  Message.fromJson(Map<String, dynamic> json)
+  Message.fromMap(Map<String, dynamic> json)
       :id = json['id'],
        author = json['author'],
        time = json['time'],
        text = json['text'];
 
-  Map<String, dynamic> toJson()  => {
+  Map<String, dynamic> toMap()  => {
     'id': id,
     'author': author,
     'time': time,

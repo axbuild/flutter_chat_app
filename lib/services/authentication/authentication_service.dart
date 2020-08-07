@@ -4,4 +4,5 @@ abstract class AuthenticationService {
   Future<User> signIn();
   Future<User> signUp();
   Future<bool> signOut();
+  Future<User> getCurrentUser();
 }

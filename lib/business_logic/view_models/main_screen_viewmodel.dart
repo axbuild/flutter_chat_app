@@ -9,6 +9,13 @@ class MainScreenViewModel extends ChangeNotifier {
 
   OptionStorageService  optionStorageService = serviceLocator<OptionStorageService>();
 
+//TODO: init auth provider to check user by method currentUser
+//  getCurrentUser().then((value){
+//  print("=====================");
+//  print(value.email);
+//  print("=====================");
+//  });
+//
   User user = User.empty();
   String title = 'Flutter Chat App';
 
@@ -16,9 +23,9 @@ class MainScreenViewModel extends ChangeNotifier {
     await optionStorageService.read('user')
         .then((value){
           if(value != null){
-            user = User.fromJson(value);
+            user = User.fromMap(value);
           } else {
-            optionStorageService.save('user', user.toJson());
+            optionStorageService.save('user', user.toMap());
           }
           Local.user = user;
           notifyListeners();

@@ -52,4 +52,11 @@ class AuthenticationServiceDefault implements AuthenticationService {
       print(e.toString());
     }
   }
+
+  @override
+  Future<User> getCurrentUser() async {
+    FirebaseUser currentUser;
+    currentUser = await _auth.currentUser();
+    return _userFromFirebaseUser(currentUser);
+  }
 }

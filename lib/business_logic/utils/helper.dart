@@ -8,7 +8,7 @@ class Helper {
   void printModelsState() async {
     await optionStorageService.read('user').then((value){
 
-      User user = User.fromJson(value);
+      User user = User.fromMap(value);
       if(user.runtimeType.toString() == 'User'){
         print(user.runtimeType.toString());
       }
@@ -24,6 +24,6 @@ class Helper {
   }
 
   void saveUser() async {
-    optionStorageService.save('user', User().toJson());
+    optionStorageService.save('user', User().toMap());
   }
 }

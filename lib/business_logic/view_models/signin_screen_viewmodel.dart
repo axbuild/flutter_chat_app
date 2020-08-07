@@ -44,6 +44,7 @@ class SignInScreenModelView extends ChangeNotifier {
         .then((value) => finishAuthorize(context, value));
 
     }
+
   }
 
   void signInWithGoogle(BuildContext context){
@@ -57,7 +58,7 @@ class SignInScreenModelView extends ChangeNotifier {
   void finishAuthorize(BuildContext context, dynamic value){
     if(value != null){
       user.isLogged = true;
-      optionStorageService.save('user', user.toJson());
+      optionStorageService.save('user', user.toMap());
 
       Local.user = user;
 

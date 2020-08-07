@@ -16,7 +16,7 @@ class DatabaseServiceImpl implements DatabaseService{
     _roomsRef
         .document(room.id)
         .collection("chats")
-        .add(message.toJson()).catchError((e){
+        .add(message.toMap()).catchError((e){
       print(e.toString());
     });
   }

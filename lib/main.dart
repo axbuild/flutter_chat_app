@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'business_logic/utils/helper.dart';
 import 'business_logic/utils/local.dart';
+import 'business_logic/utils/universal_variables.dart';
 
 void main() {
   setupServiceLocator();
@@ -26,9 +27,6 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-    //Helper().printModelsState();
-    //Helper().clearModelState();
-    //Helper().saveUser();
     model.loadData();
     super.initState();
   }
@@ -38,8 +36,9 @@ class _AppState extends State<App> {
     return MaterialApp(
       title: model.title,
       debugShowCheckedModeBanner: false,
+//      theme: ThemeData(brightness: Brightness.light),
       theme: ThemeData(
-        primaryColor: Color(0xff004d40),
+        primaryColor: Color(UniversalVariables.primeColor),
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

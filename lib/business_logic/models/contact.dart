@@ -6,10 +6,10 @@ class Contact extends ChangeNotifier implements BaseModel {
 
   Contact({this.id});
 
-  Contact.fromJson(Map<String, dynamic> json)
+  Contact.fromMap(Map<String, dynamic> json)
       :id = json['id'];
 
-  Map<String, dynamic> toJson()  => {
+  Map<String, dynamic> toMap()  => {
     'id': id
   };
 }
