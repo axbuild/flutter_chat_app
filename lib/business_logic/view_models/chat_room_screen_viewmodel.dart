@@ -6,7 +6,7 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class ConversationScreenViewModel extends ChangeNotifier {
+class ChatRoomScreenViewModel extends ChangeNotifier {
   DatabaseService storageService;
   Stream chatMessagesStream;
 

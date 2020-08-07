@@ -3,7 +3,7 @@ import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/view_models/main_screen_viewmodel.dart';
 import 'package:chatapp/services/log/logger.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/ui/screens/chat_rooms_screen.dart';
+import 'package:chatapp/ui/screens/contacts_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'business_logic/utils/helper.dart';
@@ -42,7 +42,7 @@ class _AppState extends State<App> {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: model.user.isLogged ? ChatRoom() : Authenticate(),
+      home: model.user.isLogged ? ContactsScreen() : Authenticate(),
     );
   }
 }

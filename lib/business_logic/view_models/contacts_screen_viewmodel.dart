@@ -7,7 +7,7 @@ import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class ChatRoomsScreenViewModel extends ChangeNotifier {
+class ContactsScreenViewModel extends ChangeNotifier {
 
   DatabaseService databaseService = serviceLocator<DatabaseService>();
   OptionStorageService localStorageService = serviceLocator<OptionStorageService>();

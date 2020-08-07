@@ -3,7 +3,7 @@ import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:flutter/cupertino.dart';
 
-class VideoRoomScreenViewModel extends ChangeNotifier {
+class CallRoomScreenViewModel extends ChangeNotifier {
 
 
   List<int> users = <int>[];

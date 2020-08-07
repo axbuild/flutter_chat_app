@@ -1,13 +1,13 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
-//import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
-import 'package:chatapp/business_logic/view_models/video_rooms_screen_viewmodel.dart';
+//import 'package:chatapp/business_logic/view_models/chat_room_screen_viewmodel.dart';
+import 'package:chatapp/business_logic/view_models/call_room_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class VideoRoom extends StatefulWidget {
+class CallRoom extends StatefulWidget {
 
 //  final User user;
 
@@ -18,15 +18,15 @@ class VideoRoom extends StatefulWidget {
   final ClientRole role;
 
   /// Creates a call page with given channel name.
-  const VideoRoom({Key key, this.channelName, this.role}) : super(key: key);
+  const CallRoom({Key key, this.channelName, this.role}) : super(key: key);
 
   @override
   _VideoRoomState createState() => _VideoRoomState();
 }
 
-class _VideoRoomState extends State<VideoRoom> {
+class _VideoRoomState extends State<CallRoom> {
 
-  VideoRoomScreenViewModel model = serviceLocator<VideoRoomScreenViewModel>();
+  CallRoomScreenViewModel model = serviceLocator<CallRoomScreenViewModel>();
 
 
   @override
@@ -208,9 +208,9 @@ class _VideoRoomState extends State<VideoRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<VideoRoomScreenViewModel>(
+    return ChangeNotifierProvider<CallRoomScreenViewModel>(
         create: (context) => model,
-        child: Consumer<VideoRoomScreenViewModel>(
+        child: Consumer<CallRoomScreenViewModel>(
             builder: (context, model, child) => Scaffold(
               appBar: AppBar(
                 title: Text('Video call'),

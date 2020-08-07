@@ -4,8 +4,8 @@ import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
-import 'package:chatapp/ui/screens/conversation_screen.dart';
-import 'package:chatapp/ui/screens/video_rooms_screen.dart';
+import 'package:chatapp/ui/screens/chat_room_screen.dart';
+import 'package:chatapp/ui/screens/call_room_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -89,7 +89,7 @@ class SearchScreenViewModel extends ChangeNotifier {
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VideoRoom(
+          builder: (context) => CallRoom(
             channelName: room.id,
             role: _role,
           ),
@@ -106,7 +106,7 @@ class SearchScreenViewModel extends ChangeNotifier {
 
   void navigateToConversationScreen(context, User user){
        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(
+          builder: (context) => ChatRoomScreen(
               user
           )
       ));

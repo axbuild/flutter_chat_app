@@ -1,23 +1,23 @@
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
-import 'package:chatapp/business_logic/view_models/conversation_screen_viewmodel.dart';
+import 'package:chatapp/business_logic/view_models/chat_room_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ConversationScreen extends StatefulWidget {
+class ChatRoomScreen extends StatefulWidget {
   final User user;
 
-  ConversationScreen(this.user);
+  ChatRoomScreen(this.user);
 
   @override
-  _ConversationScreenState createState() => _ConversationScreenState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ConversationScreenState extends State<ConversationScreen> {
+class _ChatScreenState extends State<ChatRoomScreen> {
 
-  ConversationScreenViewModel model = serviceLocator<ConversationScreenViewModel>();
+  ChatRoomScreenViewModel model = serviceLocator<ChatRoomScreenViewModel>();
 
   TextEditingController messageController;
 
@@ -46,9 +46,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ConversationScreenViewModel>(
+    return ChangeNotifierProvider<ChatRoomScreenViewModel>(
         create: (context) => model,
-          child: Consumer<ConversationScreenViewModel>(
+          child: Consumer<ChatRoomScreenViewModel>(
             builder: (context, model, child) => Scaffold(
               appBar: appBarMain(context),
               body: Container(

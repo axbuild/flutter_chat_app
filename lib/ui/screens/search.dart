@@ -2,7 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/ui/screens/video_rooms_screen.dart';
+import 'package:chatapp/ui/screens/call_room_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
