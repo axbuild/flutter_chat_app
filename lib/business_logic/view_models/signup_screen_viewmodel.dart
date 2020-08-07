@@ -49,12 +49,12 @@ class SignUpScreenViewModel extends ChangeNotifier {
   void finishAuthorize(BuildContext context, User user){
     if(user != null) {
       user.name = userNameTextEditingController.text.trim();
-      databaseService.uploadUserInfo(user.toJson());
+      databaseService.uploadUserInfo(user.toMap());
 
       Local.user = user;
 
       user.isLogged = true;
-      optionStorageService.save('user', user.toJson());
+      optionStorageService.save('user', user.toMap());
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => ChatRoom()
       ));

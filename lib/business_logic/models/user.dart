@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'base.dart';
 
-class User extends ChangeNotifier implements BaseModel {
+class User implements BaseModel {
   String sid;
   String lid;
   String pid;
@@ -31,7 +31,7 @@ class User extends ChangeNotifier implements BaseModel {
 
   User.empty(): isLogged = false;
 
-  User.fromJson(Map<String, dynamic> json)
+  User.fromMap(Map<String, dynamic> json)
       : sid   = json['sid'],
         lid   = json['lid'],
         pid   = json['pid'],
@@ -40,7 +40,7 @@ class User extends ChangeNotifier implements BaseModel {
         email = json['email'],
         isLogged = json['isLogged'];
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
     'sid': sid,
     'lid': lid,
     'pid': pid,

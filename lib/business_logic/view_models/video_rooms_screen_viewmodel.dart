@@ -41,7 +41,9 @@ class VideoRoomScreenViewModel extends ChangeNotifier {
     _addAgoraEventHandlers();
     await AgoraRtcEngine.enableWebSdkInteroperability(true);
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
-    configuration.dimensions = Size(1920, 1080);
+    configuration.dimensions = Size(320, 180);
+    configuration.bitrate = 140;
+    configuration.frameRate = 15;
     await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
     await AgoraRtcEngine.joinChannel(null, channelName, null, 0);
     notifyListeners();

@@ -20,7 +20,7 @@ class PushNotificationsManager {
       _firebaseMessaging.configure();
 
       // For testing purposes print the Firebase Messaging token
-      Local.token = await _firebaseMessaging.getToken();
+      Local.user.token = await _firebaseMessaging.getToken();
       //print("FirebaseMessaging token: $token");
 
       _initialized = true;

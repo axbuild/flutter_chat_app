@@ -74,4 +74,11 @@ class AuthenticationServiceGoogle implements AuthenticationService {
     }
   }
 
+  @override
+  Future<User> getCurrentUser() async {
+    FirebaseUser currentUser;
+    currentUser = await _auth.currentUser();
+    return _userFromFirebaseUser(currentUser);
+  }
+
 }

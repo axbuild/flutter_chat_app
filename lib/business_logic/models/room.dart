@@ -6,10 +6,10 @@ class Room extends ChangeNotifier implements BaseModel {
 
   Room({this.id});
 
-  Room.fromJson(Map<String, dynamic> json)
+  Room.fromMap(Map<String, dynamic> json)
       :id = json['id'];
 
-  Map<String, dynamic> toJson()  => {
+  Map<String, dynamic> toMap()  => {
     'id': id
   };
 }
