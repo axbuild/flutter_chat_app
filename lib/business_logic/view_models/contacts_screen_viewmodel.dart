@@ -16,7 +16,7 @@ class ContactsScreenViewModel extends ChangeNotifier {
 
   Stream streamRooms;
   Stream streamUsers;
-  List<String> usersIds = [];
+//  List<String> usersIds = [];
 
 //  User user;
   String title;
@@ -25,7 +25,7 @@ class ContactsScreenViewModel extends ChangeNotifier {
 
   void loadData() async {
 
-    await databaseService.getContacts(Local.user)
+    await databaseService.getRooms(Local.user)
         .then((value){
           streamRooms = value;
           notifyListeners();

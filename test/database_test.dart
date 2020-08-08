@@ -15,12 +15,12 @@ void main() async {
   User user2 = new User(sid:'90lGrhbSjO0ghDwqxF92');
 
   Room room = new Room();
-  room.id = 'W7MZYwu2NgPOrvE2WiVa';
+  room.sid = 'W7MZYwu2NgPOrvE2WiVa';
 
   await test('DB methods', () {
     databaseService.getRoom(user1, user2)
         .then((value){
-            expect(value.id, room.id);
+            expect(value.sid, room.sid);
             databaseService.getUserByName('test11')
                 .then((value){
               expect(value, List);

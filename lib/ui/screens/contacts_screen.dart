@@ -1,10 +1,12 @@
+import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/authenticate.dart';
+import 'package:chatapp/business_logic/utils/helper.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/view_models/contacts_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/screens/chat_room_screen.dart';
-import 'package:chatapp/ui/screens/search.dart';
+import 'package:chatapp/ui/screens/search_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,8 @@ class ContactsScreen extends StatefulWidget {
 class _ChatRoomState extends State<ContactsScreen> {
 
   ContactsScreenViewModel model = serviceLocator<ContactsScreenViewModel>();
+  Room room;
+  Map<String, dynamic> interlocutor;
 
   @override
   void initState() {
@@ -66,7 +70,7 @@ class _ChatRoomState extends State<ContactsScreen> {
 
   Widget chatRoomList(ContactsScreenViewModel model){
 //   print("~~~~~${model.streamUsers.isEmpty}");
-
+      String userType = '';
       return StreamBuilder(
       stream: model.streamRooms,
       builder: (context, snapshot){
@@ -77,10 +81,18 @@ class _ChatRoomState extends State<ContactsScreen> {
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
+
+            room = Room.fromMap(snapshot.data.documents[index].data);
+            interlocutor = Helper().getIntelocutor(room);
+//            if(Local.user.sid == snapshot.data.documents[index].data['from'].sid){
+//              userType = 'from';
+//            }else{
+//              userType = 'to';
+//            }
             return ChatRoomTile(
                 new User(
-                    sid:snapshot.data.documents[index].data['id'],
-                    name:snapshot.data.documents[index].data['name'],
+                    sid: interlocutor["sid"],//,snapshot.data.documents[index].data['id'],
+                    name:interlocutor["name"]//snapshot.data.documents[index].data['name'],
                 )
             );
           },

@@ -36,30 +36,28 @@ class SearchScreenViewModel extends ChangeNotifier {
 
     if(user.sid != null &&  Local.user.sid != null) {
 
-      Map<String, dynamic> chatRoomMap = {
-        "users": {
-          user.sid: true,
-          Local.user.sid: true
-        },
-        "from": Local.user.sid,
-        "to": user.sid,
-        "time": new DateTime.now().millisecondsSinceEpoch
-      };
-
-      databaseService.getRoom(user, Local.user)
+      databaseService.getRoom(Local.user, user)
           .then((currentRoom) {
             room = currentRoom;
           })
           .then((value){
-            if(room.id == null){
-              databaseService.addRoom(chatRoomMap)
+            if(room.sid == null){
+              databaseService.addRoom(Room(
+                  users: {
+                    user.sid: user.name,
+                    Local.user.sid: Local.user.name,
+                  },
+                  from: Local.user.toMap(),
+                  to: user.toMap(),
+                  time: new DateTime.now().millisecondsSinceEpoch
+              ))
               .then((newRoom){
                 room = newRoom;
-                databaseService.setContact(Local.user, user);
-                databaseService.setContact(user, Local.user);
+//                databaseService.setContact(Local.user, user);
+//                databaseService.setContact(user, Local.user);
               })
               .then((_){
-                if(room.id == null)  print('Cant create new room');
+                if(room.sid == null)  print('Cant create new room');
                 if(type == 'chat') navigateToConversationScreen(context, user);
                 if(type == 'video') startVideoConversation(context, room);
               });
@@ -68,7 +66,7 @@ class SearchScreenViewModel extends ChangeNotifier {
             }
           })
           .then((value){
-              if(room.id == null)  print('Cant create new room');
+              if(room.sid == null)  print('Cant create new room');
               navigateToConversationScreen(context, user);
               if(type == 'video') startVideoConversation(context, room);
           });
@@ -90,7 +88,7 @@ class SearchScreenViewModel extends ChangeNotifier {
         context,
         MaterialPageRoute(
           builder: (context) => CallRoom(
-            channelName: room.id,
+            channelName: room.sid,
             role: _role,
           ),
         ),

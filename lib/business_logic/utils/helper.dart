@@ -1,6 +1,9 @@
+import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
+
+import 'local.dart';
 
 class Helper {
   OptionStorageService optionStorageService = serviceLocator<OptionStorageService>();
@@ -25,5 +28,9 @@ class Helper {
 
   void saveUser() async {
     optionStorageService.save('user', User().toMap());
+  }
+
+  Map<String, dynamic> getIntelocutor(Room room){
+    return (room.from["sid"] == Local.user.sid) ? room.to :  room.from;
   }
 }

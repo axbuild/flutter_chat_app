@@ -20,7 +20,7 @@ class ChatRoomScreenViewModel extends ChangeNotifier {
       storageService.getRoom(Local.user, _user)
       .then((value){
         room = value;
-        storageService.getConversationMessages(value.id)
+        storageService.getConversationMessages(value.sid)
             .then((value){
           chatMessagesStream = value;
           notifyListeners();

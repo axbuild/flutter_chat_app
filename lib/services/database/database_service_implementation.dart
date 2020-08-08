@@ -14,36 +14,43 @@ class DatabaseServiceImpl implements DatabaseService{
   @override
   Future<Message> addConversationMessages(Room room, Message message) {
     _roomsRef
-        .document(room.id)
+        .document(room.sid)
         .collection("chats")
         .add(message.toMap()).catchError((e){
       print(e.toString());
     });
   }
 
+//  @override
+//  Future<Room> addRoom(Room room, Function getRoomId) async {
+//    return await _roomsRef
+//        .document(getRoomId())
+//        .setData(room.toMap())
+//        .then((value) => room.sid = getRoomId());
+//  }
+
   @override
-  Future<Room> addRoom(chatRoomMap) async {
+  Future<Room> addRoom(room) async {
     return await _roomsRef
-        .add(chatRoomMap)
-        .then((ref) => new Room(id: ref.documentID));
+        .add(room.toMap())
+        .then((ref) => new Room(sid: ref.documentID));
   }
 
-  Future<Room> getRoom(User user1, User user2) async  {
 
-     return await _roomsRef
-        .where("users."+user1.sid, isEqualTo: true)
-        .where("users."+user2.sid, isEqualTo: true)
+  Future<Room> getRoom(User fromUser, User toUser) async  {
+    return await _roomsRef
+        .where("users."+fromUser.sid, isGreaterThan: null)
+        .where("users."+toUser.sid, isGreaterThan: null)
         .limit(1)
         .getDocuments()
-        .then((snapshot) => new Room(id: snapshot.documents.first.documentID))
+        .then((snapshot) => new Room(sid: snapshot.documents.first.documentID))
         .catchError((e) => new Room());
   }
 
   @override
   Future<Stream> getRooms(User user) async {
     return await _roomsRef
-        .where("users."+user.sid, isEqualTo: true)
-//        .where("users", arrayContains: userName)
+        .where("users."+user.sid, isGreaterThan: null)
         .snapshots();
   }
 
@@ -73,6 +80,14 @@ class DatabaseServiceImpl implements DatabaseService{
         .setData(contactMap);
   }
 
+  Future<Stream> getContacts(User user) async {
+
+    return await _usersRef
+        .document(user.sid)
+        .collection("contacts")
+        .snapshots();
+  }
+
   @override
   Future<Stream> getConversationMessages(String chatRoomId) async {
 
@@ -94,14 +109,6 @@ class DatabaseServiceImpl implements DatabaseService{
   Future<Stream> getUsers(List documentIds) async {
     return await _usersRef
         .where('uid', whereIn: documentIds )
-        .snapshots();
-  }
-
-  Future<Stream> getContacts(User user) async {
-
-    return await _usersRef
-        .document(user.sid)
-        .collection("contacts")
         .snapshots();
   }
 
