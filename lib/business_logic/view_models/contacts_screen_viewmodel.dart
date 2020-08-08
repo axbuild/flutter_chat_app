@@ -7,7 +7,7 @@ import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class ChatRoomsScreenViewModel extends ChangeNotifier {
+class ContactsScreenViewModel extends ChangeNotifier {
 
   DatabaseService databaseService = serviceLocator<DatabaseService>();
   OptionStorageService localStorageService = serviceLocator<OptionStorageService>();
@@ -16,7 +16,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
 
   Stream streamRooms;
   Stream streamUsers;
-  List<String> usersIds = [];
+//  List<String> usersIds = [];
 
 //  User user;
   String title;
@@ -25,7 +25,7 @@ class ChatRoomsScreenViewModel extends ChangeNotifier {
 
   void loadData() async {
 
-    await databaseService.getContacts(Local.user)
+    await databaseService.getRooms(Local.user)
         .then((value){
           streamRooms = value;
           notifyListeners();

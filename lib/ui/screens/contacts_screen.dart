@@ -1,22 +1,26 @@
+import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/authenticate.dart';
+import 'package:chatapp/business_logic/utils/helper.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
-import 'package:chatapp/business_logic/view_models/chat_rooms_screen_viewmodel.dart';
+import 'package:chatapp/business_logic/view_models/contacts_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
-import 'package:chatapp/ui/screens/conversation_screen.dart';
-import 'package:chatapp/ui/screens/search.dart';
+import 'package:chatapp/ui/screens/chat_room_screen.dart';
+import 'package:chatapp/ui/screens/search_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatRoom extends StatefulWidget {
+class ContactsScreen extends StatefulWidget {
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
+class _ChatRoomState extends State<ContactsScreen> {
 
-  ChatRoomsScreenViewModel model = serviceLocator<ChatRoomsScreenViewModel>();
+  ContactsScreenViewModel model = serviceLocator<ContactsScreenViewModel>();
+  Room room;
+  Map<String, dynamic> interlocutor;
 
   @override
   void initState() {
@@ -26,9 +30,9 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ChatRoomsScreenViewModel>(
+    return ChangeNotifierProvider<ContactsScreenViewModel>(
       create: (context) => model,
-      child: Consumer<ChatRoomsScreenViewModel>(
+      child: Consumer<ContactsScreenViewModel>(
           builder: (context, model, child) => Scaffold(
             appBar: AppBar(
               title: Text(model.title ?? 'undefined'),//Icon(Icons.list),
@@ -64,9 +68,9 @@ class _ChatRoomState extends State<ChatRoom> {
 
   }
 
-  Widget chatRoomList(ChatRoomsScreenViewModel model){
+  Widget chatRoomList(ContactsScreenViewModel model){
 //   print("~~~~~${model.streamUsers.isEmpty}");
-
+      String userType = '';
       return StreamBuilder(
       stream: model.streamRooms,
       builder: (context, snapshot){
@@ -77,10 +81,18 @@ class _ChatRoomState extends State<ChatRoom> {
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){
+
+            room = Room.fromMap(snapshot.data.documents[index].data);
+            interlocutor = Helper().getIntelocutor(room);
+//            if(Local.user.sid == snapshot.data.documents[index].data['from'].sid){
+//              userType = 'from';
+//            }else{
+//              userType = 'to';
+//            }
             return ChatRoomTile(
                 new User(
-                    sid:snapshot.data.documents[index].data['id'],
-                    name:snapshot.data.documents[index].data['name'],
+                    sid: interlocutor["sid"],//,snapshot.data.documents[index].data['id'],
+                    name:interlocutor["name"]//snapshot.data.documents[index].data['name'],
                 )
             );
           },
@@ -100,7 +112,7 @@ class ChatRoomTile extends StatelessWidget {
     return GestureDetector(
       onTap:(){
         Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(user)
+          builder: (context) => ChatRoomScreen(user)
         ));
       },
       child: Container(

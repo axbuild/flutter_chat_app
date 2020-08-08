@@ -24,9 +24,11 @@ abstract class DatabaseService {
 
 
 
-  Future<Room> addRoom(chatRoomMap);
+//  Future<Room> addRoom(Room room, Function getRoomId);
 
-  Future<Room> getRoom(User user1, User user2);
+  Future<Room> addRoom(Room room);
+
+  Future<Room> getRoom(User fromUser, User toUser);
 
   Future<Stream> getRooms(User user);
 

@@ -6,7 +6,7 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class ConversationScreenViewModel extends ChangeNotifier {
+class ChatRoomScreenViewModel extends ChangeNotifier {
   DatabaseService storageService;
   Stream chatMessagesStream;
 
@@ -20,7 +20,7 @@ class ConversationScreenViewModel extends ChangeNotifier {
       storageService.getRoom(Local.user, _user)
       .then((value){
         room = value;
-        storageService.getConversationMessages(value.id)
+        storageService.getConversationMessages(value.sid)
             .then((value){
           chatMessagesStream = value;
           notifyListeners();
