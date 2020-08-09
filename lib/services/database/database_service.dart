@@ -1,3 +1,4 @@
+import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
@@ -28,9 +29,14 @@ abstract class DatabaseService {
 
   Future<Room> addRoom(Room room);
 
+  Future<void> setRoom(Room room);
+
   Future<Room> getRoom(User fromUser, User toUser);
 
   Future<Stream> getRooms(User user);
+
+
+  Future<void> setEvent(Room room, User recipient, Event event);
 
 
   Future<Message> addConversationMessages(Room room, Message message);

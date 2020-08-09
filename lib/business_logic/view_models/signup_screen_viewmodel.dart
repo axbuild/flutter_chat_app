@@ -5,7 +5,7 @@ import 'package:chatapp/services/authentication/authentication_service_google.da
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
-import 'package:chatapp/ui/screens/contacts_screen.dart';
+import 'package:chatapp/ui/screens/rooms_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
       user.isLogged = true;
       optionStorageService.save('user', user.toMap());
       Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ContactsScreen()
+          builder: (context) => RoomsScreen()
       ));
     } else {
       showPopUpDialog(context, 'User already exist, smth wrong!');

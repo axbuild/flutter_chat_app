@@ -1,5 +1,5 @@
 
-import 'package:chatapp/business_logic/view_models/contacts_screen_viewmodel.dart';
+import 'package:chatapp/business_logic/view_models/rooms_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/chat_room_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/main_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/search_screen_viewmodel.dart';
@@ -30,7 +30,7 @@ void setupServiceLocator() {
   serviceLocator.registerFactory<SignInScreenModelView>(() => SignInScreenModelView());
   serviceLocator.registerFactory<SignUpScreenViewModel>(() => SignUpScreenViewModel());
   serviceLocator.registerFactory<SearchScreenViewModel>(() => SearchScreenViewModel());
-  serviceLocator.registerFactory<ContactsScreenViewModel>(() => ContactsScreenViewModel());
+  serviceLocator.registerFactory<RoomsScreenViewModel>(() => RoomsScreenViewModel());
   serviceLocator.registerFactory<ChatRoomScreenViewModel>(() => ChatRoomScreenViewModel());
   serviceLocator.registerFactory<CallRoomScreenViewModel>(() => CallRoomScreenViewModel());
 

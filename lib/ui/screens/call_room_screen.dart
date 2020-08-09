@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 //import 'package:chatapp/business_logic/view_models/chat_room_screen_viewmodel.dart';
@@ -17,8 +18,10 @@ class CallRoom extends StatefulWidget {
   /// non-modifiable client role of the page
   final ClientRole role;
 
+  final Room room;
+
   /// Creates a call page with given channel name.
-  const CallRoom({Key key, this.channelName, this.role}) : super(key: key);
+  const CallRoom({Key key, this.channelName, this.room, this.role}) : super(key: key);
 
   @override
   _VideoRoomState createState() => _VideoRoomState();
@@ -38,7 +41,7 @@ class _VideoRoomState extends State<CallRoom> {
   @override
   void initState() {
     // initialize agora sdk
-    model.initialize(widget.role, widget.channelName);
+    model.initialize(widget.role, widget.channelName, widget.room);
     super.initState();
   }
 

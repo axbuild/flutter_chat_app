@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
@@ -68,7 +69,10 @@ class SearchScreenViewModel extends ChangeNotifier {
           .then((value){
               if(room.sid == null)  print('Cant create new room');
               navigateToConversationScreen(context, user);
-              if(type == 'video') startVideoConversation(context, room);
+              if(type == 'video'){
+                databaseService.setEvent(room, user, Event(isIncomingVideoCall: true));
+                startVideoConversation(context, room);
+              }
           });
 
     }else{
@@ -83,12 +87,14 @@ class SearchScreenViewModel extends ChangeNotifier {
 
       // await for camera and mic permissions before pushing video page
       await _handleCameraAndMic();
+
       // push video page with given channel name
       await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => CallRoom(
             channelName: room.sid,
+            room: room,
             role: _role,
           ),
         ),
