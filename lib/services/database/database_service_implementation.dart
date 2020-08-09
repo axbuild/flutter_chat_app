@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
@@ -36,6 +37,12 @@ class DatabaseServiceImpl implements DatabaseService{
         .then((ref) => new Room(sid: ref.documentID));
   }
 
+  @override
+  Future<void> setRoom(room) async {
+    return await _roomsRef
+        .document(room.sid)
+        .setData(room.toMap());
+  }
 
   Future<Room> getRoom(User fromUser, User toUser) async  {
     return await _roomsRef
@@ -52,6 +59,15 @@ class DatabaseServiceImpl implements DatabaseService{
     return await _roomsRef
         .where("users."+user.sid, isGreaterThan: null)
         .snapshots();
+  }
+
+  @override
+  Future<void> setEvent(Room room, User recipient, Event event) async {
+    await _roomsRef
+        .document(room.sid)
+        .updateData({
+      'event_'+recipient.sid: event.toMap()
+    });
   }
 
   @override

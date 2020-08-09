@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +25,7 @@ class CallRoomScreenViewModel extends ChangeNotifier {
   }
 
 
-  Future<void> initialize(ClientRole role, String channelName) async {
+  Future<void> initialize(ClientRole role, String channelName, Room room) async {
 
 
     if (Settings().agoraAppId.isEmpty) {
@@ -46,6 +47,7 @@ class CallRoomScreenViewModel extends ChangeNotifier {
     configuration.frameRate = 15;
     await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
     await AgoraRtcEngine.joinChannel(null, channelName, null, 0);
+
     notifyListeners();
   }
 

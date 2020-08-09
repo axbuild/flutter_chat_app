@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'base.dart';
 
-class Room extends ChangeNotifier implements BaseModel {
+class Room implements BaseModel {
   String sid;
   Map<String, dynamic> users;
   Map<String, dynamic> from;
   Map<String, dynamic> to;
   int time;
+  Map<String, dynamic> events;
+
 
   Room({
     this.sid,
     this.users,
     this.from,
     this.to,
-    this.time
+    this.time,
+    this.events
   });
 
   Room.fromMap(Map<String, dynamic> json)
@@ -21,13 +24,15 @@ class Room extends ChangeNotifier implements BaseModel {
        users = json['users'],
        from = json['from'],
        to = json['to'],
-       time = json['time'];
+       time = json['time'],
+       events = json['events'];
 
   Map<String, dynamic> toMap()  => {
     'sid': sid,
     'users': users,
     'from': from,
     'to': to,
-    'time': time
+    'time': time,
+    'event': events
   };
 }
