@@ -131,7 +131,7 @@ class _VideoRoomState extends State<CallRoom> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => model.onCallEnd(context),
+            onPressed: () => model.onCallEnd(context, widget.room),
             child: Icon(
               Icons.call_end,
               color: Colors.white,

@@ -1,12 +1,16 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/local.dart';
+import 'package:chatapp/services/database/database_service.dart';
+import 'package:chatapp/services/service_locator.dart';
 import 'package:flutter/cupertino.dart';
 
 class CallRoomScreenViewModel extends ChangeNotifier {
 
-
+  DatabaseService databaseService = serviceLocator<DatabaseService>();
   List<int> users = <int>[];
   final infoStrings = <String>[];
   bool muted = false;
@@ -26,7 +30,6 @@ class CallRoomScreenViewModel extends ChangeNotifier {
 
 
   Future<void> initialize(ClientRole role, String channelName, Room room) async {
-
 
     if (Settings().agoraAppId.isEmpty) {
 
@@ -109,7 +112,8 @@ class CallRoomScreenViewModel extends ChangeNotifier {
     };
   }
 
-  void onCallEnd(BuildContext context) {
+  void onCallEnd(BuildContext context, Room room) {
+    databaseService.setEvent(room, Local.user, Event());
     Navigator.pop(context);
     notifyListeners();
   }
