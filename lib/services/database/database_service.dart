@@ -1,3 +1,4 @@
+import 'package:chatapp/business_logic/models/call.dart';
 import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
@@ -42,5 +43,9 @@ abstract class DatabaseService {
   Future<Message> addConversationMessages(Room room, Message message);
 
   Future<Stream> getConversationMessages(String chatRoomId);
+
+  Future<Call> addCall(Room room, Call call);
+
+  Future<Stream> getCall(Room room, Call call);
 
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chatapp/business_logic/models/call.dart';
 import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/message.dart';
 import 'package:chatapp/business_logic/models/room.dart';
@@ -11,6 +12,7 @@ class DatabaseServiceImpl implements DatabaseService{
 
   static CollectionReference _roomsRef = Firestore.instance.collection("rooms");
   static CollectionReference _usersRef = Firestore.instance.collection("users");
+  static CollectionReference _callsRef = Firestore.instance.collection("calls");
 
   @override
   Future<Message> addConversationMessages(Room room, Message message) {
@@ -20,6 +22,36 @@ class DatabaseServiceImpl implements DatabaseService{
         .add(message.toMap()).catchError((e){
       print(e.toString());
     });
+  }
+
+  @override
+  Future<Stream> getConversationMessages(String chatRoomId) async {
+
+    return await _roomsRef
+        .document(chatRoomId)
+        .collection("chats")
+        .orderBy("time", descending: false)
+        .snapshots();
+  }
+
+  @override
+  Future<Call> addCall(Room room, Call call) async {
+    _callsRef
+        .document(room.sid)
+        .collection("calls")
+        .add(call.toMap())
+        .catchError((e){
+          print(e.toString());
+        });
+  }
+
+  @override
+  Future<Stream> getCall(Room room, Call call) async {
+    return await _callsRef
+        .document(room.sid)
+        .collection("calls")
+        .orderBy("time", descending: false)
+        .snapshots();
   }
 
 //  @override
@@ -101,16 +133,6 @@ class DatabaseServiceImpl implements DatabaseService{
     return await _usersRef
         .document(user.sid)
         .collection("contacts")
-        .snapshots();
-  }
-
-  @override
-  Future<Stream> getConversationMessages(String chatRoomId) async {
-
-   return await _roomsRef
-        .document(chatRoomId)
-        .collection("chats")
-        .orderBy("time", descending: false)
         .snapshots();
   }
 
