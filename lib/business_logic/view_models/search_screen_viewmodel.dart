@@ -70,7 +70,7 @@ class SearchScreenViewModel extends ChangeNotifier {
               if(room.sid == null)  print('Cant create new room');
               navigateToConversationScreen(context, user);
               if(type == 'video'){
-                databaseService.setEvent(room, user, Event(isIncomingVideoCall: true));
+                //databaseService.setEvent(room, user, Event(isIncomingVideoCall: true));
                 startVideoConversation(context, room);
               }
           });
