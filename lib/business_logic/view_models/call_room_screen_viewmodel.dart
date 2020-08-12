@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:chatapp/business_logic/models/call.dart';
 import 'package:chatapp/business_logic/models/event.dart';
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/settings.dart';
@@ -50,7 +51,7 @@ class CallRoomScreenViewModel extends ChangeNotifier {
     configuration.frameRate = 15;
     await AgoraRtcEngine.setVideoEncoderConfiguration(configuration);
     await AgoraRtcEngine.joinChannel(null, channelName, null, 0);
-
+    databaseService.addCall(room, Call());
     notifyListeners();
   }
 
@@ -113,7 +114,7 @@ class CallRoomScreenViewModel extends ChangeNotifier {
   }
 
   void onCallEnd(BuildContext context, Room room) {
-    databaseService.setEvent(room, Local.user, Event());
+//    databaseService.setEvent(room, Local.user, Event());
     Navigator.pop(context);
     notifyListeners();
   }

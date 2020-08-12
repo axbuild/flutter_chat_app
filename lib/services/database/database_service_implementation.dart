@@ -36,7 +36,7 @@ class DatabaseServiceImpl implements DatabaseService{
 
   @override
   Future<Call> addCall(Room room, Call call) async {
-    _callsRef
+    _roomsRef
         .document(room.sid)
         .collection("calls")
         .add(call.toMap())
