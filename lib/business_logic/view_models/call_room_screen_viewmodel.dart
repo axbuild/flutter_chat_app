@@ -114,7 +114,7 @@ class CallRoomScreenViewModel extends ChangeNotifier {
   }
 
   void onCallEnd(BuildContext context, Room room) {
-//    databaseService.setEvent(room, Local.user, Event());
+
     Navigator.pop(context);
     notifyListeners();
   }
