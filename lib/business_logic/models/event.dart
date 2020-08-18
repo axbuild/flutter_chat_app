@@ -4,6 +4,8 @@ class Event implements BaseModel {
   bool isIncomingVideoCall;
   bool isIncomingVoiceCall;
   bool isNewMessage;
+  static String NEW_MESSAGE = "new_message_";
+  static String MISSED_CALL = "missed_call_";
 
 
   Event({
