@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatapp/business_logic/models/room.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/services/service_locator.dart';
@@ -33,4 +35,16 @@ class Helper {
   Map<String, dynamic> getIntelocutor(Room room){
     return (room.from["sid"] == Local.user.sid) ? room.to :  room.from;
   }
+
+  Future<bool> isInternetExist() async {
+    try {
+      return await InternetAddress.lookup('google.com')
+      .then((value){
+        return (value.isNotEmpty && value[0].rawAddress.isNotEmpty) ? true : false;
+      });
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
 }

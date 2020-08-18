@@ -27,6 +27,7 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+
     model.loadData();
     super.initState();
   }
