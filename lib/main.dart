@@ -5,6 +5,9 @@ import 'package:chatapp/services/log/logger.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/screens/rooms_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+
 
 import 'business_logic/utils/helper.dart';
 import 'business_logic/utils/local.dart';
@@ -43,7 +46,17 @@ class _AppState extends State<App> {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: model.user.isLogged ? RoomsScreen() : Authenticate(),
+//      home: model.user.isLogged ? RoomsScreen() : Authenticate(),
+      home: LoaderOverlay(
+        overlayWidget: Center(
+          child: SpinKitCubeGrid(
+            color: Colors.red,
+            size: 50.0,
+          ),
+        ),
+        overlayOpacity: 0.8,
+        child: model.user.isLogged ? RoomsScreen() : Authenticate(),
+      )
     );
   }
 }
