@@ -12,7 +12,7 @@ class SignIn extends StatefulWidget {
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<SignIn>{
 
   SignInScreenModelView model  = serviceLocator<SignInScreenModelView>();
 
@@ -72,8 +72,10 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 8,),
                 GestureDetector(
-                  onTap: () {
-                    model.signIn(context);
+                  onTap: () async {
+//                    await this.performFuture(model.signIn(context));
+
+                    //model.signIn(context);
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -132,7 +134,8 @@ class _SignInState extends State<SignIn> {
             ),
           ),
         ),
-      )
+      ),
     );
   }
+
 }

@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
@@ -29,22 +31,26 @@ class SignInScreenModelView extends ChangeNotifier {
 
   User user;
 
-  void signIn(BuildContext context) async {
+  Future<bool> signIn(BuildContext context) async {
+    return await Future.delayed(Duration(seconds: 2));
     isLoading = true;
 
     if(formKey.currentState.validate()){
 
-      databaseService.getUserByEmail(emailTextEditingController.text.trim())
+      await databaseService.getUserByEmail(emailTextEditingController.text.trim())
           .then((value) => user = value);
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
 
-      authenticationServiceDefault.signIn()
+      await authenticationServiceDefault.signIn()
         .then((value) => finishAuthorize(context, value));
 
     }
+  }
 
+  Future getData() async {
+    return await Future.delayed(Duration(seconds: 2));
   }
 
   void signInWithGoogle(BuildContext context){
