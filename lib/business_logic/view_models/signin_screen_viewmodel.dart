@@ -32,7 +32,6 @@ class SignInScreenModelView extends ChangeNotifier {
   User user;
 
   Future<bool> signIn(BuildContext context) async {
-    return await Future.delayed(Duration(seconds: 2));
     isLoading = true;
 
     if(formKey.currentState.validate()){

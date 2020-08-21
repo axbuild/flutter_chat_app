@@ -16,7 +16,6 @@ class RoomsScreenViewModel extends ChangeNotifier {
 
   Stream streamRooms;
   Stream streamUsers;
-//  List<String> usersIds = [];
 
 //  User user;
   String title;
@@ -24,12 +23,14 @@ class RoomsScreenViewModel extends ChangeNotifier {
   Map <String, dynamic> users = {};
 
   void loadData() async {
+    Future.delayed(Duration(seconds: 1)).then((value) async {
+      await databaseService.getRooms(Local.user)
+          .then((value){
+        streamRooms = value;
+        notifyListeners();
+      });
+    });
 
-    await databaseService.getRooms(Local.user)
-        .then((value){
-          streamRooms = value;
-          notifyListeners();
-        });
   }
 
   void signOut(){

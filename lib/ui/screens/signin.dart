@@ -73,9 +73,7 @@ class _SignInState extends State<SignIn>{
                 SizedBox(height: 8,),
                 GestureDetector(
                   onTap: () async {
-//                    await this.performFuture(model.signIn(context));
-
-                    //model.signIn(context);
+                   model.signIn(context);
                   },
                   child: Container(
                     alignment: Alignment.center,
