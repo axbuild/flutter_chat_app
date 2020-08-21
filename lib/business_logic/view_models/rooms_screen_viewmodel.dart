@@ -16,7 +16,6 @@ class RoomsScreenViewModel extends ChangeNotifier {
 
   Stream streamRooms;
   Stream streamUsers;
-//  List<String> usersIds = [];
 
 //  User user;
   String title;
