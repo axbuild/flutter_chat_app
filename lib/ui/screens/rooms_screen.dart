@@ -10,6 +10,7 @@ import 'package:chatapp/ui/screens/search_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RoomsScreen extends StatefulWidget {
   @override
@@ -95,7 +96,25 @@ class _ChatRoomState extends State<RoomsScreen> {
                 )
             );
           },
-        ) : Container();
+        ) : //Container()
+        Shimmer.fromColors(
+          child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Icon(Icons.account_circle, size: 50.0),
+                title: SizedBox(
+                  child: Container(
+                    color: Colors.green,
+                  ),
+                  height: 10.0,
+                ),
+              );
+            },
+          ),
+          baseColor: Colors.grey,
+          highlightColor: Colors.teal,
+        );
       },
     );
   }
@@ -119,15 +138,18 @@ class ChatRoomTile extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Container(
-              height: 40,
-              width: 40,
+              height: 50,
+              width: 50,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Color(0xff39796b),
-                borderRadius: BorderRadius.circular(40)
-              ),
-              child: Text("${user.name.substring(0,1).toLowerCase()}",
-                  style: mediumTextStyle())
+//              decoration: BoxDecoration(
+//                color: Color(0xff39796b),
+//                borderRadius: BorderRadius.circular(40)
+//              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.account_circle, size: 50.0, color: Color(0xff39796b)),
+                ],
+              )
             ),
             SizedBox(width: 8,),
             Text(user.name, style: mediumTextStyle())
