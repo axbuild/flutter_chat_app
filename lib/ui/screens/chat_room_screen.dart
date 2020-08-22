@@ -50,7 +50,26 @@ class _ChatScreenState extends State<ChatRoomScreen> {
         create: (context) => model,
           child: Consumer<ChatRoomScreenViewModel>(
             builder: (context, model, child) => Scaffold(
-              appBar: appBarMain(context),
+              appBar: AppBar(
+                title: Row(
+                  children: <Widget>[
+                    Text(widget.user.name),
+                    Spacer(flex:2),
+                    IconButton(
+                      icon: Icon(Icons.call),
+                      onPressed: () {
+
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.video_call),
+                      onPressed: () {
+
+                      },
+                    ),
+                  ],
+                ),
+              ),
               body: Container(
                 child: Stack(
                   children: <Widget>[
