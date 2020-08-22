@@ -37,24 +37,24 @@ class _ChatRoomState extends State<RoomsScreen> {
       child: Consumer<RoomsScreenViewModel>(
           builder: (context, model, child) => Scaffold(
             appBar: AppBar(
-              title: Text(model.title ?? 'undefined'),//Icon(Icons.list),
+              title: Text('contacts'),//Icon(Icons.list),
               actions: [
-                GestureDetector(
-                  onTap: (){
-                    model.signOut();
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => Authenticate()
-                    ));
-                  },
-                  child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Icon(Icons.exit_to_app)
-                  ),
-                )
+//                GestureDetector(
+//                  onTap: (){
+//                    model.signOut();
+//                    Navigator.pushReplacement(context, MaterialPageRoute(
+//                        builder: (context) => Authenticate()
+//                    ));
+//                  },
+//                  child: Container(
+//                      padding: EdgeInsets.symmetric(horizontal: 16),
+//                      child: Icon(Icons.exit_to_app)
+//                  ),
+//                )
               ],
             ),
             body: chatRoomList(model),
-            drawer: drawer(),
+            drawer: drawer(context, model),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Color(0xff39796b),
               child: Icon(Icons.search),
@@ -86,7 +86,6 @@ class _ChatRoomState extends State<RoomsScreen> {
 
             room = Room.fromMap(snapshot.data.documents[index].data);
             interlocutor = Helper().getIntelocutor(room);
-
 //            incomingMessage = (interlocutor["isIncomingCall"] != null) ? 'income' : '-';
 
             return ChatRoomTile(
@@ -119,6 +118,20 @@ class _ChatRoomState extends State<RoomsScreen> {
     );
   }
 }
+
+//ListTile ChatRoomTile(User user) => ListTile(
+//  title: Text(user.name,
+//      style: TextStyle(
+//        fontWeight: FontWeight.w500,
+//        fontSize: 20,
+//      )),
+//  subtitle: Text(user.name),
+//  leading: Icon(
+//      Icons.account_circle,
+//      size: 50.0,
+//      color: Color(0xff39796b)
+//  ),
+//);
 
 class ChatRoomTile extends StatelessWidget {
   final User user;

@@ -1,4 +1,8 @@
+import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
+import 'package:chatapp/business_logic/utils/universal_variables.dart';
+import 'package:chatapp/business_logic/view_models/rooms_screen_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 Widget appBarMain(BuildContext context){
@@ -6,14 +10,12 @@ Widget appBarMain(BuildContext context){
     title: Row(
       children: <Widget>[
         Icon(
-            Icons.supervised_user_circle,
+            Icons.verified_user,
             color: Colors.white,
             size: 28.0
         ),
         Spacer(flex:2),
-        Text(
-          'Chat App'
-        )
+        Text('Sign in')
       ],
     ),
   );
@@ -65,32 +67,91 @@ TextStyle mediumBtnStyle(){
   );
 }
 
-Drawer drawer(){
+Drawer drawer(BuildContext context, RoomsScreenViewModel model){
 
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
         DrawerHeader(
-          child: Text("You: ${Local.user.name}"),
+          child: Text("You: ${Local.user.name}", style: TextStyle(
+            color: Colors.white,
+            fontSize: 17
+          )),
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Color(UniversalVariables.primeColor),
           ),
         ),
         ListTile(
-          title: Text('Item 1'),
+          title: Row(
+            children: <Widget>[
+              Text('History'),
+              Spacer(flex: 2),
+              Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black,
+                  size: 28.0
+              ),
+            ],
+          ),
           onTap: () {
             // Update the state of the app.
             // ...
           },
         ),
         ListTile(
-          title: Text('Item 2'),
+          title: Row(
+            children: <Widget>[
+              Text('Balance'),
+              Spacer(flex: 2),
+              Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black,
+                  size: 28.0
+              ),
+            ],
+          ),
           onTap: () {
             // Update the state of the app.
             // ...
           },
         ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text('Settings'),
+              Spacer(flex: 2),
+              Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black,
+                  size: 28.0
+              ),
+            ],
+          ),
+          onTap: () {
+            // Update the state of the app.
+            // ...
+          },
+        ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text('Sing out'),
+              Spacer(flex: 2),
+              Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black,
+                  size: 28.0
+              ),
+            ],
+          ),
+          onTap: () {
+            model.signOut();
+            Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) => Authenticate()
+            ));
+          },
+        )
       ],
     ),
   );

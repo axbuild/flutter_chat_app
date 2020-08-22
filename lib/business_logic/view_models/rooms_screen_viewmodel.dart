@@ -36,5 +36,6 @@ class RoomsScreenViewModel extends ChangeNotifier {
   void signOut(){
     authenticationServiceDefault.signOut();
     authenticationServiceGoogle.signOut();
+    notifyListeners();
   }
 }
