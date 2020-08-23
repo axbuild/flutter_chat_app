@@ -210,5 +210,25 @@ class DatabaseServiceImpl implements DatabaseService{
     });
   }
 
+  @override
+  Future<List<User>> getUsersByKnowledge(String needle) async {
+    List<User> users = [];
+
+    return await _usersRef
+        .where("knowledge."+needle.toLowerCase(), isGreaterThan: 0 )
+        .getDocuments()
+        .then((snapshot){
+          snapshot.documents.forEach((element) {
+            users.add(User(
+                sid: element.documentID,
+                name: element.data['name'],
+                email: element.data['email']
+            ));
+          });
+
+      return users;
+    });
+  }
+
 
 }

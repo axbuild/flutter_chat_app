@@ -21,7 +21,7 @@ class _ChatRoomState extends State<RoomsScreen> {
 
   RoomsScreenViewModel model = serviceLocator<RoomsScreenViewModel>();
   Room room;
-  Map<String, dynamic> interlocutor;
+  Map<String, dynamic> remoteUser;
   String incomingMessage;
 
   @override
@@ -53,7 +53,7 @@ class _ChatRoomState extends State<RoomsScreen> {
 //                )
               ],
             ),
-            body: chatRoomList(model),
+            body: roomList(model),
             drawer: drawer(context, model),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Color(0xff39796b),
@@ -70,54 +70,173 @@ class _ChatRoomState extends State<RoomsScreen> {
 
   }
 
-  Widget chatRoomList(RoomsScreenViewModel model){
-//   print("~~~~~${model.streamUsers.isEmpty}");
-      String userType = '';
+  Widget roomList(RoomsScreenViewModel model){
+
       return StreamBuilder(
-      stream: model.streamRooms,
-      builder: (context, snapshot){
-        print('~~~~~~~~~');
-        if(snapshot.hasData){
-          print(snapshot.data.documents.length);
-        };
-        return snapshot.hasData ? ListView.builder(
-          itemCount: snapshot.data.documents.length,
-          itemBuilder: (context, index){
+        stream: model.streamRooms,
+        builder: (context, snapshot){
 
-            room = Room.fromMap(snapshot.data.documents[index].data);
-            interlocutor = Helper().getIntelocutor(room);
-//            incomingMessage = (interlocutor["isIncomingCall"] != null) ? 'income' : '-';
+          if(snapshot.hasData){
+            print(snapshot.data.documents.length);
+          }
 
-            return ChatRoomTile(
-                new User(
-                    sid: interlocutor["sid"],
-                    name:interlocutor["name"]
-                )
-            );
-          },
-        ) : //Container()
-        Shimmer.fromColors(
-          child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: Icon(Icons.account_circle, size: 50.0),
-                title: SizedBox(
-                  child: Container(
-                    color: Colors.green,
-                  ),
-                  height: 10.0,
-                ),
+          return snapshot.hasData ? ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index){
+
+              room = Room.fromMap(snapshot.data.documents[index].data);
+              room.prepareUsersInformation(Local.user);
+              remoteUser = Helper().getIntelocutor(room);
+
+
+              return Column(
+                  children: <Widget>[
+                    roomTile(
+                        context,
+                        room,
+                        User(
+                            sid: remoteUser["sid"],
+                            name:remoteUser["name"]
+                        )
+                    ),
+                    Divider()
+                  ]
               );
             },
-          ),
-          baseColor: Colors.grey,
-          highlightColor: Colors.teal,
-        );
-      },
+          ) : //Container()
+          Shimmer.fromColors(
+            child: ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Icon(Icons.account_circle, size: 50.0),
+                  title: SizedBox(
+                    child: Container(
+                      color: Colors.green,
+                    ),
+                    height: 10.0,
+                  ),
+                );
+              },
+            ),
+            baseColor: Colors.grey,
+            highlightColor: Colors.teal,
+          );
+        },
     );
   }
 }
+
+
+ListTile roomTile(BuildContext context, Room room, User user) => ListTile(
+  isThreeLine: true,
+  onLongPress: () {},
+  onTap: () {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => ChatRoomScreen(room.remoteUser)
+    ));
+  },
+  leading: Container(
+    width: 50,
+    height: 50,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      border: Border.all(
+        color: Colors.white,
+        width: 3,
+      ),
+      boxShadow: [
+        BoxShadow(
+            color: Colors.grey.withOpacity(.3),
+            offset: Offset(0, 5),
+            blurRadius: 25)
+      ],
+    ),
+    child: Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: CircleAvatar(
+            backgroundImage:
+            NetworkImage('https://avatars3.githubusercontent.com/u/13711097?s=460&u=1091476a60191df4ea63d5c7691e09830cf61df9&v=4'),
+          ),
+        ),
+        room.isInterlocutorFree()
+            ? Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            height: 15,
+            width: 15,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white,
+                width: 3,
+              ),
+              shape: BoxShape.circle,
+              color: Colors.green,
+            ),
+          ),
+        )
+            : Container(),
+      ],
+    ),
+  ),
+  title: Text(
+    (room.remoteUser.name) ?? 'undefined',
+    style: Theme.of(context).textTheme.title,
+  ),
+  subtitle: Text(
+    'last message',//"${friendsList[i]['lastMsg']}",
+    style: true//!friendsList[i]['seen']
+        ? Theme.of(context)
+        .textTheme
+        .subtitle
+        .apply(color: Colors.black87)
+        : Theme.of(context)
+        .textTheme
+        .subtitle
+        .apply(color: Colors.black54),
+  ),
+  trailing: Container(
+    width: 60,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            true//friendsList[i]['seen']
+                ? Icon(
+              Icons.check,
+              size: 15,
+            )
+                : Container(height: 15, width: 15),
+            Text(''/*"${friendsList[i]['lastMsgTime']}"*/)
+          ],
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        room.hasUnSeenMessages() ? Container(
+          alignment: Alignment.center,
+          height: 25,
+          width: 25,
+          decoration: BoxDecoration(
+            color: Colors.green,
+            shape: BoxShape.circle,
+          ),
+          child: Text(
+            room.unSeenMessagesCount().toString(),
+            style: TextStyle(color: Colors.white),
+          ),
+        )
+        : Container(
+          height: 25,
+          width: 25,
+        ),
+      ],
+    ),
+  ),
+);
 
 //ListTile ChatRoomTile(User user) => ListTile(
 //  title: Text(user.name,
@@ -133,42 +252,42 @@ class _ChatRoomState extends State<RoomsScreen> {
 //  ),
 //);
 
-class ChatRoomTile extends StatelessWidget {
-  final User user;
-  ChatRoomTile(this.user);
-
-  @override
-  Widget build(BuildContext context) {
-
-    return GestureDetector(
-      onTap:(){
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ChatRoomScreen(user)
-        ));
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Row(
-          children: <Widget>[
-            Container(
-              height: 50,
-              width: 50,
-              alignment: Alignment.center,
-//              decoration: BoxDecoration(
-//                color: Color(0xff39796b),
-//                borderRadius: BorderRadius.circular(40)
-//              ),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.account_circle, size: 50.0, color: Color(0xff39796b)),
-                ],
-              )
-            ),
-            SizedBox(width: 8,),
-            Text(user.name, style: mediumTextStyle())
-          ],
-        ),
-      ),
-    );
-  }
-}
+//class ChatRoomTile extends StatelessWidget {
+//  final User user;
+//  ChatRoomTile(this.user);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//
+//    return GestureDetector(
+//      onTap:(){
+//        Navigator.push(context, MaterialPageRoute(
+//          builder: (context) => ChatRoomScreen(user)
+//        ));
+//      },
+//      child: Container(
+//        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+//        child: Row(
+//          children: <Widget>[
+//            Container(
+//              height: 50,
+//              width: 50,
+//              alignment: Alignment.center,
+////              decoration: BoxDecoration(
+////                color: Color(0xff39796b),
+////                borderRadius: BorderRadius.circular(40)
+////              ),
+//              child: Row(
+//                children: <Widget>[
+//                  Icon(Icons.account_circle, size: 50.0, color: Color(0xff39796b)),
+//                ],
+//              )
+//            ),
+//            SizedBox(width: 8,),
+//            Text(user.name, style: mediumTextStyle())
+//          ],
+//        ),
+//      ),
+//    );
+//  }
+//}

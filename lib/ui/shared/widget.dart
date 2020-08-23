@@ -85,7 +85,7 @@ Drawer drawer(BuildContext context, RoomsScreenViewModel model){
         ListTile(
           title: Row(
             children: <Widget>[
-              Text('History'),
+              Text('Profile'),
               Spacer(flex: 2),
               Icon(
                   Icons.keyboard_arrow_right,
