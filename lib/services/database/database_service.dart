@@ -17,6 +17,8 @@ abstract class DatabaseService {
 
   Future<List<User>> getUsersByEmail(String userEmail, String excludeEmail);
 
+  Future<List<User>> getUsersByKnowledge(String needle);
+
 
   Future<String> addContact(User user, User contact);
 

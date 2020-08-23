@@ -33,7 +33,7 @@ class _State extends State<SearchScreen> {
       child: Consumer<SearchScreenViewModel>(
         builder: (context, model, child) => Scaffold(
           appBar: AppBar(
-            title: Text("this ${model.users.length}")
+            title: Text("Search")
           ),
 //          appBar: appBarMain(context),
           body: Container(
@@ -93,8 +93,20 @@ class _State extends State<SearchScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(user.name, style: mediumTextStyle()),
-              Text(user.email, style: mediumTextStyle()),
+              Text(
+                  user.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize:13
+                  )
+              ),
+              Text(
+                  user.email,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize:13
+                  )
+              ),
             ],
           ),
           Spacer(),

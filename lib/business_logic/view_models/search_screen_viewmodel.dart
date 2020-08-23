@@ -22,8 +22,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   Room room;
 
   initiateSearch(text){
-    print(text);
-    databaseService.getUsersByEmail(text, Local.user.email)
+    databaseService.getUsersByKnowledge(text)
         .then((val) => showOccurrences(val));
   }
 
@@ -45,11 +44,10 @@ class SearchScreenViewModel extends ChangeNotifier {
             if(room.sid == null){
               databaseService.addRoom(Room(
                   users: {
-                    user.sid: user.name,
-                    Local.user.sid: Local.user.name,
+                    user.sid.toString(): user.toMap(),
+                    Local.user.sid.toString(): Local.user.toMap(),
                   },
-                  from: Local.user.toMap(),
-                  to: user.toMap(),
+                  createdBy: Local.user.sid,
                   time: new DateTime.now().millisecondsSinceEpoch
               ))
               .then((newRoom){

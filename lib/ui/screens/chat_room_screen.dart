@@ -53,7 +53,7 @@ class _ChatScreenState extends State<ChatRoomScreen> {
               appBar: AppBar(
                 title: Row(
                   children: <Widget>[
-                    Text(widget.user.name),
+                    Text(widget.user.name ?? 'undefined'),
                     Spacer(flex:2),
                     IconButton(
                       icon: Icon(Icons.call),

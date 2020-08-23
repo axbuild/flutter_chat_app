@@ -33,7 +33,8 @@ class Helper {
   }
 
   Map<String, dynamic> getIntelocutor(Room room){
-    return (room.from["sid"] == Local.user.sid) ? room.to :  room.from;
+//    return (room.from["sid"] == Local.user.sid) ? room.to :  room.from;
+    return Map();
   }
 
   Future<bool> isInternetExist() async {
