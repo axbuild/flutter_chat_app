@@ -1,4 +1,5 @@
 
+import 'package:chatapp/business_logic/view_models/profile_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/rooms_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/chat_room_screen_viewmodel.dart';
 import 'package:chatapp/business_logic/view_models/main_screen_viewmodel.dart';
@@ -8,6 +9,8 @@ import 'package:chatapp/business_logic/view_models/signup_screen_viewmodel.dart'
 import 'package:chatapp/business_logic/view_models/call_room_screen_viewmodel.dart';
 import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/database/database_service_implementation.dart';
+import 'package:chatapp/services/storage/file_storage_service.dart';
+import 'package:chatapp/services/storage/file_storage_service_firestorage.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:chatapp/services/storage/option_storage_service_shared_preferences.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +26,7 @@ void setupServiceLocator() {
   serviceLocator.registerLazySingleton<Logger>(() => SentryLogger());
   serviceLocator.registerLazySingleton<DatabaseService>(() => DatabaseServiceImpl());
   serviceLocator.registerLazySingleton<OptionStorageService>(() => OptionStorageServiceSharedPreferences());
+  serviceLocator.registerLazySingleton<FileStorageService>(() => FileStorageServiceFileStorage());
   serviceLocator.registerLazySingleton<AuthenticationServiceDefault>(() => AuthenticationServiceDefault());
   serviceLocator.registerLazySingleton<AuthenticationServiceGoogle>(() => AuthenticationServiceGoogle());
 
@@ -33,5 +37,6 @@ void setupServiceLocator() {
   serviceLocator.registerFactory<RoomsScreenViewModel>(() => RoomsScreenViewModel());
   serviceLocator.registerFactory<ChatRoomScreenViewModel>(() => ChatRoomScreenViewModel());
   serviceLocator.registerFactory<CallRoomScreenViewModel>(() => CallRoomScreenViewModel());
+  serviceLocator.registerFactory<ProfileScreenViewModel>(() => ProfileScreenViewModel());
 
 }
