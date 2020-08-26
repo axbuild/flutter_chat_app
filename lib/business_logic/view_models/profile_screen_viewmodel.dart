@@ -12,33 +12,33 @@ class ProfileScreenViewModel extends ChangeNotifier {
   FileStorageService storage = serviceLocator<FileStorageService>();
 
   File image;
-  String defaultImageUrl;
   String imageUrl;
   final picker = ImagePicker();
 
   void loadData() async {
-    defaultImageUrl = '';
-    imageUrl = '';
-    await storage.loadImage('default/no_photo.png')
-    .then((value){
-      defaultImageUrl = value;
-    })
-    .catchError((error, stackTrace) {
-      print("outer: $error");
-    });
-    await storage.loadImage('user/self_image/$Local.user.sid')
-    .then((value){
-      imageUrl = value;
-    })
-    .catchError((error, stackTrace) {
-      print("outer: $error");
-    });
+
+      await storage.loadImage('user/self_image/${Local.user.sid}')
+          .then((value){
+        imageUrl = value;
+        if(Local.user.photoUrl == null)
+        {
+          Local.user.photoUrl = value;
+        }
+        notifyListeners();
+      })
+          .catchError((error, stackTrace) {
+        print("outer: $error");
+      });
+
+
     notifyListeners();
   }
 
-  //    test =  FirebaseStorage.instance.ref().child('user/logo_'+Local.user.sid).getDownloadURL();
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery)
+        .then((value){
+      notifyListeners();
+    });
 
     image = File(pickedFile.path);
     print('Image Path $image');
@@ -46,23 +46,15 @@ class ProfileScreenViewModel extends ChangeNotifier {
   }
 
   Future uploadPic() async{
-    String fileName = basename(image.path);
+//    String fileName = basename(image.path);
     return await storage.upload(image, 'user/self_image', Local.user.sid)
     .then((value){
       imageUrl = value;
+      Local.user.photoUrl = value;
       print(url);
       notifyListeners();
       return value;
     });
-    notifyListeners();
-//
-//    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('user/logo_'+Local.user.sid);
-//    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-//    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-//    setState(() {
-//      print("Profile Picture uploaded");
-//      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
-//    });
   }
 
 }

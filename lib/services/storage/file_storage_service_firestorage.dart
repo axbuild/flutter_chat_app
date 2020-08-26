@@ -41,11 +41,9 @@ class FileStorageServiceFileStorage extends FileStorageService{
     storageReference = FirebaseStorage.instance.ref().child(image);
 
     return storageReference != null ?
-      storageReference.getDownloadURL().toString() : '';
-//        .then((value) => value)
-//        .catchError((error, stackTrace) {
-//          return
-//        });
+      await storageReference.getDownloadURL().then((value){
+        return value;
+      }) : '';
   }
   
 }

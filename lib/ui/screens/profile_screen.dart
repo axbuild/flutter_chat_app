@@ -61,12 +61,13 @@ class _ProfileState extends State<ProfileScreen> {
                             child: new SizedBox(
                               width: 180.0,
                               height: 180.0,
-                              child: (model.image!=null)?Image.file(
-                                model.image,
+                              child: (model.imageUrl != null) ? Image.network(
+                                model.imageUrl,
                                 fit: BoxFit.fill,
-                              ):Image.network(
-                                model.imageUrl ?? model.defaultImageUrl,
-                                fit: BoxFit.fill,
+                              ) : Icon(
+                                Icons.account_circle,
+                                color: Colors.blueGrey,
+                                size: 180.0,
                               ),
                             ),
                           ),
