@@ -4,6 +4,7 @@ import 'package:chatapp/services/authentication/authentication_service_default.d
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/database/database_service.dart';
+import 'package:chatapp/services/storage/file_storage_service.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,6 +14,7 @@ class RoomsScreenViewModel extends ChangeNotifier {
   OptionStorageService localStorageService = serviceLocator<OptionStorageService>();
   AuthenticationServiceDefault authenticationServiceDefault = serviceLocator<AuthenticationServiceDefault>();
   AuthenticationServiceGoogle authenticationServiceGoogle = serviceLocator<AuthenticationServiceGoogle>();
+  FileStorageService storage = serviceLocator<FileStorageService>();
 
   Stream streamRooms;
   Stream streamUsers;
@@ -30,6 +32,19 @@ class RoomsScreenViewModel extends ChangeNotifier {
         notifyListeners();
       });
     });
+
+    if(Local.user.photoUrl == null)
+    {
+      await storage.loadImage('user/self_image/${Local.user.sid}')
+          .then((value){
+        Local.user.photoUrl = value;
+        notifyListeners();
+      })
+          .catchError((error, stackTrace) {
+        print("outer: $error");
+      });
+    }
+
 
   }
 

@@ -42,6 +42,8 @@ dependencies:
   shimmer: ^1.1.1
   firebase_storage: ^3.0.0
   image_picker: ^0.6.7+6
+  flutter_cache_manager_firebase: ^1.0.0+1
+  card_settings: ^1.12.1
 
 
 dev_dependencies:

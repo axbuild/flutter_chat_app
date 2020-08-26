@@ -89,10 +89,13 @@ Drawer drawer(BuildContext context, RoomsScreenViewModel model){
                     borderRadius: BorderRadius.all(Radius.circular(50.0)),
                     elevation: 10,
                     child: Padding(padding: EdgeInsets.all(1.0),
-                      child: CircleAvatar(
+                      child: Local.user.photoUrl != null ? CircleAvatar(
                         radius: 50.0,
-                        backgroundImage:
-                        NetworkImage('https://avatars3.githubusercontent.com/u/13711097?s=460&u=1091476a60191df4ea63d5c7691e09830cf61df9&v=4'),
+                        backgroundImage: NetworkImage(Local.user.photoUrl),
+                      ) : Icon(
+                        Icons.account_circle,
+                        color: Colors.blueGrey,
+                        size: 100.0,
                       ),
                     ),
                   ),
