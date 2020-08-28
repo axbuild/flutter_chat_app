@@ -1,3 +1,10 @@
+import 'package:card_settings/widgets/action_fields/card_settings_button.dart';
+import 'package:card_settings/widgets/card_settings_panel.dart';
+import 'package:card_settings/widgets/card_settings_widget.dart';
+import 'package:card_settings/widgets/information_fields/card_settings_header.dart';
+import 'package:card_settings/widgets/picker_fields/card_settings_file_picker.dart';
+import 'package:card_settings/widgets/text_fields/card_settings_email.dart';
+import 'package:card_settings/widgets/text_fields/card_settings_text.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/utils/universal_variables.dart';
 import 'package:chatapp/business_logic/view_models/profile_screen_viewmodel.dart';
@@ -26,6 +33,94 @@ class _ProfileState extends State<ProfileScreen> {
     super.initState();
   }
 
+  String name = "Name";
+  String lastName = "Last Name";
+  String email = "s.abdulakhatov@gmail.com";
+
+  bool _autoValidate = false;
+
+  Future savePressed() async {
+    final form = model.formKey.currentState;
+
+    if (form.validate()) {
+      form.save();
+      // showResults(context, _ponyModel);
+    } else {
+      // showErrors(context);
+      setState(() => _autoValidate = true);
+    }
+  }
+
+  CardSettingsButton _buildCardSettingsButtonSave() {
+    return CardSettingsButton(
+      label: 'SAVE',
+      backgroundColor: Colors.green,
+      onPressed: savePressed,
+    );
+  }
+
+  Widget getFormFields(){
+    return Form(
+      key: model.formKey,
+      child: CardSettings(
+        children: <CardSettingsSection>[
+          CardSettingsSection(
+            header: CardSettingsHeader(
+              label: 'Bio',
+            ),
+            children: <CardSettingsWidget>[
+              CardSettingsText(
+                label: 'Name',
+                initialValue: name,
+                validator: (value) {
+                  return (value == null || value.isEmpty) ? 'Name is required.' : '';
+                },
+                onSaved: (value) => name = value,
+              ),
+              CardSettingsText(
+                label: 'Last Name',
+                initialValue: lastName,
+                validator: (value) {
+                  return (value == null || value.isEmpty) ? 'Name is required.' : '';
+                },
+                onSaved: (value) => lastName = value,
+              ),
+              CardSettingsEmail(
+                label: 'Email',
+                initialValue: email,
+                validator: (value) {
+                  return (value == null || value.isEmpty) ? 'Email is required.' : '';
+                },
+                onSaved: (value) => lastName = value,
+              ),
+              CardSettingsFilePicker(
+                key: model.photoKey,
+                icon: Icon(Icons.photo),
+                label: 'Photo',
+                fileType: FileType.image,
+                initialValue: _ponyModel.photo,
+                onSaved: (value) => _ponyModel.photo = value,
+                onChanged: (value) {
+                  setState(() {
+                    _ponyModel.photo = value;
+                  });
+                },
+              )
+            ],
+          ),
+          CardSettingsSection(
+            header: CardSettingsHeader(
+              label: 'Actions',
+            ),
+            children: <CardSettingsWidget>[
+              _buildCardSettingsButtonSave(),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,232 +136,222 @@ class _ProfileState extends State<ProfileScreen> {
                 }),
             title: Text('Edit Profile'),
           ),
-          body: Builder(
-            builder: (context) =>  Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: CircleAvatar(
-                          radius: 100,
-                          backgroundColor: Color(UniversalVariables.primeColor),
-                          child: ClipOval(
-                            child: new SizedBox(
-                              width: 180.0,
-                              height: 180.0,
-                              child: (model.imageUrl != null) ? Image.network(
-                                model.imageUrl,
-                                fit: BoxFit.fill,
-                              ) : Icon(
-                                Icons.account_circle,
-                                color: Colors.blueGrey,
-                                size: 180.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 60.0),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.camera,
-                            size: 30.0,
-                          ),
-                          onPressed: () {
-                            model.getImage();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Username',
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 18.0)),
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Michelle James',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          child: Icon(
-                            Icons.edit,
-                            color: Color(0xff476cfb),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Birthday',
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 18.0)),
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('1st April, 2000',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          child: Icon(
-                            Icons.edit,
-                            color: Color(0xff476cfb),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Location',
-                                    style: TextStyle(
-                                        color: Colors.blueGrey, fontSize: 18.0)),
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Paris, France',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          child: Icon(
-                            Icons.edit,
-                            color: Color(0xff476cfb),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Email',
-                            style:
-                            TextStyle(color: Colors.blueGrey, fontSize: 18.0)),
-                        SizedBox(width: 20.0),
-                        Text('michelle123@gmail.com',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      RaisedButton(
-                        color: Color(0xff476cfb),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        elevation: 4.0,
-                        splashColor: Colors.blueGrey,
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: Colors.white, fontSize: 16.0),
-                        ),
-                      ),
-                      RaisedButton(
-                        color: Color(0xff476cfb),
-                        onPressed: () {
-                          model.uploadPic().then((value){
-                            Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
-                          });
-                        },
-
-                        elevation: 4.0,
-                        splashColor: Colors.blueGrey,
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(color: Colors.white, fontSize: 16.0),
-                        ),
-                      ),
-
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
+          body: getFormFields()
+          // body: Builder(
+          //   builder: (context) =>  Container(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.start,
+          //       children: <Widget>[
+          //         SizedBox(
+          //           height: 20.0,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: <Widget>[
+          //             Align(
+          //               alignment: Alignment.center,
+          //               child: CircleAvatar(
+          //                 radius: 100,
+          //                 backgroundColor: Color(UniversalVariables.primeColor),
+          //                 child: ClipOval(
+          //                   child: new SizedBox(
+          //                     width: 180.0,
+          //                     height: 180.0,
+          //                     child: (model.imageUrl != null) ? Image.network(
+          //                       model.imageUrl,
+          //                       fit: BoxFit.fill,
+          //                     ) : Icon(
+          //                       Icons.account_circle,
+          //                       color: Colors.blueGrey,
+          //                       size: 180.0,
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             Padding(
+          //               padding: EdgeInsets.only(top: 60.0),
+          //               child: IconButton(
+          //                 icon: Icon(
+          //                   Icons.camera,
+          //                   size: 30.0,
+          //                 ),
+          //                 onPressed: () {
+          //                   model.getImage();
+          //                 },
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         SizedBox(
+          //           height: 20.0,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: <Widget>[
+          //             Align(
+          //               alignment: Alignment.centerLeft,
+          //               child: Container(
+          //                 child: Column(
+          //                   children: <Widget>[
+          //                     Align(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text('Username',
+          //                           style: TextStyle(
+          //                               color: Colors.blueGrey, fontSize: 18.0)),
+          //                     ),
+          //                     Align(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text('Michelle James',
+          //                           style: TextStyle(
+          //                               color: Colors.black,
+          //                               fontSize: 20.0,
+          //                               fontWeight: FontWeight.bold)),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //             Align(
+          //               alignment: Alignment.centerRight,
+          //               child: Container(
+          //                 child: Icon(
+          //                   Icons.edit,
+          //                   color: Color(0xff476cfb),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         SizedBox(
+          //           height: 20.0,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: <Widget>[
+          //             Align(
+          //               alignment: Alignment.centerLeft,
+          //               child: Container(
+          //                 child: Column(
+          //                   children: <Widget>[
+          //                     Align(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text('Birthday',
+          //                           style: TextStyle(
+          //                               color: Colors.blueGrey, fontSize: 18.0)),
+          //                     ),
+          //                     Align(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text('1st April, 2000',
+          //                           style: TextStyle(
+          //                               color: Colors.black,
+          //                               fontSize: 20.0,
+          //                               fontWeight: FontWeight.bold)),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //             Align(
+          //               alignment: Alignment.centerRight,
+          //               child: Container(
+          //                 child: Icon(
+          //                   Icons.edit,
+          //                   color: Color(0xff476cfb),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         SizedBox(
+          //           height: 20.0,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: <Widget>[
+          //             Align(
+          //               alignment: Alignment.centerLeft,
+          //               child: Container(
+          //                 child: Column(
+          //                   children: <Widget>[
+          //                     Align(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text('Location',
+          //                           style: TextStyle(
+          //                               color: Colors.blueGrey, fontSize: 18.0)),
+          //                     ),
+          //                     Align(
+          //                       alignment: Alignment.centerLeft,
+          //                       child: Text('Paris, France',
+          //                           style: TextStyle(
+          //                               color: Colors.black,
+          //                               fontSize: 20.0,
+          //                               fontWeight: FontWeight.bold)),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //             Align(
+          //               alignment: Alignment.centerRight,
+          //               child: Container(
+          //                 child: Icon(
+          //                   Icons.edit,
+          //                   color: Color(0xff476cfb),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         Container(
+          //           margin: EdgeInsets.all(20.0),
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.start,
+          //             children: <Widget>[
+          //               Text('Email',
+          //                   style:
+          //                   TextStyle(color: Colors.blueGrey, fontSize: 18.0)),
+          //               SizedBox(width: 20.0),
+          //               Text('michelle123@gmail.com',
+          //                   style: TextStyle(
+          //                       color: Colors.black,
+          //                       fontSize: 20.0,
+          //                       fontWeight: FontWeight.bold)),
+          //             ],
+          //           ),
+          //         ),
+          //         SizedBox(
+          //           height: 20.0,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: <Widget>[
+          //             RaisedButton(
+          //               color: Color(UniversalVariables.primeColor),
+          //               onPressed: () {
+          //                 model.uploadPic().then((value){
+          //                   Scaffold.of(context).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
+          //                 });
+          //               },
+          //
+          //               elevation: 4.0,
+          //               splashColor: Colors.blueGrey,
+          //               child: Text(
+          //                 'Save',
+          //                 style: TextStyle(color: Colors.white, fontSize: 16.0),
+          //               ),
+          //             ),
+          //
+          //           ],
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ),
       ),
     );
   }
 
 }
+
