@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
@@ -32,7 +33,7 @@ class SignInScreenModelView extends ChangeNotifier {
 
   User user;
 
-  Future<bool> signIn(BuildContext context) async {
+  Future<bool> signIn() async {
     isLoading = true;
 
     if(formKey.currentState.validate()){
@@ -43,9 +44,17 @@ class SignInScreenModelView extends ChangeNotifier {
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
 
-      await authenticationServiceDefault.signIn()
-        .then((value) => finishAuthorize(context, value));
-
+      return await authenticationServiceDefault.signIn()
+        .then((value){
+        if(value != null){
+          user.isLogged = true;
+          optionStorageService.save('user', user.toMap());
+          Local.user = user;
+          return true;
+        } else {
+          return false;
+        }
+      });
     }
   }
 
@@ -53,29 +62,39 @@ class SignInScreenModelView extends ChangeNotifier {
     return await Future.delayed(Duration(seconds: 2));
   }
 
-  void signInWithGoogle(BuildContext context){
+  Future<bool> signInWithGoogle() async {
     isLoading = true;
 
-    authenticationServiceGoogle.signIn()
-    .then((value) => finishAuthorize(context, value));
+    await authenticationServiceGoogle.signIn()
+      .then((value){
+      if(value != null){
+        user.isLogged = true;
+        optionStorageService.save('user', user.toMap());
+        Local.user = user;
+        return true;
+      } else {
+        return false;
+      }
+    });
+    // .then((value) => finishAuthorize(context, value));
 
   }
 
-  void finishAuthorize(BuildContext context, dynamic value){
-    if(value != null){
-      user.isLogged = true;
-      optionStorageService.save('user', user.toMap());
-
-      Local.user = user;
-
-      Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => RoomsScreen()
-      ));
-      notifyListeners();
-    } else {
-      showPopUpDialog(context, 'User not found!');
-    }
-  }
+  // void finishAuthorize(BuildContext context, dynamic value){
+  //   if(value != null){
+  //     user.isLogged = true;
+  //     optionStorageService.save('user', user.toMap());
+  //
+  //     Local.user = user;
+  //
+  //     Navigator.pushReplacement(context, MaterialPageRoute(
+  //         builder: (context) => RoomsScreen()
+  //     ));
+  //     notifyListeners();
+  //   } else {
+  //     showPopUpDialog(context, 'User not found!');
+  //   }
+  // }
 
   void loadData() async {
     notifyListeners();

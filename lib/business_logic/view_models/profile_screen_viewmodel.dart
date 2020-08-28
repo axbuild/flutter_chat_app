@@ -9,6 +9,9 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfileScreenViewModel extends ChangeNotifier {
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> photoKey = GlobalKey<FormState>();
+
   FileStorageService storage = serviceLocator<FileStorageService>();
 
   File image;
