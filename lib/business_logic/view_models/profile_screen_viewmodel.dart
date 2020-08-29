@@ -5,7 +5,7 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/file_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class ProfileScreenViewModel extends ChangeNotifier {
 
@@ -16,7 +16,7 @@ class ProfileScreenViewModel extends ChangeNotifier {
 
   File image;
   String imageUrl;
-  final picker = ImagePicker();
+  // final picker = ImagePicker();
 
   void loadData() async {
 
@@ -38,13 +38,13 @@ class ProfileScreenViewModel extends ChangeNotifier {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery)
-        .then((value){
-      notifyListeners();
-    });
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery)
+    //     .then((value){
+    //   notifyListeners();
+    // });
 
-    image = File(pickedFile.path);
-    print('Image Path $image');
+    // image = File(pickedFile.path);
+    // print('Image Path $image');
     notifyListeners();
   }
 

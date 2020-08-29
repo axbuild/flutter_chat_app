@@ -61,6 +61,114 @@ class _SignInState extends State<SignIn>{
   //   });
   // }
 
+  ProgressButton buildProgressButton(BuildContext context, String text){
+    return  ProgressButton.icon(iconedButtons: {
+      ButtonState.idle: IconedButton(
+          text: text,
+          icon: Icon(Icons.exit_to_app, color: Colors.white),
+          color: Color(UniversalVariables.primeColor)),
+      ButtonState.loading: IconedButton(
+          text: "Loading",
+          color: Color(UniversalVariables.lightColor)),
+      ButtonState.fail: IconedButton(
+          text: "Failed",
+          icon: Icon(Icons.cancel, color: Colors.white),
+          color: Colors.red.shade300),
+      ButtonState.success: IconedButton(
+          text: "Success",
+          icon: Icon(
+            Icons.check_circle,
+            color: Colors.white,
+          ),
+          color: Colors.green.shade400)
+    }, onPressed: (){
+      switch (signInButtonState) {
+        case ButtonState.idle:
+          signInButtonState = ButtonState.loading;
+
+          model.signIn().then((value) => {
+            if(value != null){
+              signInButtonState = ButtonState.success,
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => RoomsScreen()
+              ))
+            } else {
+              signInButtonState = ButtonState.fail,
+              showPopUpDialog(context, 'User not found!')
+              // Scaffold.of(context).showSnackBar(SnackBar(content: Text('User not found!')))
+            }
+          });
+          break;
+        case ButtonState.loading:
+          break;
+        case ButtonState.success:
+          signInButtonState = ButtonState.idle;
+          break;
+        case ButtonState.fail:
+          signInButtonState = ButtonState.idle;
+          break;
+      }
+      signInButtonState = signInButtonState;
+      setState(() {
+        signInButtonState = signInButtonState;
+      });
+    }, state: signInButtonState);
+  }
+
+  ProgressButton buildGoogleProgressButton(BuildContext context, String text){
+    return ProgressButton.icon(iconedButtons: {
+      ButtonState.idle: IconedButton(
+          text: text,
+          icon: Icon(Icons.exit_to_app, color: Colors.white),
+          color: Color(UniversalVariables.lightColor)),
+      ButtonState.loading: IconedButton(
+          text: "Loading",
+          color: Color(UniversalVariables.lightColor)),
+      ButtonState.fail: IconedButton(
+          text: "Failed",
+          icon: Icon(Icons.cancel, color: Colors.white),
+          color: Colors.red.shade300),
+      ButtonState.success: IconedButton(
+          text: "Success",
+          icon: Icon(
+            Icons.check_circle,
+            color: Colors.white,
+          ),
+          color: Colors.green.shade400)
+    }, onPressed: (){
+      switch (googleSignInButtonState) {
+        case ButtonState.idle:
+          googleSignInButtonState = ButtonState.loading;
+
+          model.signInWithGoogle().then((value) => {
+            if(value != null){
+              googleSignInButtonState = ButtonState.success,
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => RoomsScreen()
+              ))
+            } else {
+              googleSignInButtonState = ButtonState.fail,
+              showPopUpDialog(context, 'User not found!')
+            }
+          });
+          print('Sign in with Google');
+          break;
+        case ButtonState.loading:
+          break;
+        case ButtonState.success:
+          googleSignInButtonState = ButtonState.idle;
+          break;
+        case ButtonState.fail:
+          googleSignInButtonState = ButtonState.idle;
+          break;
+      }
+      googleSignInButtonState = googleSignInButtonState;
+      setState(() {
+        googleSignInButtonState = googleSignInButtonState;
+      });
+    }, state: googleSignInButtonState);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,109 +226,9 @@ class _SignInState extends State<SignIn>{
                   ),
                 ),
                 SizedBox(height: 8,),
-                ProgressButton.icon(iconedButtons: {
-                  ButtonState.idle: IconedButton(
-                      text: "SignIn",
-                      icon: Icon(Icons.exit_to_app, color: Colors.white),
-                      color: Color(UniversalVariables.primeColor)),
-                  ButtonState.loading: IconedButton(
-                      text: "Loading",
-                      color: Color(UniversalVariables.lightColor)),
-                  ButtonState.fail: IconedButton(
-                      text: "Failed",
-                      icon: Icon(Icons.cancel, color: Colors.white),
-                      color: Colors.red.shade300),
-                  ButtonState.success: IconedButton(
-                      text: "Success",
-                      icon: Icon(
-                        Icons.check_circle,
-                        color: Colors.white,
-                      ),
-                      color: Colors.green.shade400)
-                }, onPressed: (){
-                  switch (signInButtonState) {
-                    case ButtonState.idle:
-                      signInButtonState = ButtonState.loading;
-
-                      model.signIn().then((value) => {
-                        if(value != null){
-                          signInButtonState = ButtonState.success,
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => RoomsScreen()
-                          ))
-                        } else {
-                          signInButtonState = ButtonState.fail,
-                          showPopUpDialog(context, 'User not found!')
-                          // Scaffold.of(context).showSnackBar(SnackBar(content: Text('User not found!')))
-                        }
-                      });
-                      break;
-                    case ButtonState.loading:
-                      break;
-                    case ButtonState.success:
-                      signInButtonState = ButtonState.idle;
-                      break;
-                    case ButtonState.fail:
-                      signInButtonState = ButtonState.idle;
-                      break;
-                  }
-                  signInButtonState = signInButtonState;
-                  setState(() {
-                    signInButtonState = signInButtonState;
-                  });
-                }, state: signInButtonState),
+                buildProgressButton(context, 'SignIn'),
                 SizedBox(height:8,),
-                ProgressButton.icon(iconedButtons: {
-                  ButtonState.idle: IconedButton(
-                      text: "SignIn with Google",
-                      icon: Icon(Icons.exit_to_app, color: Colors.white),
-                      color: Color(UniversalVariables.lightColor)),
-                  ButtonState.loading: IconedButton(
-                      text: "Loading",
-                      color: Color(UniversalVariables.lightColor)),
-                  ButtonState.fail: IconedButton(
-                      text: "Failed",
-                      icon: Icon(Icons.cancel, color: Colors.white),
-                      color: Colors.red.shade300),
-                  ButtonState.success: IconedButton(
-                      text: "Success",
-                      icon: Icon(
-                        Icons.check_circle,
-                        color: Colors.white,
-                      ),
-                      color: Colors.green.shade400)
-                }, onPressed: (){
-                  switch (googleSignInButtonState) {
-                    case ButtonState.idle:
-                      googleSignInButtonState = ButtonState.loading;
-
-                      model.signInWithGoogle().then((value) => {
-                        if(value != null){
-                          googleSignInButtonState = ButtonState.success,
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => RoomsScreen()
-                          ))
-                        } else {
-                          googleSignInButtonState = ButtonState.fail,
-                          showPopUpDialog(context, 'User not found!')
-                        }
-                      });
-                      print('Sign in with Google');
-                      break;
-                    case ButtonState.loading:
-                      break;
-                    case ButtonState.success:
-                      googleSignInButtonState = ButtonState.idle;
-                      break;
-                    case ButtonState.fail:
-                      googleSignInButtonState = ButtonState.idle;
-                      break;
-                  }
-                  googleSignInButtonState = googleSignInButtonState;
-                  setState(() {
-                    googleSignInButtonState = googleSignInButtonState;
-                  });
-                }, state: googleSignInButtonState),
+                buildGoogleProgressButton(context, 'SignIn with Google'),
                 SizedBox(height:8,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
