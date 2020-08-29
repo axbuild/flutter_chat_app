@@ -11,29 +11,18 @@ class MainScreenViewModel extends ChangeNotifier {
   OptionStorageService  optionStorageService = serviceLocator<OptionStorageService>();
   FileStorageService storage = serviceLocator<FileStorageService>();
 
-//TODO: init auth provider to check user by method currentUser
-//  getCurrentUser().then((value){
-//  print("=====================");
-//  print(value.email);
-//  print("=====================");
-//  });
-//
-  User user = User.empty();
-  String title = 'Flutter Chat App';
-
   void loadData() async {
+    Local.user = User.empty();
     await optionStorageService.read('user')
-        .then((value){
-          if(value != null){
-            user = User.fromMap(value);
-          } else {
-            optionStorageService.save('user', user.toMap());
-          }
-          Local.user = user;
-          notifyListeners();
-        });
-
+    .then((value){
+      if(value != null){
+        Local.user = User.fromMap(value);
+      } else {
+        optionStorageService.save('user', Local.user.toMap());
+      }
+      notifyListeners();
+    });
     PushNotificationsManager().init();
-    notifyListeners();
   }
+
 }

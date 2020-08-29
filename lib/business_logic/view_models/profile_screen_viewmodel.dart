@@ -5,18 +5,20 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/file_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class ProfileScreenViewModel extends ChangeNotifier {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> photoKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> descriptionKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> hasKnowledgeKey = GlobalKey<FormState>();
 
   FileStorageService storage = serviceLocator<FileStorageService>();
 
   File image;
   String imageUrl;
-  final picker = ImagePicker();
+  // final picker = ImagePicker();
 
   void loadData() async {
 
@@ -38,13 +40,13 @@ class ProfileScreenViewModel extends ChangeNotifier {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery)
-        .then((value){
-      notifyListeners();
-    });
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery)
+    //     .then((value){
+    //   notifyListeners();
+    // });
 
-    image = File(pickedFile.path);
-    print('Image Path $image');
+    // image = File(pickedFile.path);
+    // print('Image Path $image');
     notifyListeners();
   }
 

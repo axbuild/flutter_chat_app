@@ -91,17 +91,20 @@ Drawer drawer(BuildContext context, RoomsScreenViewModel model){
                     borderRadius: BorderRadius.all(Radius.circular(50.0)),
                     elevation: 10,
                     child: Padding(padding: EdgeInsets.all(1.0),
-                      child: Local.user.photoUrl != null ? CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: NetworkImage(Local.user.photoUrl),
-                      ) : Icon(
+                      child:
+                      // Local.user.photoUrl != null ? CircleAvatar(
+                      //   radius: 50.0,
+                      //   backgroundImage: NetworkImage(Local.user.photoUrl),
+                      // ) :
+                      Icon(
                         Icons.account_circle,
                         color: Colors.blueGrey,
                         size: 100.0,
                       ),
                     ),
                   ),
-                  Text(Local.user.name, style: TextStyle(color: Colors.white, fontSize: 25.0),)
+                  // Text(Local.user.name, style: TextStyle(color: Colors.white, fontSize: 25.0),)
+                  Text("nick name", style: TextStyle(color: Colors.white, fontSize: 25.0),)
                 ],
               ),
             )),
