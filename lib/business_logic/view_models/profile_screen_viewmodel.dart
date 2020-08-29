@@ -11,6 +11,8 @@ class ProfileScreenViewModel extends ChangeNotifier {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> photoKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> descriptionKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> hasKnowledgeKey = GlobalKey<FormState>();
 
   FileStorageService storage = serviceLocator<FileStorageService>();
 

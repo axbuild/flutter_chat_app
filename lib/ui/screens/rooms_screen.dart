@@ -88,7 +88,6 @@ class _ChatRoomState extends State<RoomsScreen> {
               room.prepareUsersInformation(Local.user);
               remoteUser = Helper().getIntelocutor(room);
 
-
               return Column(
                   children: <Widget>[
                     roomTile(

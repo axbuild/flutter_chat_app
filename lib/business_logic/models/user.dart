@@ -14,7 +14,9 @@ class User implements BaseModel {
   String token;
   String age;
   String location;
+  String description;
 
+  bool hasKnowledge;
   bool isLogged;
 
   User({
@@ -26,7 +28,9 @@ class User implements BaseModel {
     this.email,
     this.phoneNumber,
     this.photoUrl,
-    this.isLogged
+    this.isLogged,
+    this.description,
+    this.hasKnowledge
   });
 
   User.empty(): isLogged = false;
@@ -38,7 +42,9 @@ class User implements BaseModel {
         login = json['login'],
         name  = json['name'],
         email = json['email'],
-        isLogged = json['isLogged'];
+        isLogged = json['is_logged'],
+        description = json['description'],
+        hasKnowledge = json['has_knowledge'];
 
   Map<String, dynamic> toMap() => {
     'sid': sid,
@@ -47,7 +53,9 @@ class User implements BaseModel {
     'login': login,
     'name': name,
     'email': email,
-    'isLogged': isLogged
+    'is_logged': isLogged,
+    'description': description,
+    'has_knowledge': hasKnowledge
   };
 
 }

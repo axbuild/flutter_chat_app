@@ -27,7 +27,6 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-
     model.loadData();
     super.initState();
   }
@@ -35,7 +34,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: model.title,
+      title: 'Flutter Chat App',
       debugShowCheckedModeBanner: false,
 //      theme: ThemeData(brightness: Brightness.light),
       theme: ThemeData(
@@ -43,7 +42,7 @@ class _AppState extends State<App> {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: model.user.isLogged ? RoomsScreen() : Authenticate(),
+      home: Local.user.isLogged ? RoomsScreen() : Authenticate(),
     );
   }
 }

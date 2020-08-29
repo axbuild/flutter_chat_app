@@ -50,10 +50,8 @@ class SignInScreenModelView extends ChangeNotifier {
           user.isLogged = true;
           optionStorageService.save('user', user.toMap());
           Local.user = user;
-          signInWithGoogle();
           return true;
         } else {
-          signInWithGoogle();
           return false;
         }
       });

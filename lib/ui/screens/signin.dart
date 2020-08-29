@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:chatapp/business_logic/utils/universal_variables.dart';
 import 'package:chatapp/business_logic/view_models/signin_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
+import 'package:chatapp/ui/screens/profile_screen.dart';
 import 'package:chatapp/ui/screens/rooms_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,7 @@ class _SignInState extends State<SignIn>{
               signInButtonState = ButtonState.success,
               Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => RoomsScreen()
+                  // builder: (context) => ProfileScreen()
               ))
             } else {
               signInButtonState = ButtonState.fail,

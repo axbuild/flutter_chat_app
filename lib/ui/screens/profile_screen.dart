@@ -4,8 +4,10 @@ import 'package:card_settings/widgets/action_fields/card_settings_button.dart';
 import 'package:card_settings/widgets/card_settings_panel.dart';
 import 'package:card_settings/widgets/card_settings_widget.dart';
 import 'package:card_settings/widgets/information_fields/card_settings_header.dart';
+import 'package:card_settings/widgets/numeric_fields/card_settings_switch.dart';
 import 'package:card_settings/widgets/picker_fields/card_settings_file_picker.dart';
 import 'package:card_settings/widgets/text_fields/card_settings_email.dart';
+import 'package:card_settings/widgets/text_fields/card_settings_paragraph.dart';
 import 'package:card_settings/widgets/text_fields/card_settings_text.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/utils/universal_variables.dart';
@@ -40,6 +42,7 @@ class _ProfileState extends State<ProfileScreen> {
   String lastName = "Last Name";
   String email = "s.abdulakhatov@gmail.com";
   Uint8List photo;
+  FocusNode _descriptionNode = FocusNode();
 
   bool _autoValidate = false;
 
@@ -109,6 +112,32 @@ class _ProfileState extends State<ProfileScreen> {
                     photo = value;
                   });
                 },
+              ),
+              CardSettingsParagraph(
+                key: model.descriptionKey,
+                label: 'Description',
+                initialValue: Local.user.description,
+                numberOfLines: 5,
+                focusNode: _descriptionNode,
+                onSaved: (value) => Local.user.description = value,
+                onChanged: (value) {
+                  setState(() {
+                    Local.user.description = value;
+                  });
+                  // widget.onValueChanged('Description', value);
+                },
+              ),
+              CardSettingsSwitch(
+                  key: model.hasKnowledgeKey,
+                  label: 'Has Knowledge?',
+                  initialValue: Local.user.hasKnowledge,
+                  onSaved: (value) => Local.user.hasKnowledge = value,
+                  onChanged: (value) {
+                    setState(() {
+                      Local.user.hasKnowledge = value;
+                    });
+                    // widget.onValueChanged('Has Spots?', value);
+                  }
               )
             ],
           ),
@@ -119,7 +148,7 @@ class _ProfileState extends State<ProfileScreen> {
             children: <CardSettingsWidget>[
               _buildCardSettingsButtonSave(),
             ],
-          )
+          ),
         ],
       ),
     );
