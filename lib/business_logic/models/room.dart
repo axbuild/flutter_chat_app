@@ -35,6 +35,7 @@ class Room implements BaseModel {
   };
 
   void prepareUsersInformation(User localUser){
+
     if(this.users != null && json['users'] != null){
       json['users'].forEach((k,v){
         if(localUser.sid == k){

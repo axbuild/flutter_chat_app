@@ -13,6 +13,8 @@ abstract class DatabaseService {
 
   Future<bool> uploadUserInfo(userMap);
 
+  Future<bool> setUser(User user);
+
   Future<Stream> getUsers(List sids);
 
   Future<List<User>> getUsersByEmail(String userEmail, String excludeEmail);

@@ -16,7 +16,7 @@ class User implements BaseModel {
   String location;
   String description;
 
-  bool hasKnowledge;
+  bool hasKnowledge = false;
   bool isLogged;
 
   User({
@@ -33,7 +33,9 @@ class User implements BaseModel {
     this.hasKnowledge
   });
 
-  User.empty(): isLogged = false;
+  User.empty()
+      : isLogged = false,
+        hasKnowledge = false;
 
   User.fromMap(Map<String, dynamic> json)
       : sid   = json['sid'],

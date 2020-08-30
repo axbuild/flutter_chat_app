@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:card_settings/widgets/action_fields/card_settings_button.dart';
@@ -12,6 +13,7 @@ import 'package:card_settings/widgets/text_fields/card_settings_text.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/utils/universal_variables.dart';
 import 'package:chatapp/business_logic/view_models/profile_screen_viewmodel.dart';
+import 'package:chatapp/services/database/database_service.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -31,6 +33,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileState extends State<ProfileScreen> {
 
   ProfileScreenViewModel model  = serviceLocator<ProfileScreenViewModel>();
+  DatabaseService  databaseService = serviceLocator<DatabaseService>();
 
   @override
   void initState() {
@@ -43,17 +46,21 @@ class _ProfileState extends State<ProfileScreen> {
   String email = "s.abdulakhatov@gmail.com";
   Uint8List photo;
   FocusNode _descriptionNode = FocusNode();
+  bool hasKnowledge = false;
 
   bool _autoValidate = false;
 
   Future savePressed() async {
     final form = model.formKey.currentState;
-
     if (form.validate()) {
       form.save();
+      // Local.user.name = name;
+      // Local.user.email = email;
+      // databaseService.setUser(Local.user);
       // showResults(context, _ponyModel);
     } else {
       // showErrors(context);
+
       setState(() => _autoValidate = true);
     }
   }
@@ -61,7 +68,7 @@ class _ProfileState extends State<ProfileScreen> {
   CardSettingsButton _buildCardSettingsButtonSave() {
     return CardSettingsButton(
       label: 'SAVE',
-      backgroundColor: Colors.green,
+      backgroundColor: Color(UniversalVariables.primeColor),
       onPressed: savePressed,
     );
   }
@@ -83,6 +90,12 @@ class _ProfileState extends State<ProfileScreen> {
                   return (value == null || value.isEmpty) ? 'Name is required.' : '';
                 },
                 onSaved: (value) => name = value,
+                onChanged: (value) {
+                  setState(() {
+                    Local.user.name = value;
+                    databaseService.setUser(Local.user);
+                  });
+                },
               ),
               CardSettingsText(
                 label: 'Last Name',
@@ -108,8 +121,16 @@ class _ProfileState extends State<ProfileScreen> {
                 initialValue: photo,
                 onSaved: (value) => photo = value,
                 onChanged: (value) {
-                  setState(() {
+                  setState(() async {
+                    print(value);
                     photo = value;
+
+                    final Directory systemTempDir = Directory.systemTemp;
+                    final File file = await new File('${systemTempDir.path}/foo.png').create();
+                    file.writeAsBytes(photo);
+                    model.image = file;
+                    await model.uploadPic();
+
                   });
                 },
               ),
@@ -130,25 +151,25 @@ class _ProfileState extends State<ProfileScreen> {
               CardSettingsSwitch(
                   key: model.hasKnowledgeKey,
                   label: 'Has Knowledge?',
-                  initialValue: Local.user.hasKnowledge,
-                  onSaved: (value) => Local.user.hasKnowledge = value,
+                  initialValue: hasKnowledge,
+                  onSaved: (value) => hasKnowledge = value,
                   onChanged: (value) {
                     setState(() {
-                      Local.user.hasKnowledge = value;
+                      hasKnowledge = value;
                     });
                     // widget.onValueChanged('Has Spots?', value);
                   }
               )
             ],
           ),
-          CardSettingsSection(
-            header: CardSettingsHeader(
-              label: 'Actions',
-            ),
-            children: <CardSettingsWidget>[
-              _buildCardSettingsButtonSave(),
-            ],
-          ),
+          // CardSettingsSection(
+          //   header: CardSettingsHeader(
+          //     label: 'Actions',
+          //   ),
+          //   children: <CardSettingsWidget>[
+          //     _buildCardSettingsButtonSave(),
+          //   ],
+          // ),
         ],
       ),
     );

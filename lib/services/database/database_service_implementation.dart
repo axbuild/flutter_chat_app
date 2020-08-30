@@ -144,6 +144,13 @@ class DatabaseServiceImpl implements DatabaseService{
     });
   }
 
+  @override
+  Future<bool> setUser(User user) async {
+    await _usersRef
+        .document(user.sid)
+        .setData(user.toMap());
+  }
+
   Future<Stream> getUsers(List documentIds) async {
     return await _usersRef
         .where('uid', whereIn: documentIds )
