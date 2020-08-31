@@ -95,7 +95,8 @@ class _ChatRoomState extends State<RoomsScreen> {
                         room,
                         User(
                             sid: remoteUser["sid"],
-                            name:remoteUser["name"]
+                            name:remoteUser["name"],
+                            isFree: remoteUser["is_free"]
                         )
                     ),
                     Divider()
