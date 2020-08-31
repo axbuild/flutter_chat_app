@@ -11,8 +11,6 @@ class Room implements BaseModel {
   User localUser;
   User remoteUser;
 
-
-
   Room({
     this.sid,
     this.users,
@@ -65,6 +63,13 @@ class Room implements BaseModel {
   }
 
   bool isInterlocutorFree(){
-    return true;
+    print('===============');
+    if(this.remoteUser == null) return false;
+
+    String k = 'is_free_'+ this.remoteUser.sid;
+    print(k);
+    bool status = this.json[k] ?? 0;
+    print('===============');
+    return status;
   }
 }

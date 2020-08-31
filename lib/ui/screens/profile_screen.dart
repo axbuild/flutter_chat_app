@@ -101,7 +101,7 @@ class _ProfileState extends State<ProfileScreen> {
                 label: 'Last Name',
                 initialValue: lastName,
                 validator: (value) {
-                  return (value == null || value.isEmpty) ? 'Name is required.' : '';
+                  return (value == null || value.isEmpty) ? 'Last Name is required.' : '';
                 },
                 onSaved: (value) => lastName = value,
               ),
@@ -150,12 +150,13 @@ class _ProfileState extends State<ProfileScreen> {
               ),
               CardSettingsSwitch(
                   key: model.hasKnowledgeKey,
-                  label: 'Has Knowledge?',
-                  initialValue: hasKnowledge,
-                  onSaved: (value) => hasKnowledge = value,
+                  label: 'I am free',
+                  initialValue: Local.user.isFree == null ? false : Local.user.isFree,
+                  onSaved: (value) => Local.user.isFree = value,
                   onChanged: (value) {
                     setState(() {
-                      hasKnowledge = value;
+                      Local.user.isFree = value;
+                      databaseService.setUser(Local.user);
                     });
                     // widget.onValueChanged('Has Spots?', value);
                   }

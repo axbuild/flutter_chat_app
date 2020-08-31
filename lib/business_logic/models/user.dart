@@ -16,8 +16,10 @@ class User implements BaseModel {
   String location;
   String description;
 
+
   bool hasKnowledge = false;
   bool isLogged;
+  bool isFree = false;
 
   User({
     this.sid,
@@ -30,7 +32,8 @@ class User implements BaseModel {
     this.photoUrl,
     this.isLogged,
     this.description,
-    this.hasKnowledge
+    this.hasKnowledge,
+    this.isFree
   });
 
   User.empty()
@@ -46,7 +49,8 @@ class User implements BaseModel {
         email = json['email'],
         isLogged = json['is_logged'],
         description = json['description'],
-        hasKnowledge = json['has_knowledge'];
+        hasKnowledge = json['has_knowledge'],
+        isFree = json['is_free'];
 
   Map<String, dynamic> toMap() => {
     'sid': sid,
@@ -57,7 +61,8 @@ class User implements BaseModel {
     'email': email,
     'is_logged': isLogged,
     'description': description,
-    'has_knowledge': hasKnowledge
+    'has_knowledge': hasKnowledge,
+    'is_free': isFree
   };
 
 }
