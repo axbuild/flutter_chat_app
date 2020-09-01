@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/painting.dart';
 
 import 'file_storage_service.dart';
 
@@ -44,6 +45,16 @@ class FileStorageServiceFileStorage extends FileStorageService{
       await storageReference.getDownloadURL().then((value){
         return value;
       }) : '';
+  }
+
+  Future<NetworkImage> loadNetworkImage(String image) async {
+    StorageReference storageReference;
+    storageReference = FirebaseStorage.instance.ref().child(image);
+
+    return storageReference != null ?
+    await storageReference.getDownloadURL().then((value){
+      return  NetworkImage(value);
+    }) : '';//TODO return empty avatar
   }
   
 }

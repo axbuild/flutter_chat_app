@@ -92,6 +92,7 @@ class _ChatRoomState extends State<RoomsScreen> {
                   children: <Widget>[
                     roomTile(
                         context,
+                        model,
                         room,
                         User(
                             sid: remoteUser["sid"],
@@ -128,7 +129,7 @@ class _ChatRoomState extends State<RoomsScreen> {
 }
 
 
-ListTile roomTile(BuildContext context, Room room, User user) => ListTile(
+ListTile roomTile(BuildContext context, RoomsScreenViewModel model, Room room, User user) => ListTile(
   isThreeLine: true,
   onLongPress: () {},
   onTap: () {
@@ -155,9 +156,15 @@ ListTile roomTile(BuildContext context, Room room, User user) => ListTile(
     child: Stack(
       children: <Widget>[
         Positioned.fill(
-          child: CircleAvatar(
+          child: room.remoteUser.photoUrl != null ?
+          CircleAvatar(
             backgroundImage:
-            NetworkImage('https://avatars3.githubusercontent.com/u/13711097?s=460&u=1091476a60191df4ea63d5c7691e09830cf61df9&v=4'),
+                //TODO: return avatar
+            loadNetworkImage(room.remoteUser.photoUrl),
+          ) : Icon(
+            Icons.account_circle,
+            color: Colors.blueGrey,
+            size: 45.0,
           ),
         ),
         room.isInterlocutorFree()
