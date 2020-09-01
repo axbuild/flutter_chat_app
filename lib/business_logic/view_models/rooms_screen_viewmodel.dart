@@ -48,6 +48,11 @@ class RoomsScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //TODO: get url
+  Future<dynamic> getImage(String fileName) async {
+    return  await storage.loadNetworkImage('user/self_image/${Local.user.sid}');
+  }
+
   void signOut(){
     authenticationServiceDefault.signOut();
     authenticationServiceGoogle.signOut();
