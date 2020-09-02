@@ -3,6 +3,7 @@ import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/utils/universal_variables.dart';
 import 'package:chatapp/business_logic/view_models/rooms_screen_viewmodel.dart';
+import 'package:chatapp/ui/screens/pickup_room_screen.dart';
 import 'package:chatapp/ui/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_state_button/iconed_button.dart';
@@ -115,6 +116,10 @@ Drawer drawer(BuildContext context, RoomsScreenViewModel model){
           )
         }),
         CustomListTile(Icons.calendar_today, 'Activity', ()=>{
+          Navigator.pop(context),
+          Navigator.push(context,
+             new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
+         )
 //          Navigator.pop(context),
 //          Navigator.push(context,
 //              new MaterialPageRoute(builder: (context) => new NotificationView())

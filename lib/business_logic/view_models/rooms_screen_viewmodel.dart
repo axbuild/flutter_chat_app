@@ -49,6 +49,8 @@ class RoomsScreenViewModel extends ChangeNotifier {
   }
 
   //TODO: get url
+  //https://pub.dev/packages/network_to_file_image
+  //cached_network_image
   Future<dynamic> getImage(String fileName) async {
     return  await storage.loadNetworkImage('user/self_image/${Local.user.sid}');
   }

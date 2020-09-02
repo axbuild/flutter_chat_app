@@ -156,12 +156,7 @@ ListTile roomTile(BuildContext context, RoomsScreenViewModel model, Room room, U
     child: Stack(
       children: <Widget>[
         Positioned.fill(
-          child: room.remoteUser.photoUrl != null ?
-          CircleAvatar(
-            backgroundImage:
-                //TODO: return avatar
-            loadNetworkImage(room.remoteUser.photoUrl),
-          ) : Icon(
+          child: Icon(
             Icons.account_circle,
             color: Colors.blueGrey,
             size: 45.0,

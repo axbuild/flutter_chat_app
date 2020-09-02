@@ -32,6 +32,11 @@ class ChatRoomScreenViewModel extends ChangeNotifier {
       notifyListeners();
   }
 
+  Future<bool> resetNotifyData() async {
+    //TODO: localUser and Room use to reset room notify
+    return true;
+  }
+
   sendMessage(text){
       storageService.addConversationMessages(room, Message(
         author: Local.user.sid,
