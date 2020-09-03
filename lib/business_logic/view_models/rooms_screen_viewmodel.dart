@@ -29,6 +29,11 @@ class RoomsScreenViewModel extends ChangeNotifier {
       await databaseService.getRooms(Local.user)
           .then((value){
         streamRooms = value;
+
+        //TODO: if rooms contains incomeing call
+        // Navigator.push(context,
+        //     new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
+        // );
         notifyListeners();
       });
     });

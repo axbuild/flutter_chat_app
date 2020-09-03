@@ -6,6 +6,7 @@ import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/view_models/rooms_screen_viewmodel.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/ui/screens/chat_room_screen.dart';
+import 'package:chatapp/ui/screens/pickup_room_screen.dart';
 import 'package:chatapp/ui/screens/search_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
