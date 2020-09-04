@@ -89,6 +89,11 @@ class _ChatRoomState extends State<RoomsScreen> {
               room.prepareUsersInformation(Local.user);
               remoteUser = Helper().getIntelocutor(room);
 
+              // Navigator.pop(context);
+              // Navigator.push(context,
+              //     new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
+              // );
+
               return Column(
                   children: <Widget>[
                     roomTile(
