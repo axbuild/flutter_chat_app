@@ -66,7 +66,7 @@ class Room implements BaseModel {
     if(this.remoteUser == null) return false;
 
     String k = 'is_free_'+ this.remoteUser.sid;
-    bool status = this.json[k] ?? 0;
+    bool status = (this.json[k] != null) ? this.json[k] : false;
     return status;
   }
 }

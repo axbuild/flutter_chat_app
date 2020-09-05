@@ -38,17 +38,18 @@ class RoomsScreenViewModel extends ChangeNotifier {
       });
     });
 
-    if(Local.user.photoUrl == null)
-    {
-      await storage.loadImage('user/self_image/${Local.user.sid}')
-      .then((value){
-        Local.user.photoUrl = value;
-        notifyListeners();
-      })
-      .catchError((error, stackTrace) {
-        print("outer: $error");
-      });
-    }
+    // if(Local.user.photoUrl == null)
+    // {
+    //   await storage.loadImage('user/self_image/${Local.user.sid}')
+    //   .then((value){
+    //     Local.user.photoUrl = value;
+    //     notifyListeners();
+    //   })
+    //   .catchError((error, stackTrace) {
+    //     print("outer: $error");
+    //     notifyListeners();
+    //   });
+    // }
 
     notifyListeners();
   }

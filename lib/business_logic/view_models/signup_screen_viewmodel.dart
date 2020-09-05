@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
@@ -9,6 +12,7 @@ import 'package:chatapp/ui/screens/rooms_screen.dart';
 import 'package:chatapp/ui/shared/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreenViewModel extends ChangeNotifier {
 
@@ -52,7 +56,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
       databaseService.uploadUserInfo(user.toMap());
 
       Local.user = user;
-
+      createEntity();
       user.isLogged = true;
       optionStorageService.save('user', user.toMap());
       Navigator.pushReplacement(context, MaterialPageRoute(
@@ -61,6 +65,27 @@ class SignUpScreenViewModel extends ChangeNotifier {
     } else {
       showPopUpDialog(context, 'User already exist, smth wrong!');
     }
+  }
+
+  Future<http.Response> createEntity() {
+    return http.post(
+      Settings().crm+'crm.contact.add/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'fields':
+        {
+          "NAME": Local.user.name,
+          "SECOND_NAME": Local.user.name,
+          "LAST_NAME": Local.user.email,
+          "OPENED": "Y",
+          "ASSIGNED_BY_ID": 1,
+          "TYPE_ID": "CLIENT",
+          "SOURCE_ID": "SELF",
+        }
+      }),
+    );
   }
 
   void loadData(){
