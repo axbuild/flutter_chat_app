@@ -15,6 +15,8 @@ abstract class DatabaseService {
 
   Future<bool> setUser(User user);
 
+  Future<User> getUser(User user);
+
   Future<Stream> getUsers(List sids);
 
   Future<List<User>> getUsersByEmail(String userEmail, String excludeEmail);

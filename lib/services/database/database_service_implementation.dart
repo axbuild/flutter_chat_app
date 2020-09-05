@@ -78,8 +78,8 @@ class DatabaseServiceImpl implements DatabaseService{
 
   Future<Room> getRoom(User fromUser, User toUser) async  {
     return await _roomsRef
-        .where("users."+fromUser.sid, isGreaterThan: null)
-        .where("users."+toUser.sid, isGreaterThan: null)
+        .where("users."+fromUser.sid+".sid", isEqualTo: fromUser.sid)
+        .where("users."+toUser.sid+".sid", isEqualTo: toUser.sid)
         .limit(1)
         .getDocuments()
         .then((snapshot) => new Room(sid: snapshot.documents.first.documentID))
@@ -89,7 +89,7 @@ class DatabaseServiceImpl implements DatabaseService{
   @override
   Future<Stream> getRooms(User user) async {
     return await _roomsRef
-        .where("users."+user.sid, isGreaterThan: null)
+        .where("users."+user.sid+".sid", isEqualTo: user.sid)
         .snapshots();
   }
 
@@ -149,6 +149,18 @@ class DatabaseServiceImpl implements DatabaseService{
     await _usersRef
         .document(user.sid)
         .setData(user.toMap());
+  }
+
+  @override
+  Future<User> getUser(User user) async {
+    return await _usersRef
+        .document(user.sid)
+        .get()
+        .then((snapshot) => User(
+        sid : user.sid,
+        name : snapshot['name'],
+        email : snapshot['email'],
+        isLogged : true));
   }
 
   Future<Stream> getUsers(List documentIds) async {

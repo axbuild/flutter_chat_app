@@ -61,7 +61,7 @@ class SearchScreenViewModel extends ChangeNotifier {
                 if(type == 'video') startVideoConversation(context, room);
               });
             }else{
-              print('Room not found, will be created');
+              print('Room not found, will be created'+room.sid);
             }
           })
           .then((value){

@@ -106,6 +106,13 @@ class _ChatRoomState extends State<RoomsScreen> {
               );
             },
           ) : //Container()
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     Text('local user:'+Local.user.sid+' data:'+snapshot.hasData.toString())
+          //   ],
+          // );
+
           Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -144,8 +151,8 @@ ListTile roomTile(BuildContext context, RoomsScreenViewModel model, Room room, U
     ));
   },
   leading: Container(
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       border: Border.all(

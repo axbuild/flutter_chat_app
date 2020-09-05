@@ -85,7 +85,7 @@ class _ProfileState extends State<ProfileScreen> {
             children: <CardSettingsWidget>[
               CardSettingsText(
                 label: 'Name',
-                initialValue: name,
+                initialValue: Local.user.name,
                 validator: (value) {
                   return (value == null || value.isEmpty) ? 'Name is required.' : '';
                 },
@@ -99,15 +99,21 @@ class _ProfileState extends State<ProfileScreen> {
               ),
               CardSettingsText(
                 label: 'Last Name',
-                initialValue: lastName,
+                initialValue: Local.user.lastName,
                 validator: (value) {
                   return (value == null || value.isEmpty) ? 'Last Name is required.' : '';
                 },
                 onSaved: (value) => lastName = value,
+                onChanged: (value) => {
+                  setState(() => {
+                    Local.user.lastName = value,
+                    databaseService.setUser(Local.user)
+                  })
+                },
               ),
               CardSettingsEmail(
                 label: 'Email',
-                initialValue: email,
+                initialValue: Local.user.email,
                 validator: (value) {
                   return (value == null || value.isEmpty) ? 'Email is required.' : '';
                 },

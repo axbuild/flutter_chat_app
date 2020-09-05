@@ -17,9 +17,8 @@ class MainScreenViewModel extends ChangeNotifier {
     .then((value){
       if(value != null){
         Local.user = User.fromMap(value);
-      } else {
-        optionStorageService.save('user', Local.user.toMap());
       }
+      optionStorageService.save('user', Local.user.toMap());
       notifyListeners();
     });
     PushNotificationsManager().init();

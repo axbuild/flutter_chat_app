@@ -1,7 +1,9 @@
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
@@ -15,6 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_state_button/progress_button.dart';
+
 
 class SignInScreenModelView extends ChangeNotifier {
 
@@ -80,6 +83,8 @@ class SignInScreenModelView extends ChangeNotifier {
 
   }
 
+
+
   // void finishAuthorize(BuildContext context, dynamic value){
   //   if(value != null){
   //     user.isLogged = true;
@@ -97,7 +102,7 @@ class SignInScreenModelView extends ChangeNotifier {
   // }
 
   void loadData() async {
-    notifyListeners();
+     notifyListeners();
   }
 
 }

@@ -106,7 +106,10 @@ Drawer drawer(BuildContext context, RoomsScreenViewModel model){
                     ),
                   ),
                   // Text(Local.user.name, style: TextStyle(color: Colors.white, fontSize: 25.0),)
-                  Text("nick name", style: TextStyle(color: Colors.white, fontSize: 25.0),)
+                  Text(
+                      (Local.user.name != null) ? Local.user.name : 'undefined',
+                    style: TextStyle(color: Colors.white, fontSize: 25.0)
+                  )
                 ],
               ),
             )),

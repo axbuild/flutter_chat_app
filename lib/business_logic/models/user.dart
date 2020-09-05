@@ -8,6 +8,7 @@ class User implements BaseModel {
   String pid;
   String login;
   String name;
+  String lastName;
   String email;
   String phoneNumber;
   String photoUrl;
@@ -27,6 +28,7 @@ class User implements BaseModel {
     this.pid,
     this.login,
     this.name,
+    this.lastName,
     this.email,
     this.phoneNumber,
     this.photoUrl,
@@ -46,6 +48,7 @@ class User implements BaseModel {
         pid   = json['pid'],
         login = json['login'],
         name  = json['name'],
+        lastName = json['last_name'],
         email = json['email'],
         isLogged = json['is_logged'],
         description = json['description'],
@@ -58,6 +61,7 @@ class User implements BaseModel {
     'pid': pid,
     'login': login,
     'name': name,
+    'last_name': lastName,
     'email': email,
     'is_logged': isLogged,
     'description': description,
