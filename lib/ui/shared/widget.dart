@@ -3,6 +3,7 @@ import 'package:chatapp/business_logic/utils/authenticate.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/business_logic/utils/universal_variables.dart';
 import 'package:chatapp/business_logic/view_models/rooms_screen_viewmodel.dart';
+import 'package:chatapp/ui/screens/calendar_screen.dart';
 import 'package:chatapp/ui/screens/pickup_room_screen.dart';
 import 'package:chatapp/ui/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -118,14 +119,17 @@ Drawer drawer(BuildContext context, RoomsScreenViewModel model){
         CustomListTile(Icons.calendar_today, 'Activity', ()=>{
           Navigator.pop(context),
           Navigator.push(context,
-             new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
+             // new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
+             new MaterialPageRoute(builder: (context) => new CalendarScreen(title:'You events'))
          )
 //          Navigator.pop(context),
 //          Navigator.push(context,
 //              new MaterialPageRoute(builder: (context) => new NotificationView())
 //          )
         }),
-        CustomListTile(Icons.settings, 'Settings', ()=>{}),
+        CustomListTile(Icons.settings, 'Settings', (){
+        //
+        }),
         CustomListTile(Icons.lock, 'Log Out', ()=>{
           model.signOut(),
           Navigator.pushReplacement(context, MaterialPageRoute(

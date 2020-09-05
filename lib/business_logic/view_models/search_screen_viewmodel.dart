@@ -33,7 +33,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   }
 
   startConversation({BuildContext context, User user, String type}){
-
+    print('local user' + Local.user.sid + ' Remote user ' + user.sid);
     if(user.sid != null &&  Local.user.sid != null) {
 
       databaseService.getRoom(Local.user, user)

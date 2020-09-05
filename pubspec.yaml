@@ -46,6 +46,7 @@ dependencies:
   flutter_cache_manager_firebase: ^1.0.0+1
   card_settings: ^1.12.1
   progress_state_button: ^1.0.1
+  table_calendar: ^2.2.3
 
 
 dev_dependencies:

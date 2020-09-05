@@ -31,8 +31,6 @@ class _SignInState extends State<SignIn>{
     super.initState();
   }
 
-
-
   // void onPressedIconWithText() {
   //   switch (stateTextWithIcon) {
   //     case ButtonState.idle:
