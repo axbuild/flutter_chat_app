@@ -73,7 +73,7 @@ class _ProfileState extends State<ProfileScreen> {
     );
   }
 
-  Widget getFormFields(){
+  Widget getFormFields(BuildContext context){
     return Form(
       key: model.formKey,
       child: CardSettings(
@@ -90,11 +90,11 @@ class _ProfileState extends State<ProfileScreen> {
                   return (value == null || value.isEmpty) ? 'Name is required.' : '';
                 },
                 onSaved: (value) => name = value,
-                onChanged: (value) {
-                  setState(() {
-                    Local.user.name = value;
-                    databaseService.setUser(Local.user);
-                  });
+                onChanged: (value) => {
+                  setState(() => {
+                    Local.user.name = value,
+                    databaseService.setUser(Local.user)
+                  })
                 },
               ),
               CardSettingsText(
@@ -191,7 +191,7 @@ class _ProfileState extends State<ProfileScreen> {
                 }),
             title: Text('Edit Profile'),
           ),
-          body: getFormFields()
+          body: getFormFields(context)
           // body: Builder(
           //   builder: (context) =>  Container(
           //     child: Column(

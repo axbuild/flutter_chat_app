@@ -89,11 +89,6 @@ class _ChatRoomState extends State<RoomsScreen> {
               room.prepareUsersInformation(Local.user);
               remoteUser = Helper().getIntelocutor(room);
 
-              // Navigator.pop(context);
-              // Navigator.push(context,
-              //     new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
-              // );
-
               return Column(
                   children: <Widget>[
                     roomTile(
@@ -111,24 +106,29 @@ class _ChatRoomState extends State<RoomsScreen> {
               );
             },
           ) : //Container()
-          Shimmer.fromColors(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Icon(Icons.account_circle, size: 50.0),
-                  title: SizedBox(
-                    child: Container(
-                      color: Colors.green,
-                    ),
-                    height: 10.0,
-                  ),
-                );
-              },
+          Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-            baseColor: Colors.grey,
-            highlightColor: Colors.teal,
           );
+          // Shimmer.fromColors(
+          //   child: ListView.builder(
+          //     itemCount: 10,
+          //     itemBuilder: (context, index) {
+          //       return ListTile(
+          //         leading: Icon(Icons.account_circle, size: 50.0),
+          //         title: SizedBox(
+          //           child: Container(
+          //             color: Colors.green,
+          //           ),
+          //           height: 10.0,
+          //         ),
+          //       );
+          //     },
+          //   ),
+          //   baseColor: Colors.grey,
+          //   highlightColor: Colors.teal,
+          // );
         },
     );
   }
