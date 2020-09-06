@@ -43,6 +43,7 @@ class SignInScreenModelView extends ChangeNotifier {
 
       await databaseService.getUserByEmail(emailTextEditingController.text.trim())
           .then((value) => user = value);
+      optionStorageService.save('user', user.toMap());
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();

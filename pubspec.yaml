@@ -48,6 +48,7 @@ dependencies:
   progress_state_button: ^1.0.1
   table_calendar: ^2.2.3
   stripe_payment: ^1.0.7
+  elastic_client: ^0.1.13
 
 
 dev_dependencies:
