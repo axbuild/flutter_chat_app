@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:chatapp/business_logic/models/room.dart';
+import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
 import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
+import 'package:elastic_client/console_http_transport.dart';
 
 import 'local.dart';
 
@@ -46,6 +48,10 @@ class Helper {
     } on SocketException catch (_) {
       return false;
     }
+  }
+
+  Future<void> l(String index, String text){
+    final transport = ConsoleHttpTransport(Uri.parse(Settings().e));
   }
 
 }

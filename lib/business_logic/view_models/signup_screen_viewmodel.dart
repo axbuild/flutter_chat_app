@@ -83,6 +83,7 @@ class SignUpScreenViewModel extends ChangeNotifier {
           "ASSIGNED_BY_ID": 1,
           "TYPE_ID": "CLIENT",
           "SOURCE_ID": "SELF",
+          "UF_CRM_1599388563618": Local.user.sid
         }
       }),
     );
