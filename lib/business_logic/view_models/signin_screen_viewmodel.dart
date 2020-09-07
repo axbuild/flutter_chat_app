@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:chatapp/business_logic/models/settings.dart';
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/helper.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
@@ -44,6 +45,8 @@ class SignInScreenModelView extends ChangeNotifier {
       await databaseService.getUserByEmail(emailTextEditingController.text.trim())
           .then((value) => user = value);
       optionStorageService.save('user', user.toMap());
+
+      Helper().log('test', 'test');
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();
