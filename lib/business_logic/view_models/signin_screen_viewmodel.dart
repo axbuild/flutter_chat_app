@@ -46,7 +46,10 @@ class SignInScreenModelView extends ChangeNotifier {
           .then((value) => user = value);
       optionStorageService.save('user', user.toMap());
 
-      Helper().log('test', 'test');
+      Helper().log('', {
+        'time': DateTime.now().millisecondsSinceEpoch,
+        "user_sid": Local.user.sid
+      });
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
       authenticationServiceDefault.password = passwordTextEditingController.text.trim();

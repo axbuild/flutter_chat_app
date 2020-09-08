@@ -49,6 +49,7 @@ dependencies:
   table_calendar: ^2.2.3
   stripe_payment: ^1.0.7
   elastic_client: ^0.1.13
+  uuid: 2.2.2
 
 
 dev_dependencies:

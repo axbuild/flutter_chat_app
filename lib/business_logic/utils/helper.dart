@@ -7,6 +7,7 @@ import 'package:chatapp/services/service_locator.dart';
 import 'package:chatapp/services/storage/option_storage_service.dart';
 import 'package:elastic_client/console_http_transport.dart';
 import 'package:elastic_client/elastic_client.dart' as elastic;
+import 'package:uuid/uuid.dart';
 
 import 'local.dart';
 
@@ -51,15 +52,16 @@ class Helper {
     }
   }
 
-  Future<void> log(String index, String text) async {
+  Future<void> log(String index, Map<String, dynamic> data) async {
+    var uuid = Uuid();
+
     final transport = ConsoleHttpTransport(
         Uri.parse(Settings().e),
         basicAuth: BasicAuth(Settings().eU, Settings().eP)
     );
     final client = elastic.Client(transport);
 
-    await client.updateDoc('flutter_index', 'my_type', 'my_id_1',
-        {'some': 'data', 'name': 'Sue', 'distance': 10});
+    await client.updateDoc('flutter_index', 'my_type', uuid.v1().toString(), data);
 
     await transport.close();
 
