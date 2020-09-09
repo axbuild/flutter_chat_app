@@ -1,4 +1,5 @@
 import 'package:chatapp/business_logic/models/user.dart';
+import 'package:chatapp/business_logic/utils/helper.dart';
 import 'package:chatapp/business_logic/utils/local.dart';
 import 'package:chatapp/services/authentication/authentication_service_default.dart';
 import 'package:chatapp/services/authentication/authentication_service_google.dart';
@@ -25,11 +26,22 @@ class RoomsScreenViewModel extends ChangeNotifier {
   Map <String, dynamic> users = {};
 
   void loadData() async {
+
+    Helper().log('', {
+      'time': DateTime.now().millisecondsSinceEpoch,
+      "user_sid": Local.user.sid,
+      "action":"screen rooms. start load Data"
+    });
+
     Future.delayed(Duration(seconds: 1)).then((value) async {
       await databaseService.getRooms(Local.user)
           .then((value){
         streamRooms = value;
-
+        Helper().log('', {
+          'time': DateTime.now().millisecondsSinceEpoch,
+          "user_sid": Local.user.sid,
+          "action":"screen rooms. loaded Data"
+        });
         //TODO: if rooms contains incomeing call
         // Navigator.push(context,
         //     new MaterialPageRoute(builder: (context) => new PickupRoomScreen())
