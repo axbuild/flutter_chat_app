@@ -81,6 +81,12 @@ class _ChatRoomState extends State<RoomsScreen> {
             print(snapshot.data.documents.length);
           }
 
+          Helper().log('', {
+            'time': DateTime.now().millisecondsSinceEpoch,
+            "user_sid": Local.user.sid,
+            "action":"screen rooms view. loaded Data" + snapshot.hasData.toString()
+          });
+
           return snapshot.hasData ? ListView.builder(
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index){
