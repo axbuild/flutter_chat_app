@@ -43,8 +43,11 @@ class SignInScreenModelView extends ChangeNotifier {
     if(formKey.currentState.validate()){
 
       await databaseService.getUserByEmail(emailTextEditingController.text.trim())
-          .then((value) => user = value);
-      optionStorageService.save('user', user.toMap());
+          .then((value){
+        user = value;
+        optionStorageService.save('user', user.toMap());
+      });
+
 
       Helper().log('', {
         'time': DateTime.now().millisecondsSinceEpoch,
