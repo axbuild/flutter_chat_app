@@ -45,13 +45,19 @@ class SignInScreenModelView extends ChangeNotifier {
       await databaseService.getUserByEmail(emailTextEditingController.text.trim())
           .then((value){
         user = value;
+        Helper().log('', {
+          'time': DateTime.now().millisecondsSinceEpoch,
+          "user_sid": value.sid,
+          "action":"screen rooms. onSignX"
+        });
         optionStorageService.save('user', user.toMap());
       });
 
 
       Helper().log('', {
         'time': DateTime.now().millisecondsSinceEpoch,
-        "user_sid": Local.user.sid
+        "user_sid": Local.user.sid,
+        "action":"screen rooms. onSign"
       });
 
       authenticationServiceDefault.email = emailTextEditingController.text.trim();
@@ -112,6 +118,17 @@ class SignInScreenModelView extends ChangeNotifier {
   // }
 
   void loadData() async {
+    await optionStorageService.read('user').then((value){
+
+      user = User.fromMap(value);
+      Helper().log('', {
+        'time': DateTime.now().millisecondsSinceEpoch,
+        "user_sid": Local.user.sid,
+        "action":"screen rooms. onloadData"
+      });
+
+
+    });
      notifyListeners();
   }
 
