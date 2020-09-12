@@ -44,36 +44,30 @@ class SignInScreenModelView extends ChangeNotifier {
 
       await databaseService.getUserByEmail(emailTextEditingController.text.trim())
           .then((value){
-        user = value;
-        Helper().log('', {
-          'time': DateTime.now().millisecondsSinceEpoch,
-          "user_sid": value.sid,
-          "action":"screen rooms. onSignX"
-        });
-        optionStorageService.save('user', user.toMap());
-      });
+              user = value;
+              optionStorageService.save('user', user.toMap());
 
+              Helper().log('', {
+                'time': DateTime.now().millisecondsSinceEpoch,
+                "user_sid": value.sid,
+                "action":"screen rooms. onSignX"
+              });
+          }).then((value) async {
+              authenticationServiceDefault.email = emailTextEditingController.text.trim();
+              authenticationServiceDefault.password = passwordTextEditingController.text.trim();
 
-      Helper().log('', {
-        'time': DateTime.now().millisecondsSinceEpoch,
-        "user_sid": Local.user.sid,
-        "action":"screen rooms. onSign"
-      });
-
-      authenticationServiceDefault.email = emailTextEditingController.text.trim();
-      authenticationServiceDefault.password = passwordTextEditingController.text.trim();
-
-      return await authenticationServiceDefault.signIn()
-        .then((value){
-        if(value != null){
-          user.isLogged = true;
-          optionStorageService.save('user', user.toMap());
-          Local.user = user;
-          return true;
-        } else {
-          return false;
-        }
-      });
+              return await authenticationServiceDefault.signIn()
+                  .then((value){
+                if(value != null){
+                  user.isLogged = true;
+                  optionStorageService.save('user', user.toMap());
+                  Local.user = user;
+                  return true;
+                } else {
+                  return false;
+                }
+              });
+          });
     }
   }
 
